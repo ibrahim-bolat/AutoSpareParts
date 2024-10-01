@@ -1,0 +1,19 @@
+using AutoSpareParts.Application.Features.Accounts.DTOs;
+using FluentValidation;
+
+namespace AutoSpareParts.Application.Features.Accounts.Validations;
+
+public class ForgetPassDtoValidator:AbstractValidator<ForgetPassDto>
+{
+    public ForgetPassDtoValidator()
+    {
+        RuleFor(x => x.Email)
+            .NotNull()
+            .WithMessage("Lütfen emaili boş geçmeyiniz...")
+            .NotEmpty()
+            .WithMessage("Lütfen emaili boş geçmeyiniz...")
+            .EmailAddress()
+            .WithMessage("Lütfen uygun formatta e-mail adresi giriniz.");
+
+    }
+}

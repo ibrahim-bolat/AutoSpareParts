@@ -1,0 +1,44 @@
+@model HashSet<IpAssignDto>
+<div class="modal fade" id="endpointIpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="endpointIpModalForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ip Atama</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="ipModalFormModalBody">
+                    <div asp-validation-summary="All" class="text-danger ml-4"></div>
+                    @if (Model is not null)
+                    {
+                        @foreach(var ip in Model)
+                        {
+                            <div class="row">
+                                <input asp-for="@ip.Id" id="ipID@(ip.Id)" class="form-control" type="hidden"/>
+                                <div class="col-9">
+                                    <div class="custom-control custom-switch custom-control-inline">
+                                        <input class="custom-control-input" type="checkbox" id="ipHasAssign@(ip.Id)" data-id="@ip.Id"
+                                           @(ip.TobeAssignedAreaName!=null ? ("data-areaname=" + ip.TobeAssignedAreaName) : null)
+                                           @(ip.TobeAssignedMenuName!=null ? ("data-menuname=" + ip.TobeAssignedMenuName) : null)
+                                           @(ip.TobeAssignedEndpointId!=null ? ("data-endpointId=" + ip.TobeAssignedEndpointId) : null)
+                                           @(ip.HasAssign ? "checked" : "")/>
+                                        <label class="custom-control-label" for="ipHasAssign@(ip.Id)">@ip.RangeStart-@ip.RangeEnd</label>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label id="ipListType@(ip.Id)" class="control-label" asp-for="@ip.IpListType">@ip.IpListType</label>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="button" id="endpointIpModalSave" class="btn btn-primary endpointIpModalSaveBtn">Kaydet</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

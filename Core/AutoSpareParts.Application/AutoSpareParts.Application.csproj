@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\AutoSpareParts.Domain\AutoSpareParts.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Accounts\BusinessRules" />
+      <Folder Include="Features\Accounts\Constants" />
+      <Folder Include="Features\Addresses\BusinessRules" />
+      <Folder Include="Features\Addresses\Models\ViewModels" />
+      <Folder Include="Features\AuthorizeEndpoints\BusinessRules" />
+      <Folder Include="Features\AuthorizeEndpoints\MappingProfiles" />
+      <Folder Include="Features\AuthorizeEndpoints\Validations" />
+      <Folder Include="Features\IpOperations\BusinessRules" />
+      <Folder Include="Features\RoleOperations\BusinessRules" />
+      <Folder Include="Features\RoleOperations\Constants" />
+      <Folder Include="Features\UserImages\BusinessRules" />
+      <Folder Include="Features\UserImages\Models\ViewModels" />
+      <Folder Include="Features\UserOperations\BusinessRules" />
+      <Folder Include="Features\UserOperations\Constants" />
+      <Folder Include="Helpers" />
+      <Folder Include="Model\ViewModels" />
+      <Folder Include="Validations" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+      <PackageReference Include="IPAddressRange" Version="6.0.0" />
+      <PackageReference Include="MediatR" Version="11.0.0" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.1.3" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
+    </ItemGroup>
+
+</Project>

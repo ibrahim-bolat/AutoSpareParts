@@ -1,0 +1,46 @@
+@model CreateUserDto
+<div class="modal fade" id="userCrateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="createModalForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myCreateModalLabel">Kullanıcı Ekle</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body" id="createModalFormModalBody">
+                    <div asp-validation-summary="All" class="text-danger ml-4"></div>
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" id="createFirstName" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" id="createLastName" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" id="createUserName" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" type="email" id="createEmail" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" type="password" id="createPassword" class="form-control" autocomplete="off"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RePassword" class="control-label"></label>
+                        <input asp-for="RePassword" type="password" id="createRePassword" class="form-control" autocomplete="off"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnAdd">Ekle</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

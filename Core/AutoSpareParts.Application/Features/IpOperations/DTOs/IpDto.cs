@@ -1,0 +1,23 @@
+using System.ComponentModel.DataAnnotations;
+using AutoSpareParts.Application.DTOs.Base;
+using AutoSpareParts.Domain.Enums;
+
+namespace AutoSpareParts.Application.Features.IpOperations.DTOs;
+
+public class IpDto:BaseDto
+    {
+        public int Id { get; set; }
+        
+        [Display(Name = "Ip Aralık Başlangıcı")]
+        public string RangeStart { get; set; }
+        
+        [Display(Name = "Ip Aralık Sonu")]
+        public string RangeEnd { get; set; }
+        
+        [Display(Name = "Ip Liste Tipi")]
+        public  IpListType IpListType { get; set; }
+        
+        [Display(Name = "Durumu")]
+        public bool Status { get; set; }
+
+    }

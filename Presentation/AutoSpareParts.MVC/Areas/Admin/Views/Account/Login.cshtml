@@ -1,0 +1,63 @@
+﻿@model LoginDto
+@{
+    Layout = "Account/_AccountLayout";
+    ViewBag.Title = "Giriş";
+}
+
+<div class="login-form p-4">
+    <form asp-area="Admin" asp-controller="Account" asp-action="Login" method="post">
+        <div asp-validation-summary="All" class="text-danger ml-4"></div>
+        <div class="form-group row">
+            <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9">
+                <input type="email" asp-for="Email" class="form-control" autocomplete="email"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Password" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9">
+                <input type="password" asp-for="Password" class="form-control" autocomplete="on"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Persistent" class="col-3 form-check-label text-capitalize"></label>
+            <div class="col-9">
+                <input id="loginIsPersistent" asp-for="Persistent" class=""/>
+                <label class="pull-right">
+                    <a asp-area="Admin" asp-controller="Account" asp-action="ForgetPass" class="ml-auto text-capitalize">Şifreni mi Unuttun?</a>
+                </label>
+            </div>
+        </div>
+        <div class="form-group row mx-1">
+            <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30 rounded">Giriş Yap</button>
+        </div>
+    </form>
+    <div class="form-group row mx-1 justify-content-between">
+            <button type="button" id="facebookLoginButton" data-returnUrl="@Context.Request.Query["ReturnUrl"]" class="btn btn-primary facebook externallogin col-sm-5 p-2 rounded">
+                <i class="fa fa-facebook fa-2x"></i>
+                <span class="text-capitalize mr-sm-2 pr-md-0">Facebook ile Giriş Yap</span>
+            </button>
+            <button type="button" id="googleLoginButton" data-returnUrl="@Context.Request.Query["ReturnUrl"]" class="btn btn-danger google-plus externallogin col-sm-5 p-2 mt-2 mt-sm-0 rounded">
+                <i class="fa fa-google-plus fa-2x"></i>
+                <span class="text-capitalize pr-sm-2 pr-md-0">Google ile Giriş Yap</span>
+            </button>
+        </div>
+    <div class="register-link m-t-15 text-center">
+        <p>Hesabın yok mu? <a asp-area="Admin" asp-controller="Account" asp-action="Register" class="font-weight-bold">Kaydol</a></p>
+    </div>
+</div>
+
+@section Scripts {
+        <script src="~/lib/inputmask/jquery.inputmask.min.js"></script>
+        <script asp-append-version="true">
+                var app = app || {};
+                app.ToastMessages = app.ToastMessages || {};
+                app.Urls = app.Urls || {};
+                app.Urls.externalLoginUrl = '@(Url.Action("ExternalLogin", "Account", new { area = "Admin" }))';
+                app.ToastMessages.loginMessage = '@TempData["LoginSuccess"]';
+                app.ToastMessages.facebookLoginMessage = '@TempData["facebookLoginStatus"]';
+                app.ToastMessages.googleLoginMessage = '@TempData["googleLoginStatus"]';
+                app.ToastMessages.updatePasswordMessage = '@TempData["UpdatePasswordStatus"]';
+        </script>
+        <script src="~/admin/js/account/account.js" asp-append-version="true"></script>
+}

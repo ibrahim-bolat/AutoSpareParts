@@ -1,0 +1,61 @@
+using AutoMapper;
+using AutoSpareParts.Application.DTOs.Common;
+using AutoSpareParts.Application.Features.RoleOperations.DTOs;
+using AutoSpareParts.Application.Wrappers.Concrete;
+using AutoSpareParts.Domain.Entities.Identity;
+using AutoSpareParts.Domain.Enums;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+namespace AutoSpareParts.Application.Features.RoleOperations.Queries.GetRoleListQuery;
+
+public class GetRoleListQueryHandler:IRequestHandler<GetRoleListQueryRequest,GetRoleListQueryResponse>
+{
+    private readonly RoleManager<AppRole> _roleManager;
+    private readonly IMapper _mapper;
+
+    public GetRoleListQueryHandler(RoleManager<AppRole> roleManager, IMapper mapper)
+    {
+        _roleManager = roleManager;
+        _mapper = mapper;
+    }
+
+    public async Task<GetRoleListQueryResponse> Handle(GetRoleListQueryRequest request, CancellationToken cancellationToken)
+    {
+        var roleData = _roleManager.Roles.AsQueryable();
+        int pageSize = request.DatatableRequestDto.Length == -1 ? roleData.Count() :  request.DatatableRequestDto.Length;
+        int skip =  request.DatatableRequestDto.Start;
+        var sortColumn = request.DatatableRequestDto.Columns[request.DatatableRequestDto.Order.FirstOrDefault()!.Column].Data;
+        var sortColumnDirection = request.DatatableRequestDto.Order.FirstOrDefault()!.Dir.ToString();
+        if (!string.IsNullOrEmpty(request.DatatableRequestDto.Search.Value))
+        {
+            roleData = roleData.Where(m => m.Name.ToLower().Contains(request.DatatableRequestDto.Search.Value.ToLower()));
+        }
+        if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+        {
+            //Func<AppRole, string> orderingFunction = (c => sortColumn  == nameof(c.Name) ? c.Name : c.Id.ToString());
+            if (sortColumnDirection == OrderDirType.Desc.ToString())
+            {
+                roleData = roleData.OrderByDescending(c=>c.IsActive).ThenByDescending(c => sortColumn  == nameof(c.Name) ? c.Name : c.Id.ToString()).AsQueryable();
+            }
+            else
+            {
+                roleData = roleData.OrderByDescending(c=>c.IsActive).ThenBy(c => sortColumn  == nameof(c.Name) ? c.Name : c.Id.ToString()).AsQueryable();
+            }
+        }
+        int recordsTotal = roleData.Count();
+        var data = await roleData.Skip(skip).Take(pageSize).ToListAsync();
+        List<RoleDto> roleList = _mapper.Map<List<RoleDto>>(data);
+        var response = new DatatableResponseDto<RoleDto>
+        {
+            Draw = request.DatatableRequestDto.Draw,
+            RecordsTotal = recordsTotal,
+            RecordsFiltered = recordsTotal,
+            Data = roleList
+        };
+        return new GetRoleListQueryResponse{
+            Result = new DataResult<DatatableResponseDto<RoleDto>>(ResultStatus.Success, response)
+        };
+    }
+}
