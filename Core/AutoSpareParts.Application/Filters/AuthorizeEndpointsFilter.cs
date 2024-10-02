@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using AutoSpareParts.Application.Repositories;
 using AutoSpareParts.Domain.Entities;
@@ -38,12 +39,9 @@ public class AuthorizeEndpointsFilter : IAsyncActionFilter
         List<string> actionArguments = new List<string>();
         actionArguments.AddRange(context.ActionArguments.Select(a => a.ToString()));
 
-        Endpoint endpoint = await _unitOfWork.GetRepository<Endpoint>().GetAsync(
-            predicate:a => a.EndpointName == endpointName && a.ControllerName == controllerName &&
-                 a.AreaName == areaName && a.HttpType == requestMethodType && a.IsActive, 
-                include:e => e
-                    .Include(endpoint=>endpoint.AppRoles)
-                    .Include(endpoint => endpoint.IpAddresses));
+        Endpoint endpoint = await _unitOfWork.GetRepository<Endpoint>().GetAsync(predicate:a => a.EndpointName == endpointName && 
+                            a.ControllerName == controllerName && a.AreaName == areaName && a.HttpType == requestMethodType && a.IsActive, 
+                            include:e => e.Include(endpoint=>endpoint.AppRoles).Include(endpoint => endpoint.IpAddresses));
 
         AppUser user = null;
         var userName = context.HttpContext.User.Identity?.Name;
@@ -69,7 +67,7 @@ public class AuthorizeEndpointsFilter : IAsyncActionFilter
             if (context.HttpContext.User.Identity != null && context.HttpContext.User.Identity.Name != null)
             {
                 var appRoles = await _userManager.GetRolesAsync(user);
-                if (appRoles.Contains("Owner") || (endpoint.AppRoles.Any(r => appRoles.Contains(r.Name))) &&
+                if (appRoles.Contains(RoleType.Owner.ToString()) || (endpoint.AppRoles.Any(r => appRoles.Contains(r.Name))) &&
                     IpCheck(remoteIpAddress, endpoint))
                 {
                     await next();
@@ -103,11 +101,8 @@ public class AuthorizeEndpointsFilter : IAsyncActionFilter
             List<IpAddress> blackList = endpoint.IpAddresses.Where(i => i.IpListType == IpListType.BlackList && i.IsActive).ToList();
             if (whiteList.Count != 0 && blackList.Count != 0)
             {
-                if (whiteList.Any(i =>
-                        IPAddressRange.Parse($"{i.RangeStart} - {i.RangeEnd}")
-                            .Contains(IPAddress.Parse(remoteIpAddress))) && !blackList.Any(i =>
-                        IPAddressRange.Parse($"{i.RangeStart} - {i.RangeEnd}")
-                            .Contains(IPAddress.Parse(remoteIpAddress))))
+                if (whiteList.Any(i =>IPAddressRange.Parse($"{i.RangeStart} - {i.RangeEnd}").Contains(IPAddress.Parse(remoteIpAddress))) && 
+                    !blackList.Any(i =>IPAddressRange.Parse($"{i.RangeStart} - {i.RangeEnd}").Contains(IPAddress.Parse(remoteIpAddress))))
                 {
                     return true;
                 }
@@ -116,11 +111,8 @@ public class AuthorizeEndpointsFilter : IAsyncActionFilter
 
             if (whiteList.Count != 0 && blackList.Count == 0)
             {
-                if (whiteList.Any(i =>
-                        IPAddressRange.Parse($"{i.RangeStart} - {i.RangeEnd}")
-                            .Contains(IPAddress.Parse(remoteIpAddress))))
+                if (whiteList.Any(i =>IPAddressRange.Parse($"{i.RangeStart} - {i.RangeEnd}").Contains(IPAddress.Parse(remoteIpAddress))))
                 {
-
                     return true;
                 }
                 return false;
@@ -128,9 +120,7 @@ public class AuthorizeEndpointsFilter : IAsyncActionFilter
 
             if (whiteList.Count == 0 && blackList.Count != 0)
             {
-                if (!blackList.Any(i =>
-                        IPAddressRange.Parse($"{i.RangeStart} - {i.RangeEnd}")
-                            .Contains(IPAddress.Parse(remoteIpAddress))))
+                if (!blackList.Any(i => IPAddressRange.Parse($"{i.RangeStart} - {i.RangeEnd}").Contains(IPAddress.Parse(remoteIpAddress))))
                 {
                     return true;
                 }

@@ -19,8 +19,8 @@ public static class ServiceRegistration
         serviceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
         
         //mediatR
-        serviceCollection.AddMediatR(Assembly.GetExecutingAssembly());
-        
+        serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+
         //fluent validation
         serviceCollection.AddFluentValidationAutoValidation();
         serviceCollection.AddFluentValidationClientsideAdapters();
