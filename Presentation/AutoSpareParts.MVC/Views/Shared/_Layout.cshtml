@@ -12,6 +12,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="~/icons/favicon.png">
 
+    <!-- Font Script -->
     <script>
         WebFontConfig = {
             google: { families: ['Open+Sans:400,600,700', 'Poppins:400,600,700'] }
@@ -23,8 +24,9 @@
             s.parentNode.insertBefore(wf, s);
         })(document);
     </script>
+
     <!-- Css Styles -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> 
+    <link rel="stylesheet" href="~/lib/bootstrap5/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/animate.min.css">
     <link rel="stylesheet" href="~/css/magnific-popup.min.css">
@@ -38,47 +40,42 @@
     <!-- Loading Overlay End-->
     <!-- Page Wrapper Begin -->
     <div class="page-wrapper">
-        <h1 class="d-none">Donald - Responsive eCommerce HTML Template</h1>
+        <h1 class="d-none">Auto Spare Parts</h1>
         <!-- Header Begin -->
         <partial name="_Header" />
         <!-- Header End -->
         <!-- Main Begin -->
-        <main class="main mt-lg-4">
-            <div class="page-content">
-                <div class="container">
-                    @RenderBody()
-                </div>
-            </div>
-        </main>
+        @RenderBody()
         <!-- Main End -->
         <!-- Footer Begin -->
         <partial name="_Footer" />
         <!-- Footer End -->
-        </<div>
-            <!-- Page Wrapper End -->
-            <!-- Sticky Footer Begin -->
-            <partial name="_StickyFooter" />
-            <!-- Sticky Footer End-->
-            <!-- Scroll Top Begin-->
-            <partial name="_ScrollTop" />
-            <!-- Scroll Top End-->
-            <!-- Mobile Menu Begin -->
-            <partial name="_MobileMenu" />
-            <!-- Mobile Menu End -->
+    </div>
+    <!-- Page Wrapper End -->
+    <!-- Sticky Footer Begin -->
+    <partial name="_StickyFooter" />
+    <!-- Sticky Footer End-->
+    <!-- Scroll Top Begin-->
+    <partial name="_ScrollTop" />
+    <!-- Scroll Top End-->
+    <!-- Mobile Menu Begin -->
+    <partial name="_MobileMenu" />
+    <!-- Mobile Menu End -->
 
 
-            <script src="~/lib/jquery/dist/jquery.min.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> 
-            @{
-                await Html.RenderPartialAsync("_ValidationScriptsPartial");
-            }
-            <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
-            <script src="~/js/imagesloaded.pkgd.min.js"></script>
-            <script src="~/js/jquery.elevatezoom.min.js"></script>
-            <script src="~/js/owl.carousel.min.js"></script>
-            <script src="~/js/sticky.min.js"></script>
-            <script src="~/js/main.js" asp-append-version="true"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-            @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap5/dist/js/bootstrap.bundle.min.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/js/imagesloaded.pkgd.min.js"></script>
+    <script src="~/js/jquery.elevatezoom.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/sticky.min.js"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/common/alllayouts.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

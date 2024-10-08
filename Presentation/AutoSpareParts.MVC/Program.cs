@@ -18,7 +18,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddPresentationServices(builder.Configuration,builder.Host);
+builder.Services.AddPresentationServices(builder.Configuration, builder.Host);
 
 
 var app = builder.Build();
@@ -32,7 +32,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseStatusCodePagesWithReExecute("/Error/Index","?statusCode={0}");
+app.UseStatusCodePagesWithReExecute("/Error/Index", "?statusCode={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -57,6 +57,9 @@ await app.AuthorizeEndpointsMigrateAsync(typeof(Program));
 
 // Use Rate Limiting
 app.UseRateLimiter();
+
+// Configure Localization
+app.ConfigureLocalization();
 
 app.MapControllerRoute(
     name: "Admin",

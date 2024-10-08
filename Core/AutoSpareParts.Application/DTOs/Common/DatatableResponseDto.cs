@@ -2,21 +2,21 @@ using Newtonsoft.Json;
 
 namespace AutoSpareParts.Application.DTOs.Common;
 
-public class DatatableResponseDto<T>
+public record DatatableResponseDto<T>
 {
     [JsonProperty("draw")] 
-    public int Draw { get; set; }
+    public int Draw { get; init; }
     
     [JsonProperty("recordsTotal")] 
-    public int RecordsTotal { get; set; }
+    public int RecordsTotal { get; init; }
     
     [JsonProperty("recordsFiltered")] 
-    public int RecordsFiltered { get; set; }
+    public int RecordsFiltered { get; init; }
 
     [JsonProperty("data")] 
-    public IEnumerable<T> Data { get; set; }
+    public IEnumerable<T> Data { get; init; }
 
     [JsonProperty("error", NullValueHandling = NullValueHandling.Ignore)]
-    public string Error { get; set; }
+    public string Error { get; init; }
     
 }

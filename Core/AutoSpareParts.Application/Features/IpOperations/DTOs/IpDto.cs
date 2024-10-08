@@ -4,20 +4,20 @@ using AutoSpareParts.Domain.Enums;
 
 namespace AutoSpareParts.Application.Features.IpOperations.DTOs;
 
-public class IpDto:BaseDto
+public record IpDto:BaseDto
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
         
         [Display(Name = "Ip Aralık Başlangıcı")]
-        public string RangeStart { get; set; }
+        public string RangeStart { get; init; }
         
         [Display(Name = "Ip Aralık Sonu")]
-        public string RangeEnd { get; set; }
+        public string RangeEnd { get; init; }
         
         [Display(Name = "Ip Liste Tipi")]
-        public  IpListType IpListType { get; set; }
+        public  IpListType IpListType { get; init; }
         
         [Display(Name = "Durumu")]
-        public bool Status { get; set; }
+        public bool Status { get; init; }
 
     }

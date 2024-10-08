@@ -29,7 +29,11 @@ public class RegisterDtoValidator:AbstractValidator<RegisterDto>
             .NotEmpty()
             .WithMessage("Lütfen emaili boş geçmeyiniz...")
             .MaximumLength(30)
-            .WithMessage("En fazla 30 karakter girebilirsiniz...");
+            .WithMessage("En fazla 30 karakter girebilirsiniz...")
+            .NotEqual(x => x.FirstName)
+            .WithMessage("Kullanıcı Adı Adla aynı olamaz...")
+            .NotEqual(x => x.LastName)
+            .WithMessage("Kullanıcı Adı Soyadla aynı olamaz...");
 
         RuleFor(x => x.Email)
             .NotNull()

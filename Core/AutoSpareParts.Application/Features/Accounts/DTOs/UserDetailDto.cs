@@ -3,8 +3,8 @@ using AutoSpareParts.Application.Features.Addresses.DTOs;
 
 namespace AutoSpareParts.Application.Features.Accounts.DTOs;
 
-public class UserDetailDto:BaseDto
+public record UserDetailDto:BaseDto
 {
-    public UserDto UserDto { get; set; }
-    public List<AddressSummaryDto> UserAddressSummaryDtos { get; set; }
+    public UserDto UserDto { get; init; }
+    public List<AddressSummaryDto> UserAddressSummaryDtos { get; init; }
 }

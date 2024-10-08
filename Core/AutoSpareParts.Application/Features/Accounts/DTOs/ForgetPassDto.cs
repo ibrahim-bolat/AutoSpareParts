@@ -3,8 +3,8 @@ using AutoSpareParts.Application.DTOs.Base;
 
 namespace AutoSpareParts.Application.Features.Accounts.DTOs;
 
-public class ForgetPassDto:BaseDto
+public record ForgetPassDto:BaseDto
     {
         [Display(Name = "E-Posta Adresiniz")]
-        public string Email { get; set; }
+        public string Email { get; init; }
     }

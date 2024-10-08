@@ -19,7 +19,8 @@ public static class ServiceRegistration
         {
             //dotnet ef migrations add InitialCreate -s Presentation/AutoSpareParts.MVC -p Infrastructure/AutoSpareParts.Persistence
             //dotnet ef database update -s Presentation/AutoSpareParts.MVC -p Infrastructure/AutoSpareParts.Persistence
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+                providerOptions => providerOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(5), errorCodesToAdd: null));
         });
         
         

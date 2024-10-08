@@ -78,10 +78,12 @@ public static class ServiceRegistration
         
         //seri log configuration
         Logger log = new LoggerConfiguration()
-            //.WriteTo.Console()
-            //.WriteTo.File("logs/log.txt")
-            .WriteTo.PostgreSQL(configuration.GetConnectionString("DefaultConnection"), "Logs",
-                needAutoCreateTable: true,
+            //.WriteTo.Console(outputTemplate:"[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}" )
+            //.WriteTo.File(configuration["Serilog:LogFilePath"],
+            //    rollingInterval: RollingInterval.Day,
+            //    rollOnFileSizeLimit: true)
+            .WriteTo.PostgreSQL(configuration.GetConnectionString("DefaultConnection"), 
+                configuration["Serilog:LogDatabaseTableName"], needAutoCreateTable: true,
                 columnOptions: new Dictionary<string, ColumnWriterBase>
                 {
                     {"message", new RenderedMessageColumnWriter(NpgsqlDbType.Text)},

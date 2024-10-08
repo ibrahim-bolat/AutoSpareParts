@@ -2,6 +2,6 @@
 
 namespace AutoSpareParts.Application.DTOs.Base;
 
-public abstract class BaseDto:IDto
+public abstract record BaseDto:IDto
 {
 }

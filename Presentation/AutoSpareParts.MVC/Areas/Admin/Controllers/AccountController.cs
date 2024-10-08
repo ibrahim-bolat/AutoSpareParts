@@ -111,9 +111,9 @@ public class AccountController : Controller
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
                 if (string.IsNullOrEmpty(TempData["returnUrl"] != null ? TempData["returnUrl"].ToString() : ""))
-                    return RedirectToAction("Index", "Home",new { area = "Admin" });
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
                 if (TempData["returnUrl"]!.Equals("Index") || TempData["returnUrl"].Equals("/"))
-                    return RedirectToAction("Index", "Home",new { area = "Admin" });
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
                 return LocalRedirect(TempData["returnUrl"].ToString()!);
             }
 
@@ -147,15 +147,15 @@ public class AccountController : Controller
         }
         return View(loginDto);
     }
-    
+
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> ExternalLogin(string providerName,bool isPersistent,string returnUrl)
+    public async Task<IActionResult> ExternalLogin(string providerName, bool isPersistent, string returnUrl)
     {
         var dresult = await _mediator.Send(new GetExternalLoginAuthenticationPropertiesQueryRequest()
         {
             ProviderName = providerName,
-            RedirectUrl = Url.Action("ExternalLoginResponse", "Account", new {providerName=providerName,isPersistent=isPersistent ,returnUrl = returnUrl})
+            RedirectUrl = Url.Action("ExternalLoginResponse", "Account", new { providerName = providerName, isPersistent = isPersistent, returnUrl = returnUrl })
         });
         if (dresult.Result.ResultStatus == ResultStatus.Success)
         {
@@ -163,10 +163,10 @@ public class AccountController : Controller
         }
         return RedirectToAction("Login", "Account", new { area = "Admin" });
     }
-    
+
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> ExternalLoginResponse(string providerName,bool isPersistent,string returnUrl = "Index")
+    public async Task<IActionResult> ExternalLoginResponse(string providerName, bool isPersistent, string returnUrl = "Index")
     {
         var dresult = await _mediator.Send(new ExternalLoginUserCommandRequest()
         {
@@ -182,14 +182,14 @@ public class AccountController : Controller
         {
             if (returnUrl.Equals("Index") || returnUrl.Equals("/"))
             {
-                return RedirectToAction("Index", "Home",new { area="Admin" });
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
             }
             return LocalRedirect(returnUrl);
         }
         TempData[$"{providerName}LoginStatus"] = false;
         return RedirectToAction("Login", "Account", new { area = "Admin" });
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Logout()
     {

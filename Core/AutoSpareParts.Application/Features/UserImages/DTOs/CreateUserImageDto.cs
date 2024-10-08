@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AutoSpareParts.Application.Features.UserImages.DTOs;
 
-public class CreateUserImageDto:BaseDto
+public record CreateUserImageDto:BaseDto
 {
     public int Id { get; set; }
     

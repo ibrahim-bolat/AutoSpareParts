@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
 
 namespace AutoSpareParts.Application.Features.Accounts.Validations.CustomValidations;
@@ -10,8 +11,8 @@ public class CustomDateAttribute:ValidationAttribute
     }
     public override bool IsValid(object value)
     {
-        DateTime propValue = Convert.ToDateTime(value);
-        if (propValue <= DateTime.Now && propValue >= DateTime.Now.AddYears(-100) || propValue==DateTime.MinValue)
+        DateOnly propValue = (DateOnly)value;
+        if (propValue <= DateOnly.FromDateTime(DateTime.Now) && propValue >= DateOnly.FromDateTime(DateTime.Now).AddYears(-100) || propValue==DateOnly.MinValue)
         {
             return true;
         }

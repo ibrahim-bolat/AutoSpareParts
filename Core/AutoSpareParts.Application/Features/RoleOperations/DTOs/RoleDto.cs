@@ -3,7 +3,7 @@ using AutoSpareParts.Application.DTOs.Base;
 
 namespace AutoSpareParts.Application.Features.RoleOperations.DTOs;
 
-public class RoleDto:BaseDto
+public record RoleDto:BaseDto
     {
         public int Id { get; set; }
         

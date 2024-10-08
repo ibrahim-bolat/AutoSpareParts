@@ -4,24 +4,24 @@ using AutoSpareParts.Application.DTOs.Base;
 namespace AutoSpareParts.Application.Features.Accounts.DTOs;
 
 
-public class RegisterDto:BaseDto
+public record RegisterDto:BaseDto
     {
         [Display(Name = "Ad")]
-        public string FirstName { get; set; }
+        public string FirstName { get; init; }
         
         [Display(Name = "Soyad")]
-        public string LastName { get; set; }
+        public string LastName { get; init; }
         
         [Display(Name = "Kullanıcı Adı")]
-        public string UserName { get; set; }
+        public string UserName { get; init; }
         
         [Display(Name = "Email")]
-        public string Email { get; set; }
+        public string Email { get; init; }
         
         [Display(Name = "Şifre")]
-        public string Password { get; set; }
+        public string Password { get; init; }
 
         [Display(Name = "Şifre Tekrar")]
-        public string RePassword { get; set; }
+        public string RePassword { get; init; }
     }
 

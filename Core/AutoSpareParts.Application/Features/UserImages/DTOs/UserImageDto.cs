@@ -4,7 +4,7 @@ using AutoSpareParts.Application.DTOs.Base;
 
 namespace AutoSpareParts.Application.Features.UserImages.DTOs;
 
-public class UserImageDto:BaseDto
+public record UserImageDto:BaseDto
 {
     public int Id { get; set; }
     

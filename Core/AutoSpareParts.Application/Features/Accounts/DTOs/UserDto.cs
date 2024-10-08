@@ -5,39 +5,39 @@ using AutoSpareParts.Domain.Enums;
 
 namespace AutoSpareParts.Application.Features.Accounts.DTOs;
 
-public class UserDto:BaseDto
+public record UserDto:BaseDto
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
         
         [Display(Name = "Ad")]
-        public string FirstName { get; set; }
+        public string FirstName { get; init; }
         
         [Display(Name = "Soyad")]
-        public string LastName { get; set; }
+        public string LastName { get; init; }
         
         [Display(Name = "Kullanıcı Adı")]
-        public string UserName { get; set; }
+        public string UserName { get; init; }
         
         [Display(Name = "Cinsiyet")]
-        public GenderType GenderType { get; set; }
+        public GenderType GenderType { get; init; }
         
         [Display(Name = "Kimlik No")]
-        public string UserIdendityNo { get; set; }
+        public string UserIdendityNo { get; init; }
         
         [Display(Name = "Telefon")]
         [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; init; }
         
         [Display(Name = "Email")]
-        public string Email { get; set; }
+        public string Email { get; init; }
         
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:D}",ApplyFormatInEditMode = false)]
         [Display(Name = "Doğum Tarihi")]
         [CustomDate]
-        public DateTime? DateOfBirth{get; set;}
+        public DateOnly? DateOfBirth{get; init;}
         
         [Display(Name = "Not")]
-        public string Note { get; set; }
+        public string Note { get; init; }
         
     }

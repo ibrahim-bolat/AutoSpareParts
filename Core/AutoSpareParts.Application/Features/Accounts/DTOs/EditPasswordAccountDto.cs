@@ -3,17 +3,17 @@ using AutoSpareParts.Application.DTOs.Base;
 
 namespace AutoSpareParts.Application.Features.Accounts.DTOs;
 
-public class EditPasswordAccountDto:BaseDto
+public record EditPasswordAccountDto:BaseDto
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [Display(Name = "Kullanıcı Adı")]
-        public string UserName { get; set; }
+        public string UserName { get; init; }
 
         [Display(Name = "Yeni Şifre")]
-        public string NewPassword { get; set; }
+        public string NewPassword { get; init; }
 
         [Display(Name = "Yeni Şifre Tekrar")]
-        public string ReNewPassword { get; set; }
+        public string ReNewPassword { get; init; }
     }
 

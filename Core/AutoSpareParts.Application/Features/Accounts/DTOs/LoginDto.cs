@@ -4,18 +4,18 @@ using AutoSpareParts.Application.DTOs.Base;
 namespace AutoSpareParts.Application.Features.Accounts.DTOs;
 
 
-public class LoginDto:BaseDto
+public record LoginDto:BaseDto
     {
         [Display(Name = "E-Posta ")]
-        public string Email { get; set; }
+        public string Email { get; init; }
         
 
         [Display(Name = "Şifre")]
-        public string Password { get; set; }
+        public string Password { get; init; }
         
 
         [Display(Name = "Beni Hatırla")]
-        public bool Persistent { get; set; }
+        public bool Persistent { get; init; }
         
-        public bool Lock { get; set; }
+        public bool Lock { get; init; }
     }

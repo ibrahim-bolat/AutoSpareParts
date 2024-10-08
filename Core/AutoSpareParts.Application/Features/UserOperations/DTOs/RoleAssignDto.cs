@@ -5,12 +5,12 @@ namespace AutoSpareParts.Application.Features.UserOperations.DTOs;
 
 
 
-public class RoleAssignDto:BaseDto
+public record RoleAssignDto:BaseDto
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
         
         
         [Display(Name = "Rol Adı")]
-        public string Name { get; set; }
-        public bool HasAssign { get; set; }
+        public string Name { get; init; }
+        public bool HasAssign { get; init; }
     }

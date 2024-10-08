@@ -1,28 +1,28 @@
 namespace AutoSpareParts.Application.DTOs.Common;
 
-public class DatatableRequestDto
+public record DatatableRequestDto
 {
-    public int Draw { get; set; }
-    public int Start { get; set; }
-    public int Length { get; set; }
-    public Search Search { get; set; }
-    public List<Column> Columns { get; set; }
-    public List<Order> Order { get; set; }
+    public int Draw { get; init; }
+    public int Start { get; init; }
+    public int Length { get; init; }
+    public Search Search { get; init; }
+    public List<Column> Columns { get; init; }
+    public List<Order> Order { get; init; }
 }
 
-public class Column
+public record Column
 {
-    public string Data { get; set; }
-    public string Name { get; set; }
-    public bool Searchable { get; set; }
-    public bool Orderable { get; set; }
-    public Search Search { get; set; }
+    public string Data { get; init; }
+    public string Name { get; init; }
+    public bool Searchable { get; init; }
+    public bool Orderable { get; init; }
+    public Search Search { get; init; }
 }
 
-public class Order
+public record Order
 {
-    public int Column { get; set; }
-    public OrderDirType Dir { get; set; }
+    public int Column { get; init; }
+    public OrderDirType Dir { get; init; }
 }
 
 public enum OrderDirType
@@ -31,8 +31,8 @@ public enum OrderDirType
     Desc
 }
 
-public class Search
+public record Search
 {
-    public string Value { get; set; }
-    public bool Regex { get; set; }
+    public string Value { get; init; }
+    public bool Regex { get; init; }
 }
