@@ -1,15 +1,15 @@
 using System.Linq.Expressions;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Domain.Entities.Common;
 using AutoSpareParts.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace AutoSpareParts.Persistence.Repositories;
+namespace AutoSpareParts.Persistence.Repositories.Common;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
 {
-    private readonly DbSet<TEntity> _dbSet;
+    protected readonly DbSet<TEntity> _dbSet;
 
     public Repository(DataContext dbContext)
     {
@@ -68,14 +68,14 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,bool enableTracking = true)
+    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool enableTracking = true)
     {
         IQueryable<TEntity> query = _dbSet;
         if (!enableTracking)
         {
             query = query.AsNoTracking();
         }
-        if (include!=null)
+        if (include != null)
         {
             query = include(query);
         }
@@ -87,15 +87,15 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return await query.FirstOrDefaultAsync();
     }
 
-    public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null,Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,bool enableTracking = true)
+    public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool enableTracking = true)
     {
         IQueryable<TEntity> query = _dbSet;
         if (!enableTracking)
         {
             query = query.AsNoTracking();
         }
-        if (include!=null)
+        if (include != null)
         {
             query = include(query);
         }
@@ -109,16 +109,16 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         }
         return await query.ToListAsync();
     }
-    
-    public async Task<IQueryable<TEntity>> GetAllQueryableAsync(Expression<Func<TEntity, bool>> predicate = null,Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,bool enableTracking = true)
+
+    public async Task<IQueryable<TEntity>> GetAllQueryableAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool enableTracking = true)
     {
         IQueryable<TEntity> query = _dbSet;
         if (!enableTracking)
         {
             query = query.AsNoTracking();
         }
-        if (include!=null)
+        if (include != null)
         {
             query = include(query);
         }

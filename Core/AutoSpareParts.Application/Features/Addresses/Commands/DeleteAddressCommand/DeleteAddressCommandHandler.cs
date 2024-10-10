@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.Addresses.Constants;
 using AutoSpareParts.Application.Features.Addresses.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -22,14 +22,14 @@ public class CreateAddressCommandHandler:IRequestHandler<DeleteAddressCommandReq
 
     public async Task<DeleteAddressCommandResponse> Handle(DeleteAddressCommandRequest request, CancellationToken cancellationToken)
     {
-        var address = await _unitOfWork.GetRepository<Address>().GetAsync(predicate:x => x.Id == request.Id);
+        var address = await _unitOfWork.Addresses.GetAsync(predicate:x => x.Id == request.Id);
         if (address != null)
         {
             address.IsActive = false;
             address.IsDeleted = true;
             address.ModifiedByName = request.ModifiedByName;
             address.ModifiedTime = DateTime.Now;
-            var deletedAddress = _unitOfWork.GetRepository<Address>().UpdateAsync(address);
+            var deletedAddress = _unitOfWork.Addresses.UpdateAsync(address);
             var result = await _unitOfWork.SaveAsync();
             var addressDto = _mapper.Map<DetailAddressDto>(address);
             if (result > 0)

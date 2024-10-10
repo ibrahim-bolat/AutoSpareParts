@@ -1,6 +1,6 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.Addresses.Constants;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -20,7 +20,7 @@ public class GetStreetListQueryHandler:IRequestHandler<GetStreetListQueryRequest
 
     public async Task<GetStreetListQueryResponse> Handle(GetStreetListQueryRequest request, CancellationToken cancellationToken)
     {
-        var streetList = await _unitOfWork.GetRepository<Street>().GetAllAsync(predicate:street=>street.NeighborhoodOrVillageId==request.NeighborhoodOrVillageId);
+        var streetList = await _unitOfWork.Streets.GetAllAsync(predicate:street=>street.NeighborhoodOrVillageId==request.NeighborhoodOrVillageId);
         if (streetList != null)
         {
             var response = streetList.Select(street => new SelectListItem()

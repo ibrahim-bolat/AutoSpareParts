@@ -1,5 +1,5 @@
 using AutoSpareParts.Application.Features.IpOperations.Constants;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -24,17 +24,17 @@ public class AssignIpListAuthorizeEndpointsCommandHandler : IRequestHandler<
     {
         List<Endpoint> endpointList = null;
         List<IpAddress> allActiveIpAddresses =
-            await _unitOfWork.GetRepository<IpAddress>().GetAllAsync(predicate:ip => ip.IsActive);
+            await _unitOfWork.IpAddresses.GetAllAsync(predicate:ip => ip.IsActive);
         if (request.IpAreaName != null)
         {
             if (request.IpMenuName == null)
             {
-                endpointList = await _unitOfWork.GetRepository<Endpoint>().GetAllAsync(predicate:e => 
+                endpointList = await _unitOfWork.Endpoints.GetAllAsync(predicate:e => 
                     e.AreaName == request.IpAreaName, include:e => e.Include(endpoint=>endpoint.IpAddresses));
             }
             else
             {
-                endpointList = await _unitOfWork.GetRepository<Endpoint>().GetAllAsync(
+                endpointList = await _unitOfWork.Endpoints.GetAllAsync(
                     predicate:e => e.AreaName == request.IpAreaName && e.ControllerName == request.IpMenuName,
                     include:e => e.Include(endpoint=>endpoint.IpAddresses));
             }
@@ -62,7 +62,7 @@ public class AssignIpListAuthorizeEndpointsCommandHandler : IRequestHandler<
 
         if (request.IpAreaName == null && request.IpMenuName == null && request.EndpointId > 0)
         {
-            Endpoint endpoint = await _unitOfWork.GetRepository<Endpoint>()
+            Endpoint endpoint = await _unitOfWork.Endpoints
                 .GetAsync(predicate:e => e.Id == request.EndpointId, include:e => e.Include(endpoint=>endpoint.IpAddresses));
             endpoint.IpAddresses.RemoveAll(ip => true);
             if (request.IpIds.Count() != 0)

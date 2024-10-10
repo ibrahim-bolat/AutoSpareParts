@@ -1,6 +1,6 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.Addresses.Constants;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -20,7 +20,7 @@ public class GetDistrictListQueryHandler:IRequestHandler<GetDistrictListQueryReq
 
     public async Task<GetDistrictListQueryResponse> Handle(GetDistrictListQueryRequest request, CancellationToken cancellationToken)
     {
-        var districtList = await _unitOfWork.GetRepository<District>().GetAllAsync(predicate:district=>district.CityId==request.CityId);
+        var districtList = await _unitOfWork.Districts.GetAllAsync(predicate:district=>district.CityId==request.CityId);
         if (districtList != null)
         {
             var response = districtList.Select(district => new SelectListItem()

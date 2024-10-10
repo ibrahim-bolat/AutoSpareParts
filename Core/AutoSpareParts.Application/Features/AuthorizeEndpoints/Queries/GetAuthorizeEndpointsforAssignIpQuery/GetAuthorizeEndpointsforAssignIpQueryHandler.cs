@@ -1,11 +1,11 @@
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.DTOs.Common;
-using AutoSpareParts.Application.Repositories;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Newtonsoft.Json;
+using AutoSpareParts.Application.Repositories.Common;
 
 namespace AutoSpareParts.Application.Features.AuthorizeEndpoints.Queries.GetAuthorizeEndpointsforAssignIpQuery;
 
@@ -23,7 +23,7 @@ public class
     public async Task<GetAuthorizeEndpointsforAssignIpQueryResponse> Handle(
         GetAuthorizeEndpointsforAssignIpQueryRequest request, CancellationToken cancellationToken)
     {
-        List<Endpoint> endpoints = await _unitOfWork.GetRepository<Endpoint>().GetAllAsync(predicate:e => e.IsActive);
+        List<Endpoint> endpoints = await _unitOfWork.Endpoints.GetAllAsync(predicate:e => e.IsActive);
         HashSet<string> areas = new();
         endpoints.ForEach(e=>areas.Add(e.AreaName));
         List<TreeViewDto> treeViewDtos = new();

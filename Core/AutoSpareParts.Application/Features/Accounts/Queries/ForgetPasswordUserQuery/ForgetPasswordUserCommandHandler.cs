@@ -1,6 +1,6 @@
 using System.Web;
 using AutoSpareParts.Application.Constants;
-using AutoSpareParts.Application.Model;
+using AutoSpareParts.Application.Models;
 using AutoSpareParts.Application.Services;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities.Identity;

@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.Addresses.Constants;
 using AutoSpareParts.Application.Features.Addresses.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -22,7 +22,7 @@ public class GetCreateAddressQueryHandler:IRequestHandler<GetCreateAddressQueryR
     public async Task<GetCreateAddressQueryResponse> Handle(GetCreateAddressQueryRequest request,
         CancellationToken cancellationToken)
     {
-        var cityList = await _unitOfWork.GetRepository<City>().GetAllAsync();
+        var cityList = await _unitOfWork.Cities.GetAllAsync();
         List<SelectListItem> citySelectListItems = null;
         if (cityList != null)
         {

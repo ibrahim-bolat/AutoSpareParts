@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.Addresses.Constants;
 using AutoSpareParts.Application.Features.Addresses.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -26,7 +26,7 @@ public class CreateAddressCommandHandler:IRequestHandler<CreateAddressCommandReq
 
     public async Task<CreateAddressCommandResponse> Handle(CreateAddressCommandRequest request, CancellationToken cancellationToken)
     {
-       var count = await _unitOfWork.GetRepository<Address>().CountAsync(predicate:x => x.UserId == request.AddressDto.UserId && x.IsActive);
+       var count = await _unitOfWork.Addresses.CountAsync(predicate:x => x.UserId == request.AddressDto.UserId && x.IsActive);
        string createdByName = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
         if (count >= 4)
         {
@@ -45,7 +45,7 @@ public class CreateAddressCommandHandler:IRequestHandler<CreateAddressCommandReq
         City city = null;
         if (int.TryParse(request.AddressDto.StreetId, out int streetId))
         {
-            city = await _unitOfWork.GetRepository<City>().GetAsync(predicate:c => c.Id == cityId,
+            city = await _unitOfWork.Cities.GetAsync(predicate:c => c.Id == cityId,
                 include: c => c.Include(city=>city.Districts.Where(d=>d.Id==districtId))
                     .ThenInclude(district=>district.NeighborhoodsOrVillages.Where(n=>n.Id==neighborhoodorvillageId))
                     .ThenInclude(neighborhoodorvillage=>neighborhoodorvillage.Streets.Where(s=>s.Id==streetId)));
@@ -57,7 +57,7 @@ public class CreateAddressCommandHandler:IRequestHandler<CreateAddressCommandReq
         }
         else
         {
-            city = await _unitOfWork.GetRepository<City>().GetAsync(predicate:c => c.Id == cityId,
+            city = await _unitOfWork.Cities.GetAsync(predicate:c => c.Id == cityId,
                 include: c => c.Include(city => city.Districts.Where(d => d.Id == districtId))
                     .ThenInclude(district => district.NeighborhoodsOrVillages.Where(n => n.Id == neighborhoodorvillageId)));
              cityName = city.Name;
@@ -68,13 +68,13 @@ public class CreateAddressCommandHandler:IRequestHandler<CreateAddressCommandReq
         {
             if (request.AddressDto.DefaultAddress)
             {
-                var addresses = await _unitOfWork.GetRepository<Address>().GetAllAsync(predicate:a=>a.UserId==request.AddressDto.UserId);
+                var addresses = await _unitOfWork.Addresses.GetAllAsync(predicate:a=>a.UserId==request.AddressDto.UserId);
                 foreach (var address in addresses)
                 {
                     address.DefaultAddress = false;
                     address.ModifiedByName = createdByName;
                     address.ModifiedTime = DateTime.Now;
-                    await _unitOfWork.GetRepository<Address>().UpdateAsync(address);
+                    await _unitOfWork.Addresses.UpdateAsync(address);
                 }
                 var newAddress = _mapper.Map<Address>(request.AddressDto);
                 newAddress.DefaultAddress = true;
@@ -92,7 +92,7 @@ public class CreateAddressCommandHandler:IRequestHandler<CreateAddressCommandReq
                 newAddress.NeighborhoodOrVillageName = neighborhoodOrVillageName;
                 newAddress.StreetName = streetName;
                 newAddress.StreetId = request.AddressDto.StreetId;
-                await _unitOfWork.GetRepository<Address>().AddAsync(newAddress);
+                await _unitOfWork.Addresses.AddAsync(newAddress);
             }
             else
             {
@@ -112,7 +112,7 @@ public class CreateAddressCommandHandler:IRequestHandler<CreateAddressCommandReq
                 newAddress.NeighborhoodOrVillageName = neighborhoodOrVillageName;
                 newAddress.StreetName = streetName;
                 newAddress.StreetId = request.AddressDto.StreetId;
-                await _unitOfWork.GetRepository<Address>().AddAsync(newAddress);
+                await _unitOfWork.Addresses.AddAsync(newAddress);
             }
         }
         else
@@ -135,7 +135,7 @@ public class CreateAddressCommandHandler:IRequestHandler<CreateAddressCommandReq
                 newAddress.NeighborhoodOrVillageName = neighborhoodOrVillageName;
                 newAddress.StreetName = streetName;
                 newAddress.StreetId = request.AddressDto.StreetId;
-                await _unitOfWork.GetRepository<Address>().AddAsync(newAddress);
+                await _unitOfWork.Addresses.AddAsync(newAddress);
             }
             else
             {
@@ -155,7 +155,7 @@ public class CreateAddressCommandHandler:IRequestHandler<CreateAddressCommandReq
                 newAddress.NeighborhoodOrVillageName = neighborhoodOrVillageName;
                 newAddress.StreetName = streetName;
                 newAddress.StreetId = request.AddressDto.StreetId;
-                await _unitOfWork.GetRepository<Address>().AddAsync(newAddress);
+                await _unitOfWork.Addresses.AddAsync(newAddress);
             }
         }
         int result = await _unitOfWork.SaveAsync();

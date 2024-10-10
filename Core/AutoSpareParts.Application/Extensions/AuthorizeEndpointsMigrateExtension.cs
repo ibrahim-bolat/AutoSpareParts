@@ -1,6 +1,6 @@
 using System.Reflection;
 using AutoSpareParts.Application.CustomAttributes;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
 using Microsoft.AspNetCore.Builder;
@@ -24,7 +24,7 @@ public static class AuthorizeEndpointsMigrateExtension
                 {
                     try
                     {
-                        List<Endpoint> endpoints = await unitOfWork.GetRepository<Endpoint>().GetAllAsync(predicate: e => e.IsActive);
+                        List<Endpoint> endpoints = await unitOfWork.Endpoints.GetAllAsync(predicate: e => e.IsActive);
                         Assembly assembly = Assembly.GetAssembly(type);
                         var controllers = assembly!.GetTypes().Where(t => t.IsAssignableTo(typeof(Controller)));
                         foreach (var controller in controllers)
@@ -76,7 +76,7 @@ public static class AuthorizeEndpointsMigrateExtension
                                 }
                             }
                         }
-                        await unitOfWork.GetRepository<Endpoint>().UpdateRangeAsync(endpoints);
+                        await unitOfWork.Endpoints.UpdateRangeAsync(endpoints);
                         await unitOfWork.SaveAsync();
                     }
                     finally

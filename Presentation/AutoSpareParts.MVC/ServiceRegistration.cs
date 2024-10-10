@@ -1,6 +1,6 @@
 using System.Net;
 using System.Text.Json.Serialization;
-using AutoSpareParts.Application.Model;
+using AutoSpareParts.Application.Models;
 using AutoSpareParts.MVC.Configurations.RateLimit;
 using AutoSpareParts.MVC.Configurations.SeriLog;
 using Microsoft.AspNetCore.Authorization;

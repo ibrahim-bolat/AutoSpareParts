@@ -1,6 +1,6 @@
 using System.Net;
 using System.Threading.RateLimiting;
-using AutoSpareParts.Application.Model;
+using AutoSpareParts.Application.Models;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
 

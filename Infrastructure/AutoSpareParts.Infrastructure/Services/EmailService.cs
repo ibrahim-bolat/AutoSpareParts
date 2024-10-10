@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Mail;
-using AutoSpareParts.Application.Model;
+using AutoSpareParts.Application.Models;
 using AutoSpareParts.Application.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

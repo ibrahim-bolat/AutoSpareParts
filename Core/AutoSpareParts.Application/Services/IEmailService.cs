@@ -1,4 +1,4 @@
-using AutoSpareParts.Application.Model;
+using AutoSpareParts.Application.Models;
 
 namespace AutoSpareParts.Application.Services;
 

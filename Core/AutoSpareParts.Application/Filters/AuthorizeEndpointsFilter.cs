@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Net;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Entities.Identity;
 using AutoSpareParts.Domain.Enums;
@@ -39,7 +39,7 @@ public class AuthorizeEndpointsFilter : IAsyncActionFilter
         List<string> actionArguments = new List<string>();
         actionArguments.AddRange(context.ActionArguments.Select(a => a.ToString()));
 
-        Endpoint endpoint = await _unitOfWork.GetRepository<Endpoint>().GetAsync(predicate:a => a.EndpointName == endpointName && 
+        Endpoint endpoint = await _unitOfWork.Endpoints.GetAsync(predicate:a => a.EndpointName == endpointName && 
                             a.ControllerName == controllerName && a.AreaName == areaName && a.HttpType == requestMethodType && a.IsActive, 
                             include:e => e.Include(endpoint=>endpoint.AppRoles).Include(endpoint => endpoint.IpAddresses));
 
@@ -47,7 +47,7 @@ public class AuthorizeEndpointsFilter : IAsyncActionFilter
         var userName = context.HttpContext.User.Identity?.Name;
         if (userName != null)
             user = await _userManager.FindByNameAsync(userName);
-        await _unitOfWork.GetRepository<RequestInfoLog>().AddAsync(new RequestInfoLog()
+        await _unitOfWork.RequestInfoLogs.AddAsync(new RequestInfoLog()
         {
             AreaName = areaName,
             ControllerName = controllerName,

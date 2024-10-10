@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.UserImages.Constants;
 using AutoSpareParts.Application.Features.UserImages.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -22,7 +22,7 @@ public class GetByUserIdAllUserImageQueryHandler:IRequestHandler<GetByUserIdAllU
 
     public async Task<GetByUserIdAllUserImageQueryResponse> Handle(GetByUserIdAllUserImageQueryRequest request, CancellationToken cancellationToken)
     {
-        var userImages = await _unitOfWork.GetRepository<UserImage>().GetAllAsync(predicate:ui=>ui.UserId==request.UserId && ui.IsActive);
+        var userImages = await _unitOfWork.UserImages.GetAllAsync(predicate:ui=>ui.UserId==request.UserId && ui.IsActive);
         var userImagesViewDtoList = _mapper.Map<IList<UserImageDto>>(userImages);
         if (userImages.Count > -1)
         {

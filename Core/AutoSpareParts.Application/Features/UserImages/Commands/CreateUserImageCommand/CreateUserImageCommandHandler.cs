@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.UserImages.Constants;
 using AutoSpareParts.Application.Features.UserImages.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -22,7 +22,7 @@ public class CreateUserImageCommandHandler:IRequestHandler<CreateUserImageComman
 
     public async Task<CreateUserImageCommandResponse> Handle(CreateUserImageCommandRequest request, CancellationToken cancellationToken)
     {
-        var count = await _unitOfWork.GetRepository<UserImage>().CountAsync(predicate:x => x.UserId == request.UserImageAddDto.UserId && x.IsActive);
+        var count = await _unitOfWork.UserImages.CountAsync(predicate:x => x.UserId == request.UserImageAddDto.UserId && x.IsActive);
         if (count >= 4)
         {
             return new CreateUserImageCommandResponse
@@ -38,11 +38,11 @@ public class CreateUserImageCommandHandler:IRequestHandler<CreateUserImageComman
         userImage.ModifiedTime=DateTime.Now;
         userImage.IsActive = true;
         userImage.IsDeleted = false;
-        await _unitOfWork.GetRepository<UserImage>().AddAsync(userImage);
+        await _unitOfWork.UserImages.AddAsync(userImage);
         if (count > 0  && userImage.Profil)
         {
             var userImages =
-                await _unitOfWork.GetRepository<UserImage>().GetAllAsync(predicate:ui =>
+                await _unitOfWork.UserImages.GetAllAsync(predicate:ui =>
                     ui.UserId == request.UserImageAddDto.UserId && ui.IsActive);
             if (userImages != null)
             {
@@ -53,7 +53,7 @@ public class CreateUserImageCommandHandler:IRequestHandler<CreateUserImageComman
                         uImage.Profil = false;
                         uImage.ModifiedByName = request.CreatedByName;
                         uImage.ModifiedTime = DateTime.Now;
-                        await _unitOfWork.GetRepository<UserImage>().UpdateAsync(uImage);
+                        await _unitOfWork.UserImages.UpdateAsync(uImage);
                     }
                 }
             }

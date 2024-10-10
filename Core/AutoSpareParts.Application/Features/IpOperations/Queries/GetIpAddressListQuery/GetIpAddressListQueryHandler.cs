@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.DTOs.Common;
 using AutoSpareParts.Application.Features.IpOperations.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -23,7 +23,7 @@ public class GetIpAddressListQueryHandler:IRequestHandler<GetIpAddressListQueryR
     public async Task<GetIpAddressListQueryResponse> Handle(GetIpAddressListQueryRequest request, CancellationToken cancellationToken)
     {
         var ipData =
-            _mapper.ProjectTo<IpListDto>(await _unitOfWork.GetRepository<IpAddress>().GetAllQueryableAsync()).AsQueryable();
+            _mapper.ProjectTo<IpListDto>(await _unitOfWork.IpAddresses.GetAllQueryableAsync()).AsQueryable();
         int pageSize = request.DatatableRequestDto.Length == -1 ? ipData.Count() :  request.DatatableRequestDto.Length;
         int skip =  request.DatatableRequestDto.Start;
         var sortColumn = request.DatatableRequestDto.Columns[request.DatatableRequestDto.Order.FirstOrDefault()!.Column].Data;

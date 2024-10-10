@@ -14,6 +14,7 @@ public record EditPasswordAccountDto:BaseDto
         public string NewPassword { get; init; }
 
         [Display(Name = "Yeni Şifre Tekrar")]
+        [Compare("NewPassword",ErrorMessage ="Şifre ile eşleşmelidir")]
         public string ReNewPassword { get; init; }
     }
 

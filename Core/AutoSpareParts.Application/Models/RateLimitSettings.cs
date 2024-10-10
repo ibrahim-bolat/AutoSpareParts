@@ -1,6 +1,6 @@
 using System.Threading.RateLimiting;
 
-namespace  AutoSpareParts.Application.Model;
+namespace  AutoSpareParts.Application.Models;
 
 public class RateLimitSettings
 {

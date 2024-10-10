@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.UserImages.Constants;
 using AutoSpareParts.Application.Features.UserImages.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -25,7 +25,7 @@ public class DeleteUserImageCommandHandler:IRequestHandler<DeleteUserImageComman
     
     public async Task<DeleteUserImageCommandResponse> Handle(DeleteUserImageCommandRequest request, CancellationToken cancellationToken)
     {
-        var userImage = await _unitOfWork.GetRepository<UserImage>().GetAsync(predicate:x => x.Id == request.Id && x.IsActive==true);
+        var userImage = await _unitOfWork.UserImages.GetAsync(predicate:x => x.Id == request.Id && x.IsActive==true);
         if (userImage != null)
         {
             var imagePath = _hostEnvironment.WebRootPath + userImage.ImagePath;
@@ -39,7 +39,7 @@ public class DeleteUserImageCommandHandler:IRequestHandler<DeleteUserImageComman
                 userImage.IsDeleted = true;
                 userImage.ModifiedByName = request.ModifiedByName;
                 userImage.ModifiedTime = DateTime.Now;
-                await _unitOfWork.GetRepository<UserImage>().UpdateAsync(userImage);
+                await _unitOfWork.UserImages.UpdateAsync(userImage);
                 var result = await _unitOfWork.SaveAsync();
                 var userImageDto = _mapper.Map<UserImageDto>(userImage);
                 if (result > 0)

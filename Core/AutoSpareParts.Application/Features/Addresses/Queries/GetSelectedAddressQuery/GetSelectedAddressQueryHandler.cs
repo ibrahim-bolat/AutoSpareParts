@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.Addresses.Constants;
 using AutoSpareParts.Application.Features.Addresses.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -22,7 +22,7 @@ public class GetSelectedAddressQueryHandler:IRequestHandler<GetSelectedAddressQu
     public async Task<GetSelectedAddressQueryResponse> Handle(GetSelectedAddressQueryRequest request,
         CancellationToken cancellationToken)
     {
-        var cityList = await _unitOfWork.GetRepository<City>().GetAllAsync();
+        var cityList = await _unitOfWork.Cities.GetAllAsync();
         if (cityList != null)
         {
             request.AddressDto.Cities = cityList.Select(city => new SelectListItem()
@@ -32,8 +32,7 @@ public class GetSelectedAddressQueryHandler:IRequestHandler<GetSelectedAddressQu
             }).ToList();
             if (!string.IsNullOrEmpty(request.AddressDto.CityId))
             {
-                var districtList = await _unitOfWork.GetRepository<District>()
-                    .GetAllAsync(predicate: district => district.CityId == Convert.ToInt32(request.AddressDto.CityId));
+                var districtList = await _unitOfWork.Districts.GetAllAsync(predicate: district => district.CityId == Convert.ToInt32(request.AddressDto.CityId));
                 if (districtList != null)
                 {
                     request.AddressDto.Districts = districtList.Select(district => new SelectListItem()
@@ -44,8 +43,7 @@ public class GetSelectedAddressQueryHandler:IRequestHandler<GetSelectedAddressQu
 
                     if (!string.IsNullOrEmpty(request.AddressDto.DistrictId))
                     {
-                        var neighborhoodorvillageList = await _unitOfWork.GetRepository<NeighborhoodOrVillage>()
-                            .GetAllAsync(predicate: neighborhoodOrVillage =>
+                        var neighborhoodorvillageList = await _unitOfWork.NeighborhoodOrVillages.GetAllAsync(predicate: neighborhoodOrVillage =>
                                 neighborhoodOrVillage.DistrictId == Convert.ToInt32(request.AddressDto.DistrictId));
                         if (neighborhoodorvillageList != null)
                         {
@@ -58,10 +56,8 @@ public class GetSelectedAddressQueryHandler:IRequestHandler<GetSelectedAddressQu
 
                             if (!string.IsNullOrEmpty(request.AddressDto.NeighborhoodOrVillageId))
                             {
-                                var streetList = await _unitOfWork.GetRepository<Street>().GetAllAsync(
-                                    predicate: street =>
-                                        street.NeighborhoodOrVillageId ==
-                                        Convert.ToInt32(request.AddressDto.NeighborhoodOrVillageId));
+                                var streetList = await _unitOfWork.Streets.GetAllAsync(predicate: street =>
+                                                street.NeighborhoodOrVillageId ==Convert.ToInt32(request.AddressDto.NeighborhoodOrVillageId));
                                 if (streetList != null)
                                 {
                                     request.AddressDto.Streets = streetList.Select(street => new SelectListItem()

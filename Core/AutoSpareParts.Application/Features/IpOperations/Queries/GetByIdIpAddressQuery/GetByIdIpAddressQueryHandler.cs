@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.IpOperations.Constants;
 using AutoSpareParts.Application.Features.IpOperations.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -22,7 +22,7 @@ public class GetByIdIpAddressQueryHandler:IRequestHandler<GetByIdIpAddressQueryR
 
     public async Task<GetByIdIpAddressQueryResponse> Handle(GetByIdIpAddressQueryRequest request, CancellationToken cancellationToken)
     {
-        var ipAddress = await _unitOfWork.GetRepository<IpAddress>().GetByIdAsync(request.Id);
+        var ipAddress = await _unitOfWork.IpAddresses.GetByIdAsync(request.Id);
         if (ipAddress != null)
         {
             IpDto ipDto = _mapper.Map<IpDto>(ipAddress);

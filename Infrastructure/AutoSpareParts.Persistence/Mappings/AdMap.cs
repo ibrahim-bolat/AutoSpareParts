@@ -19,6 +19,7 @@ public class AdMap : IEntityTypeConfiguration<Ad>
         builder.Property(ad => ad.DiscountAmount).HasMaxLength(100).IsRequired();
         builder.Property(ad => ad.StarRating).HasDefaultValue(0);
         builder.Property(ad => ad.AdPageOrder).IsRequired();
+        builder.Property(ad => ad.Showcase).IsRequired();
         builder.Property(ad => ad.AdDetail).HasMaxLength(1000);
         builder.Property(ad => ad.Note).HasMaxLength(500);
 

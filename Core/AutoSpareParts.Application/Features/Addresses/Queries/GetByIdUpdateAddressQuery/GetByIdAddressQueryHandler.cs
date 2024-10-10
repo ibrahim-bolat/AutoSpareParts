@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.Addresses.Constants;
 using AutoSpareParts.Application.Features.Addresses.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -25,31 +25,23 @@ public class GetByIdUpdateAddressQueryHandler : IRequestHandler<GetByIdUpdateAdd
     public async Task<GetByIdUpdateAddressQueryResponse> Handle(GetByIdUpdateAddressQueryRequest request,
         CancellationToken cancellationToken)
     {
-        var address =
-            await _unitOfWork.GetRepository<Address>().GetAsync(predicate:x => x.Id == request.Id && x.IsActive == true);
+        var address = await _unitOfWork.Addresses.GetAsync(predicate:x => x.Id == request.Id && x.IsActive == true);
         List<City> cityList;
         if (address is not null)
         {
             if (address.StreetName is not null)
             {
-                cityList = await _unitOfWork.GetRepository<City>().GetAllAsync(
+                cityList = await _unitOfWork.Cities.GetAllAsync(
                     include: c => c
                         .Include(city => city.Districts.Where(d => d.CityId == Convert.ToInt32(address.CityId)))
-                        .ThenInclude(district =>
-                            district.NeighborhoodsOrVillages.Where(n =>
-                                n.DistrictId == Convert.ToInt32(address.DistrictId)))
-                        .ThenInclude(neighborhoodorvillage =>
-                            neighborhoodorvillage.Streets.Where(s =>
-                                s.Id == Convert.ToInt32(address.NeighborhoodOrVillageId))));
+                        .ThenInclude(district => district.NeighborhoodsOrVillages.Where(n =>n.DistrictId == Convert.ToInt32(address.DistrictId)))
+                        .ThenInclude(neighborhoodorvillage => neighborhoodorvillage.Streets.Where(s => s.Id == Convert.ToInt32(address.NeighborhoodOrVillageId))));
             }
             else
             {
-                cityList = await _unitOfWork.GetRepository<City>().GetAllAsync(
-                    include: c => c
-                        .Include(city => city.Districts.Where(d => d.CityId == Convert.ToInt32(address.CityId)))
-                        .ThenInclude(district =>
-                            district.NeighborhoodsOrVillages.Where(n =>
-                                n.DistrictId == Convert.ToInt32(address.DistrictId))));
+                cityList = await _unitOfWork.Cities.GetAllAsync(
+                    include: c => c.Include(city => city.Districts.Where(d => d.CityId == Convert.ToInt32(address.CityId)))
+                        .ThenInclude(district => district.NeighborhoodsOrVillages.Where(n => n.DistrictId == Convert.ToInt32(address.DistrictId))));
             }
             AddressDto addressDto = new AddressDto();
             addressDto = _mapper.Map(address, addressDto);
@@ -58,8 +50,7 @@ public class GetByIdUpdateAddressQueryHandler : IRequestHandler<GetByIdUpdateAdd
                 Value = city.Id.ToString(),
                 Text = city.Name,
             }).ToList();
-            var districtList = await _unitOfWork.GetRepository<District>()
-                .GetAllAsync(predicate:district => district.CityId.ToString().Equals(addressDto.CityId));
+            var districtList = await _unitOfWork.Districts.GetAllAsync(predicate:district => district.CityId.ToString().Equals(addressDto.CityId));
             if (districtList != null)
             {
                 addressDto.Districts = districtList.Select(district => new SelectListItem()
@@ -68,8 +59,7 @@ public class GetByIdUpdateAddressQueryHandler : IRequestHandler<GetByIdUpdateAdd
                     Text = district.Name,
                 }).ToList();
 
-                var neighborhoodorvillageList = await _unitOfWork.GetRepository<NeighborhoodOrVillage>()
-                    .GetAllAsync(predicate:neighborhoodOrVillage =>
+                var neighborhoodorvillageList = await _unitOfWork.NeighborhoodOrVillages.GetAllAsync(predicate:neighborhoodOrVillage =>
                         neighborhoodOrVillage.DistrictId.ToString().Equals(addressDto.DistrictId));
                 if (neighborhoodorvillageList != null)
                 {
@@ -82,7 +72,7 @@ public class GetByIdUpdateAddressQueryHandler : IRequestHandler<GetByIdUpdateAdd
 
                     if (!string.IsNullOrEmpty(addressDto.StreetId))
                     {
-                        var streetList = await _unitOfWork.GetRepository<Street>().GetAllAsync(predicate:street =>
+                        var streetList = await _unitOfWork.Streets.GetAllAsync(predicate:street =>
                             street.NeighborhoodOrVillageId.ToString().Equals(addressDto.NeighborhoodOrVillageId));
                         if (streetList != null)
                         {

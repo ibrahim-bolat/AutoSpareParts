@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.Addresses.Constants;
 using AutoSpareParts.Application.Features.Addresses.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -24,7 +24,7 @@ public class GetByIdDetailAddressQueryHandler : IRequestHandler<GetByIdDetailAdd
         CancellationToken cancellationToken)
     {
         var address =
-            await _unitOfWork.GetRepository<Address>().GetAsync(predicate:x => x.Id == request.Id && x.IsActive == true);
+            await _unitOfWork.Addresses.GetAsync(predicate:x => x.Id == request.Id && x.IsActive == true);
         if (address is not null)
         {
             DetailAddressDto detailAddressDto = _mapper.Map<DetailAddressDto>(address);

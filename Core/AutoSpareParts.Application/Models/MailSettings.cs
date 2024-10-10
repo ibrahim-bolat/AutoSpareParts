@@ -1,4 +1,4 @@
-namespace  AutoSpareParts.Application.Model;
+namespace  AutoSpareParts.Application.Models;
 
 public class MailSettings
 {

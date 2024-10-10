@@ -1,6 +1,6 @@
 using AutoMapper;
 using AutoSpareParts.Application.Features.IpOperations.Constants;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
@@ -25,7 +25,7 @@ public class SetIpAddressPassiveCommandCommandHandler : IRequestHandler<SetIpAdd
     public async Task<SetIpAddressPassiveCommandResponse> Handle(SetIpAddressPassiveCommandRequest request,
         CancellationToken cancellationToken)
     {
-        IpAddress ipAddress = await _unitOfWork.GetRepository<IpAddress>().GetByIdAsync(request.Id);
+        IpAddress ipAddress = await _unitOfWork.IpAddresses.GetByIdAsync(request.Id);
         if (ipAddress != null)
         {
             if (ipAddress.IsActive)
@@ -34,7 +34,7 @@ public class SetIpAddressPassiveCommandCommandHandler : IRequestHandler<SetIpAdd
                 ipAddress.IsDeleted = true;
                 ipAddress.ModifiedTime = DateTime.Now;
                 ipAddress.ModifiedByName = _httpContextAccessor.HttpContext?.User.Identity?.Name;
-                await _unitOfWork.GetRepository<IpAddress>().UpdateAsync(ipAddress);
+                await _unitOfWork.IpAddresses.UpdateAsync(ipAddress);
                 int result = await _unitOfWork.SaveAsync();
                 if (result > 0)
                 {

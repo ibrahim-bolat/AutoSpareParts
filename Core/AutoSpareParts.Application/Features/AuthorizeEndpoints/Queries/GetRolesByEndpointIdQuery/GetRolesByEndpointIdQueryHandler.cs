@@ -1,6 +1,6 @@
 using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.Features.UserOperations.DTOs;
-using AutoSpareParts.Application.Repositories;
+using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Entities.Identity;
@@ -24,7 +24,7 @@ public class GetRolesByEndpointIdQueryHandler:IRequestHandler<GetRolesByEndpoint
 
     public async Task<GetRolesByEndpointIdQueryResponse> Handle(GetRolesByEndpointIdQueryRequest request, CancellationToken cancellationToken)
     {
-        Endpoint endpoint = await _unitOfWork.GetRepository<Endpoint>().GetAsync(predicate:a=>a.Id.ToString()==request.Id,include:e => e.Include(endpoint=>endpoint.AppRoles));
+        Endpoint endpoint = await _unitOfWork.Endpoints.GetAsync(predicate:a=>a.Id.ToString()==request.Id,include:e => e.Include(endpoint=>endpoint.AppRoles));
         if (endpoint != null)
         {
             if (endpoint.IsActive)

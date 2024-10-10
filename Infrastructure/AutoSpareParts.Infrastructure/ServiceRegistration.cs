@@ -1,4 +1,4 @@
-using AutoSpareParts.Application.Model;
+using AutoSpareParts.Application.Models;
 using AutoSpareParts.Application.Services;
 using AutoSpareParts.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
