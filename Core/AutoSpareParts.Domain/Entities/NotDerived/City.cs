@@ -2,7 +2,7 @@
 using AutoSpareParts.Domain.Entities.Common;
 
 
-namespace AutoSpareParts.Domain.Entities;
+namespace AutoSpareParts.Domain.Entities.NotDerived;
 
 public class City : IEntity
 {

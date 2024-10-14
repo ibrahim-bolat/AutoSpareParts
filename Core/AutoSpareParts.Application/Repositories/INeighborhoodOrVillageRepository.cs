@@ -1,5 +1,5 @@
 using AutoSpareParts.Application.Repositories.Common;
-using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Domain.Entities.NotDerived;
 
 
 namespace AutoSpareParts.Application.Repositories;

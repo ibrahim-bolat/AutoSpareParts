@@ -1,8 +1,8 @@
-using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Domain.Entities.NotDerived;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AutoSpareParts.Persistence.Mappings.UnCommon;
+namespace AutoSpareParts.Persistence.Mappings.NotDerived;
 
 public sealed class DistrictMap : IEntityTypeConfiguration<District>
 {

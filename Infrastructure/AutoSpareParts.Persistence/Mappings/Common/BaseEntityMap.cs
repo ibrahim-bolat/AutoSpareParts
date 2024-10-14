@@ -1,6 +1,4 @@
-using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Entities.Common;
-using AutoSpareParts.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

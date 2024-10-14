@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using AutoSpareParts.Domain.Entities.Common;
 
-namespace AutoSpareParts.Domain.Entities;
+namespace AutoSpareParts.Domain.Entities.NotDerived;
 
 public class NeighborhoodOrVillage : IEntity
 {

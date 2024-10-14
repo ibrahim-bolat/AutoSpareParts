@@ -4,7 +4,7 @@ using AutoSpareParts.Domain.Entities;
 
 namespace AutoSpareParts.Application.Repositories;
 
-public interface IDistrictRepository:IRepository<District>
+public interface IEndpointRepository : IRepository<Endpoint>
 {
 
 }

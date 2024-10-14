@@ -3,7 +3,7 @@ using AutoSpareParts.Application.Features.Addresses.Constants;
 using AutoSpareParts.Application.Features.Addresses.DTOs;
 using AutoSpareParts.Application.Repositories.Common;
 using AutoSpareParts.Application.Wrappers.Concrete;
-using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Domain.Entities.NotDerived;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
