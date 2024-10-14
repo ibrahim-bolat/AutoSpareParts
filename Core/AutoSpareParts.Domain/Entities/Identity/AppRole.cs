@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoSpareParts.Domain.Entities.Identity;
 
-public class AppRole:IdentityRole<int>,IEntity
-    {
-         public  DateTime CreatedTime { get; set; } = DateTime.Now;
+public class AppRole:IdentityRole<int>
+{
+        public  DateTime CreatedTime { get; set; } = DateTime.Now;
         public  DateTime ModifiedTime { get; set; } = DateTime.Now;
         public  bool IsActive { get; set; } = true;
         public  bool IsDeleted { get; set; } = false;

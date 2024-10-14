@@ -1,19 +1,18 @@
 using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-public class CommentMap : IEntityTypeConfiguration<Comment>
+public sealed class CommentMap : BaseEntityMap<Comment>
 {
-    public void Configure(EntityTypeBuilder<Comment> builder)
+    public override void Configure(EntityTypeBuilder<Comment> builder)
     {
-        builder.HasKey(comment=> comment.Id);
-        builder.Property(comment => comment.Id).ValueGeneratedOnAdd();
+        base.Configure(builder);
         builder.Property(comment => comment.CommentDetail).HasMaxLength(1000).IsRequired();
         builder.Property(comment => comment.CommentOrder).IsRequired();
         builder.Property(comment => comment.CommentStarRating).HasDefaultValue(0);
-        builder.Property(comment => comment.Note).HasMaxLength(500);
         builder.HasOne(comment => comment.Ad).WithMany(ad => ad.Comments)
             .HasForeignKey(comment => comment.AdId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(comment => comment.AppUser).WithMany(user => user.Comments)

@@ -3,7 +3,7 @@ $(document).ready(function ($) {
     var tree = $('#tree').tree({
         primaryKey: 'id',
         uiLibrary: 'bootstrap4',
-        dataSource: '/Admin/AuthorizeEndpoint/GetAuthorizeEndpointsforAssignRole',
+        dataSource: '/admin/authorizeEndpoint/getAuthorizeEndpointsforAssignRole',
         width: 800,
         icons: {
             expand: '<i class="gj-icon chevron-right"></i>',
@@ -33,7 +33,7 @@ $(document).ready(function ($) {
             roleIds: roleIds
         };
         $.ajax({
-            url: '/Admin/AuthorizeEndpoint/AssignRolesByEndpointId/' + Id,
+            url: '/admin/authorizeEndpoint/assignRolesByEndpointId/' + Id,
             type: "POST",
             data: postData,
             dataType: "json",
@@ -58,7 +58,7 @@ $(document).ready(function ($) {
 function getRolesByEndpointId(Id) {
     var html = "";
     $.ajax({
-        url: '/Admin/AuthorizeEndpoint/GetRolesByEndpointId/' + Id,
+        url: '/admin/authorizeEndpoint/getRolesByEndpointId/' + Id,
         typr: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",

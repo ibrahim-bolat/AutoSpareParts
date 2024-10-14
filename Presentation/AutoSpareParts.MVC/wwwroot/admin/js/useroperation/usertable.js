@@ -17,7 +17,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/Admin/UserOperation/GetAllUsers",
+            "url": "/admin/userOperation/getAllUsers",
             "type": "POST",
             "datatype": "json"
         },
@@ -40,8 +40,8 @@ $(document).ready(function ($) {
             {
                 "data": "Id", "width": "50px", "render": function (data) {
                     return '<a class="btn btn-success mr-2" onclick="return getRole(' + data + ')"><i class="fa fa-tasks">Rol Ata</i></a>' +
-                        '<a class="btn btn-info mr-2" href="Account/Profile/' + data + '"><i class="fa fa-info-circle">Detay</i></a>' +
-                        '<a class="btn btn-secondary mr-2" href="Account/EditProfile/'+data+'"><i class="fa fa-pencil-square-o">Profil Güncelle</i></a>' +
+                        '<a class="btn btn-info mr-2" href="account/profile/' + data + '"><i class="fa fa-info-circle">Detay</i></a>' +
+                        '<a class="btn btn-secondary mr-2" href="account/editProfile/'+data+'"><i class="fa fa-pencil-square-o">Profil Güncelle</i></a>' +
                         '<a class="btn btn-warning mr-2 editPasswordButton" data-userid="'+data+'"><i class="fa fa-pencil-square-o">Şifre Güncelle</i></a>' +
                         '<a class="btn btn-danger" onclick="getByIdforDelete(' + data + ')"><i class="fa fa-trash-o">Sil</i></a>';
                 }
@@ -109,7 +109,7 @@ $(document).ready(function ($) {
     $('#userCreateModalForm').on('submit', '#createModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/Admin/UserOperation/CreateUser",
+            url: "/admin/userOperation/createUser",
             type: "POST",
             data: data,
             success: function (result) {
@@ -138,7 +138,7 @@ $(document).ready(function ($) {
         e.preventDefault();
         var Id = $('#deleteID').val();
         $.ajax({
-            url: '/Admin/UserOperation/DeleteUser/' + Id,
+            url: '/admin/userOperation/deleteUser/' + Id,
             type: "POST",
             contentType: "application/json;charset=UTF-8",
             dataType: "json",
@@ -164,7 +164,7 @@ $(document).ready(function ($) {
         e.preventDefault();
         var Id = $(this).data("userid");
         $.ajax({
-            url: '/Admin/UserOperation/EditPasswordUser',
+            url: '/admin/userOperation/editPasswordUser',
             type: 'GET',
             data: { "Id": Id},
             dataType: 'html',
@@ -183,7 +183,7 @@ $(document).ready(function ($) {
     $('#editPasswordModalPartial').on('submit', '#editPasswordModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/Admin/UserOperation/EditPasswordUser",
+            url: "/admin/userOperation/editPasswordUser",
             type: "POST",
             data: data,
             success: function (result) {
@@ -212,7 +212,7 @@ $(document).ready(function ($) {
         })
         var postData = { roleIds: roleIds };
         $.ajax({
-            url: '/Admin/UserOperation/AssignRolesByUserId/' + Id,
+            url: '/admin/userOperation/assignRolesByUserId/' + Id,
             type: "POST",
             data: postData,
             dataType: "json",
@@ -254,7 +254,7 @@ $(document).ready(function ($) {
 function getRole(Id) {
     var html ="";
     $.ajax({
-        url: '/Admin/UserOperation/GetRoleById/' + Id,
+        url: '/admin/userOperation/getRoleById/' + Id,
         type: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
@@ -296,7 +296,7 @@ function getByIdforDelete(Id) {
     clearDeleteModalTextBox();
     disabledDeleteModalTextBox(true);
     $.ajax({
-        url: '/Admin/UserOperation/GetUserById/' + Id,
+        url: '/admin/userOperation/getUserById/' + Id,
         type: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",

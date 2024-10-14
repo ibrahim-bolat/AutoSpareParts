@@ -1,9 +1,0 @@
-Ctrl . (Alt + Enter)   => Hýzlý Eylemler
-Ctrl + K, Ctrl + D     => Kod Format
-Shift + Alt + E        => Tüm Satýrý Seç
-Ctrl + D       		   => Seçileni Çoðalt
-Ctrl + Shift + L       => Seçileni Sil
-Alt + ÜstAltOk         => Seçileni Yukarý Aþaðý Taþý
-Ctrl + K, Ctrl + C     => Yorum Satýrý
-Ctrl + 	R       	   => Yeniden Ýsimlendir
-Ctrl + Shift + Space   => Overloadlarý gör üst alt oklarla 

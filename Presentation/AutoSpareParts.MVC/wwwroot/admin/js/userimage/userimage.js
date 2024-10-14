@@ -16,7 +16,7 @@ $(document).ready(function ($) {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: '/Admin/UserImage/SetProfilImage',
+                    url: '/admin/userImage/setProfilImage',
                     data: {
                         id: Id,
                         userId:userId
@@ -29,7 +29,7 @@ $(document).ready(function ($) {
                                 text: "Profil Resmi Başarıyla Ayarlandı",
                                 icon: 'success',
                             }).then((result) => {
-                                window.location = '/Admin/Account/Profile?id=' + userId;
+                                window.location = '/admin/account/profile?id=' + userId;
                             })
                         } else {
                             Swal.fire({
@@ -68,7 +68,7 @@ $(document).ready(function ($) {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: '/Admin/UserImage/DeleteUserImage',
+                    url: '/admin/userImage/deleteUserImage',
                     data: {
                         id: Id
                     },
@@ -80,7 +80,7 @@ $(document).ready(function ($) {
                                 text: "Resim Silme İşlemi Başarıyla Gerçekleşti",
                                 icon: 'success',
                             }).then((result) => {
-                                window.location = '/Admin/Account/Profile?id=' + userId;
+                                window.location = '/admin/account/profile?id=' + userId;
                             })
                         } else {
                             Swal.fire({

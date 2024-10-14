@@ -1,22 +1,21 @@
 using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-    public class VehicleAddressMap:IEntityTypeConfiguration<VehicleAddress>
+    public sealed class VehicleAddressMap:BaseEntityMap<VehicleAddress>
     {
-        public void Configure(EntityTypeBuilder<VehicleAddress> builder)
+        public override void Configure(EntityTypeBuilder<VehicleAddress> builder)
         {
-            builder.HasKey(vehicleAddress => vehicleAddress.Id);
-            builder.Property(vehicleAddress => vehicleAddress.Id).ValueGeneratedOnAdd();
+            base.Configure(builder);
             builder.Property(vehicleAddress => vehicleAddress.AddressTitle).HasMaxLength(100).IsRequired();
             builder.Property(vehicleAddress => vehicleAddress.NeighborhoodOrVillage).HasMaxLength(250).IsRequired();
             builder.Property(vehicleAddress => vehicleAddress.District).HasMaxLength(250).IsRequired();
             builder.Property(vehicleAddress => vehicleAddress.City).HasMaxLength(250).IsRequired();
             builder.Property(vehicleAddress => vehicleAddress.PostalCode).HasMaxLength(5);
             builder.Property(vehicleAddress => vehicleAddress.AddressDetails).HasMaxLength(500).IsRequired();
-            builder.Property(vehicleAddress => vehicleAddress.Note).HasMaxLength(500);
 
         builder.HasData(new VehicleAddress
             {

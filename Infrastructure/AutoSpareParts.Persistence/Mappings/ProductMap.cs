@@ -1,17 +1,17 @@
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-public class ProductMap : IEntityTypeConfiguration<Product>
+public sealed class ProductMap : BaseEntityMap<Product>
 {
-    public void Configure(EntityTypeBuilder<Product> builder)
+    public override void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.HasKey(product => product.Id);
-        builder.Property(product => product.Id).ValueGeneratedOnAdd();
+        base.Configure(builder);
         builder.Property(product => product.Name).HasMaxLength(250).IsRequired();
         builder.Property(product => product.StockCode).HasMaxLength(250).IsRequired();
         builder.Property(product => product.StockStatus).IsRequired();
@@ -32,7 +32,6 @@ public class ProductMap : IEntityTypeConfiguration<Product>
         builder.Property(product => product.SalePrice).HasColumnType("decimal(18,4)").IsRequired();
 
         builder.Property(product => product.ProductDetail).HasMaxLength(1000);
-        builder.Property(product => product.Note).HasMaxLength(500);
         builder.HasMany(product => product.Categories).WithMany(category => category.Products)
             .UsingEntity(e => e.ToTable("CategoryProducts")); ;
 

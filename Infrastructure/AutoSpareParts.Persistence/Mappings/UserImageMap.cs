@@ -1,27 +1,26 @@
 using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-    public class UserImageMap:IEntityTypeConfiguration<UserImage>
+    public sealed class UserImageMap:BaseEntityMap<UserImage>
     {
-        public void Configure(EntityTypeBuilder<UserImage> builder)
+        public override void Configure(EntityTypeBuilder<UserImage> builder)
         {
-            builder.HasKey(userImage => userImage.Id);
-            builder.Property(userImage => userImage.Id).ValueGeneratedOnAdd();
-            builder.Property(userImage => userImage.ImageTitle).HasMaxLength(100).IsRequired();
-            builder.Property(userImage => userImage.ImagePath).HasMaxLength(500).IsRequired();
-            builder.Property(userImage => userImage.ImageAltText).HasMaxLength(250);
-            builder.Property(userImage => userImage.Note).HasMaxLength(500);
+            base.Configure(builder);
+            builder.Property(userImage => userImage.Title).HasMaxLength(100).IsRequired();
+            builder.Property(userImage => userImage.Path).HasMaxLength(500).IsRequired();
+            builder.Property(userImage => userImage.AltText).HasMaxLength(250);
             builder.HasOne(userImage => userImage.AppUser).WithMany(user => user.UserImages)
                 .HasForeignKey(userImage => userImage.UserId).OnDelete(DeleteBehavior.Cascade);
             builder.HasData(new UserImage()
             {
                 Id = 1, 
-                ImageTitle = "ProfilResmi",
-                ImagePath ="/admin/images/userimages/1/profil.jpg",
-                ImageAltText = "Profil",
+                Title = "ProfilResmi",
+                Path ="/admin/images/userimages/1/profil.jpg",
+                AltText = "Profil",
                 Profil = true,
                 UserId =1,
                 IsActive = true,

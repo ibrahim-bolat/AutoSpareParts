@@ -1,17 +1,16 @@
 using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-public class BrandSeriesMap : IEntityTypeConfiguration<BrandSeries>
+public sealed class BrandSeriesMap : BaseEntityMap<BrandSeries>
 {
-    public void Configure(EntityTypeBuilder<BrandSeries> builder)
+    public override void Configure(EntityTypeBuilder<BrandSeries> builder)
     {
-        builder.HasKey(brandSeries => brandSeries.Id);
-        builder.Property(brandSeries => brandSeries.Id).ValueGeneratedOnAdd();
+        base.Configure(builder);
         builder.Property(brandSeries => brandSeries.Name).HasMaxLength(250).IsRequired();
-        builder.Property(brandSeries => brandSeries.Note).HasMaxLength(500);
         builder.HasOne(brandSeries => brandSeries.Brand).WithMany(brand => brand.BrandSeries)
             .HasForeignKey(brandSeries => brandSeries.BrandId).OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(brandSeries => brandSeries.Models).WithOne(model => model.BrandSeries)

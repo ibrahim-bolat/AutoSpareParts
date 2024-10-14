@@ -17,7 +17,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/Admin/RoleOperation/GetAllRoles",
+            "url": "/admin/roleOperation/getAllRoles",
             "type": "POST",
             "datatype": "json"
         },
@@ -76,7 +76,7 @@ $(document).ready(function ($) {
     $('#roleCreateModalForm').on('submit', '#createModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/Admin/RoleOperation/CreateRole",
+            url: "/admin/roleOperation/createRole",
             type: "POST",
             data: data,
             success: function (result) {
@@ -103,7 +103,7 @@ $(document).ready(function ($) {
     $('#roleUpdateModalForm').on('submit', '#updateModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/Admin/RoleOperation/UpdateRole",
+            url: "/admin/roleOperation/updateRole",
             type: "POST",
             data: data,
             success: function (result) {
@@ -146,7 +146,7 @@ $(document).ready(function ($) {
 function getByIdforUpdate(Id) {
     clearUpdateModalTextBox();
     $.ajax({
-        url: '/Admin/RoleOperation/GetRoleById/' + Id,
+        url: '/admin/roleOperation/getRoleById/' + Id,
         typr: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
@@ -182,7 +182,7 @@ function SetRoleActive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/Admin/RoleOperation/SetRoleActive/' + Id,
+                url: '/admin/roleOperation/setRoleActive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
@@ -229,7 +229,7 @@ function SetRolePassive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/Admin/RoleOperation/SetRolePassive/' + Id,
+                url: '/admin/roleOperation/setRolePassive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",

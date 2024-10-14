@@ -1,19 +1,18 @@
 using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-    public class ProductImageMap : IEntityTypeConfiguration<ProductImage>
+    public sealed class ProductImageMap : BaseEntityMap<ProductImage>
     {
-        public void Configure(EntityTypeBuilder<ProductImage> builder)
+        public override void Configure(EntityTypeBuilder<ProductImage> builder)
         {
-            builder.HasKey(productImage => productImage.Id);
-            builder.Property(productImage => productImage.Id).ValueGeneratedOnAdd();
+            base.Configure(builder);
             builder.Property(productImage => productImage.Title).HasMaxLength(250).IsRequired();
             builder.Property(productImage => productImage.Path).HasMaxLength(500).IsRequired();
             builder.Property(productImage => productImage.AltText).HasMaxLength(250);
-            builder.Property(productImage => productImage.Note).HasMaxLength(500);
             builder.HasOne(productImage => productImage.Product).WithMany(product => product.ProductImages)
                 .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.Cascade);
             builder.HasData(new ProductImage()

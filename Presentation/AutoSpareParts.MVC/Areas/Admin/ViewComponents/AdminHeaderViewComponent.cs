@@ -36,7 +36,7 @@ public class AdminHeaderAvatarViewComponent : ViewComponent
                 foreach (var userImage in imageResult.Result.Data)
                 {
                     if (userImage.Profil)
-                        ViewBag.ProfilPhoto = userImage.ImagePath;
+                        ViewBag.ProfilPhoto = userImage.Path;
                 }
             }
             return View();

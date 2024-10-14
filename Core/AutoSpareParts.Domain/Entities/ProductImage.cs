@@ -1,7 +1,7 @@
 using AutoSpareParts.Domain.Entities.Common;
 
 namespace AutoSpareParts.Domain.Entities;
-public class ProductImage:Image
+public class ProductImage:BaseImage
     {
         public bool Vitrin { get; set; }
         public int ProductId { get; set; }

@@ -28,7 +28,7 @@ public class DeleteUserImageCommandHandler:IRequestHandler<DeleteUserImageComman
         var userImage = await _unitOfWork.UserImages.GetAsync(predicate:x => x.Id == request.Id && x.IsActive==true);
         if (userImage != null)
         {
-            var imagePath = _hostEnvironment.WebRootPath + userImage.ImagePath;
+            var imagePath = _hostEnvironment.WebRootPath + userImage.Path;
             var userImagePath = $"{_hostEnvironment.WebRootPath}/admin/images/userimages/{userImage.UserId}";
             if (File.Exists(imagePath))
             {

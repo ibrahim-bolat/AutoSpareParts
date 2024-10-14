@@ -31,7 +31,7 @@ public class CreateUserImageCommandHandler:IRequestHandler<CreateUserImageComman
             };
         }
         UserImage userImage = _mapper.Map<UserImage>(request.UserImageAddDto);
-        userImage.ImagePath = await UploadImage(request.UserImageAddDto); //Resmi kaydet wwwroot/admin/images/userimages/
+        userImage.Path = await UploadImage(request.UserImageAddDto); //Resmi kaydet wwwroot/admin/images/userimages/
         userImage.CreatedByName = request.CreatedByName;
         userImage.ModifiedByName = request.CreatedByName;
         userImage.CreatedTime=DateTime.Now;

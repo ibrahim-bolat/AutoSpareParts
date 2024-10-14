@@ -31,8 +31,8 @@ public static class ServiceRegistration
         //cookie configuration
         serviceCollection.ConfigureApplicationCookie(cookieOptions =>
         {
-            cookieOptions.LoginPath = new PathString("/Admin/Account/Login");
-            cookieOptions.LogoutPath = new PathString("/Admin/Account/Logout");
+            cookieOptions.LoginPath = new PathString("/admin/account/login");
+            cookieOptions.LogoutPath = new PathString("/admin/account/logout");
             cookieOptions.Cookie = new CookieBuilder
             {
                 Name = "AutoSparePartsCookie", 
@@ -42,7 +42,7 @@ public static class ServiceRegistration
             };
             cookieOptions.SlidingExpiration = true;
             cookieOptions.ExpireTimeSpan = TimeSpan.FromHours(2);
-            cookieOptions.AccessDeniedPath = new PathString($"/Error/Index?statusCode={401}");
+            cookieOptions.AccessDeniedPath = new PathString($"/Error/index?statusCode={401}");
         });
         
         //facebook and google login authenticate
@@ -57,7 +57,7 @@ public static class ServiceRegistration
         {
             googleOptions.ClientId = configuration["GoogleClientId"];
             googleOptions.ClientSecret = configuration["GoogleClientSecret"];
-            googleOptions.AccessDeniedPath = new PathString("/Admin/Account/Login");
+            googleOptions.AccessDeniedPath = new PathString("/admin/account/login");
             googleOptions.ReturnUrlParameter = "";
         });;
         

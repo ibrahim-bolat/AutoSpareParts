@@ -1,18 +1,18 @@
 
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
 
-public class ModelMap : IEntityTypeConfiguration<Model>
+public sealed class ModelMap : BaseEntityMap<Model>
 {
-    public void Configure(EntityTypeBuilder<Model> builder)
+    public override void Configure(EntityTypeBuilder<Model> builder)
     {
-        builder.HasKey(model => model.Id);
-        builder.Property(model => model.Id).ValueGeneratedOnAdd();
+        base.Configure(builder);
         builder.Property(model => model.Name).HasMaxLength(500).IsRequired();
         builder.Property(model => model.EngineType).HasMaxLength(250).IsRequired();
 
@@ -39,7 +39,6 @@ public class ModelMap : IEntityTypeConfiguration<Model>
             .HasConversion(
                 a => a.ToString(),
                 a => (BodyType)Enum.Parse(typeof(BodyType), a)).IsRequired();
-        builder.Property(model => model.Note).HasMaxLength(500);
         builder.HasOne(model => model.BrandSeries).WithMany(brandSeries => brandSeries.Models)
             .HasForeignKey(model => model.BrandSeriesId).OnDelete(DeleteBehavior.Cascade);
 

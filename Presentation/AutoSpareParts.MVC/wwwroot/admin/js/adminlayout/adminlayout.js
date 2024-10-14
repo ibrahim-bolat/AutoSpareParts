@@ -14,11 +14,11 @@ $(document).ready(function ($) {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: '/Admin/Account/Logout',
+                    url: '/admin/account/logout',
                     dataType: "json",
                     success: function (logoutResult) {
                         if (logoutResult.success) {
-                            window.location = '/Admin/Account/Login';
+                            window.location = '/admin/account/login';
                         } else {
                             Swal.fire({
                                 title: 'Hata',

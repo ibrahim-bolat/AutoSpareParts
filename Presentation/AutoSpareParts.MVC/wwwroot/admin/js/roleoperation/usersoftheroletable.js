@@ -18,7 +18,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/Admin/RoleOperation/UsersOfTheRole?id=" + roleId,
+            "url": "/admin/roleOperation/usersOfTheRole?id=" + roleId,
             "type": "POST",
             "datatype": "json"
         },
@@ -71,7 +71,7 @@ function RemoveUserFromRole(userId,roleId) {
         if (result.isConfirmed) {
             $.ajax({
                 type: "POST",
-                url: '/Admin/RoleOperation/RemoveUserFromRole/',
+                url: '/admin/roleOperation/removeUserFromRole/',
                 data: {
                     userId: userId,
                     roleId: roleId

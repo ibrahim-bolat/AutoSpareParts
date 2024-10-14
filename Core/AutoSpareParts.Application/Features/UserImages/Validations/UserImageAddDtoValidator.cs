@@ -7,7 +7,7 @@ public class UserImageAddDtoValidator:AbstractValidator<CreateUserImageDto>
 {
     public UserImageAddDtoValidator()
     {
-        RuleFor(userImage => userImage.ImageTitle)
+        RuleFor(userImage => userImage.Title)
             .NotNull()
             .WithMessage("Lütden resim başlığını boş geçmeyiniz....")
             .NotEmpty()
@@ -15,7 +15,7 @@ public class UserImageAddDtoValidator:AbstractValidator<CreateUserImageDto>
             .MaximumLength(100)
             .WithMessage("En fazla 100 karakter girebilirsiniz...");
 
-        RuleFor(userImage => userImage.ImageAltText)
+        RuleFor(userImage => userImage.AltText)
             .MaximumLength(250)
             .WithMessage("En fazla 250 karakter girebilirsiniz...");
         

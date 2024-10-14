@@ -1,16 +1,16 @@
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-    public class IpAddressMap:IEntityTypeConfiguration<IpAddress>
+    public sealed class IpAddressMap:BaseEntityMap<IpAddress>
     {
-        public void Configure(EntityTypeBuilder<IpAddress> builder)
+        public override void Configure(EntityTypeBuilder<IpAddress> builder)
         {
-            builder.HasKey(ip => ip.Id);
-            builder.Property(ip => ip.Id).ValueGeneratedOnAdd();
+            base.Configure(builder);
             builder.Property(ip => ip.RangeStart).HasMaxLength(100).IsRequired();
             builder.Property(ip => ip.RangeEnd).HasMaxLength(17).IsRequired();
             builder.Property(ip => ip.IpListType)
@@ -18,7 +18,6 @@ namespace AutoSpareParts.Persistence.Mappings;
                     a=>a.ToString(),
                     a=>(IpListType)Enum.Parse(typeof(IpListType),a))
                 .IsRequired();
-            builder.Property(ip => ip.Note).HasMaxLength(500);
             builder.HasMany(ip => ip.Endpoints).WithMany(endpoint => endpoint.IpAddresses)
                 .UsingEntity(e => e.ToTable("EndpointIpAddreses"));
             builder.HasData(new IpAddress()

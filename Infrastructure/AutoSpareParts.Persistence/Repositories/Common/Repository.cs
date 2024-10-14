@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace AutoSpareParts.Persistence.Repositories.Common;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
+public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
 {
     protected readonly DbSet<TEntity> _dbSet;
 
@@ -16,13 +16,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         _dbSet = dbContext.Set<TEntity>();
     }
 
-    public async Task<TEntity> AddAsync(TEntity entity)
+    public virtual async Task<TEntity> AddAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity);
         return entity;
     }
 
-    public async Task<TEntity> UpdateAsync(TEntity entity)
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity)
     {
         await Task.Run(() =>
         {
@@ -31,7 +31,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return entity;
     }
 
-    public async Task RemoveAsync(TEntity entity)
+    public virtual async Task RemoveAsync(TEntity entity)
     {
         await Task.Run(() =>
         {
@@ -39,13 +39,13 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         });
     }
 
-    public async Task<bool> AddRangeAsync(List<TEntity> entityList)
+    public virtual async Task<bool> AddRangeAsync(List<TEntity> entityList)
     {
         await _dbSet.AddRangeAsync(entityList);
         return true;
     }
 
-    public async Task<bool> UpdateRangeAsync(List<TEntity> entityList)
+    public virtual async Task<bool> UpdateRangeAsync(List<TEntity> entityList)
     {
         await Task.Run(() =>
         {
@@ -54,7 +54,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return true;
     }
 
-    public async Task<bool> RemoveRangeAsync(List<TEntity> entityList)
+    public virtual async Task<bool> RemoveRangeAsync(List<TEntity> entityList)
     {
         await Task.Run(() =>
         {
@@ -63,12 +63,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return true;
     }
 
-    public async Task<TEntity> GetByIdAsync(int id)
+    public virtual async Task<TEntity> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool enableTracking = true)
+    public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool enableTracking = true)
     {
         IQueryable<TEntity> query = _dbSet;
         if (!enableTracking)
@@ -87,7 +87,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return await query.FirstOrDefaultAsync();
     }
 
-    public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+    public virtual async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool enableTracking = true)
     {
         IQueryable<TEntity> query = _dbSet;
@@ -110,7 +110,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return await query.ToListAsync();
     }
 
-    public async Task<IQueryable<TEntity>> GetAllQueryableAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+    public virtual async Task<IQueryable<TEntity>> GetAllQueryableAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool enableTracking = true)
     {
         IQueryable<TEntity> query = _dbSet;
@@ -133,12 +133,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return await Task.FromResult(query.AsQueryable());
     }
 
-    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await _dbSet.AnyAsync(predicate);
     }
 
-    public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await _dbSet.CountAsync(predicate);
     }

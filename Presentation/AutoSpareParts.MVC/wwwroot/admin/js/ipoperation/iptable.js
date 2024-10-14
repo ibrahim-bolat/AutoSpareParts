@@ -17,7 +17,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/Admin/IpOperation/GetAllIpAddresses",
+            "url": "/admin/ipOperation/getAllIpAddresses",
             "type": "POST",
             "datatype": "json"
         },
@@ -118,7 +118,7 @@ $(document).ready(function ($) {
     $('#ipCreateModalForm').on('submit', '#createModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/Admin/IpOperation/CreateIpAddress",
+            url: "/admin/ipOperation/createIpAddress",
             type: "POST",
             data: data,
             success: function (result) {
@@ -145,7 +145,7 @@ $(document).ready(function ($) {
     $('#ipUpdateModalForm').on('submit', '#updateModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/Admin/IpOperation/UpdateIpAddress",
+            url: "/admin/ipOperation/updateIpAddress",
             type: "POST",
             data: data,
             success: function (result) {
@@ -211,7 +211,7 @@ $(document).ready(function ($) {
 function getByIdforUpdate(Id) {
     clearUpdateModalTextBox();
     $.ajax({
-        url: '/Admin/IpOperation/GetIpAddressById/' + Id,
+        url: '/admin/ipOperation/getIpAddressById/' + Id,
         typr: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
@@ -250,7 +250,7 @@ function SetIpAddressActive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/Admin/IpOperation/SetIpAddressActive/' + Id,
+                url: '/admin/ipOperation/setIpAddressActive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
@@ -297,7 +297,7 @@ function SetIpAddressPassive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/Admin/IpOperation/SetIpAddressPassive/' + Id,
+                url: '/admin/ipOperation/setIpAddressPassive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",                                  
                 dataType: "json",

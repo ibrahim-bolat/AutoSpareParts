@@ -1,17 +1,18 @@
 using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-public class MainCategoryMap : IEntityTypeConfiguration<MainCategory>
+public sealed class MainCategoryMap : BaseEntityMap<MainCategory>
 {
-    public void Configure(EntityTypeBuilder<MainCategory> builder)
+    public override void Configure(EntityTypeBuilder<MainCategory> builder)
     {
+        base.Configure(builder);
         builder.HasKey(mainCategory => mainCategory.Id);
         builder.Property(mainCategory => mainCategory.Id).ValueGeneratedOnAdd();
         builder.Property(mainCategory => mainCategory.Name).HasMaxLength(250).IsRequired();
-        builder.Property(mainCategory => mainCategory.Note).HasMaxLength(500);
         builder.HasMany(mainCategory => mainCategory.Categories).WithOne(category => category.MainCategory)
             .HasForeignKey(category => category.MainCategoryId).OnDelete(DeleteBehavior.Cascade);
         builder.HasData(new MainCategory()

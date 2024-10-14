@@ -14,7 +14,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var cityId = $("#cityId").val();
         $.ajax({
-            url: "/Admin/Address/GetAllDistrictsByCityId",
+            url: "/admin/address/getAllDistrictsByCityId",
             data: { cityId: cityId },
             type: "POST",
             dataType: "json",
@@ -43,7 +43,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var districtId = $("#districtId").val();
         $.ajax({
-            url: "/Admin/Address/GetAllNeighborhoodsOrVillagesByDistrictId",
+            url: "/admin/address/getAllNeighborhoodsOrVillagesByDistrictId",
             data: { districtId: districtId },
             type: "POST",
             dataType: "json",
@@ -69,7 +69,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var neighborhoodOrVillageId = $("#neighborhoodOrVillageId").val();
         $.ajax({
-            url: "/Admin/Address/GetAllStreetsByNeighborhoodOrVillageId",
+            url: "/admin/address/getAllStreetsByNeighborhoodOrVillageId",
             data: { neighborhoodOrVillageId: neighborhoodOrVillageId },
             type: "POST",
             dataType: "json",
@@ -121,7 +121,7 @@ $(document).ready(function ($) {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: '/Admin/Address/DeleteAddress',
+                    url: '/admin/address/deleteAddress',
                     data: {
                         addressId: Id
                     },

@@ -1,18 +1,17 @@
 using AutoSpareParts.Domain.Entities;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-public class OemMap : IEntityTypeConfiguration<Oem>
+public sealed class OemMap : BaseEntityMap<Oem>
 {
-    public void Configure(EntityTypeBuilder<Oem> builder)
+    public override void Configure(EntityTypeBuilder<Oem> builder)
     {
-        builder.HasKey(oem=> oem.Id);
-        builder.Property(oem => oem.Id).ValueGeneratedOnAdd();
+        base.Configure(builder);
         builder.Property(oem => oem.OemNo).HasMaxLength(250).IsRequired();
         builder.Property(oem => oem.OemBrandName).HasMaxLength(250).IsRequired();
-        builder.Property(oem => oem.Note).HasMaxLength(500);
         builder.HasOne(oem => oem.Product).WithMany(product => product.Oems)
             .HasForeignKey(oem => oem.ProductId).OnDelete(DeleteBehavior.Cascade);
         builder.HasData(new Oem()

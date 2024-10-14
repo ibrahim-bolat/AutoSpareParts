@@ -13,11 +13,11 @@ public record CreateUserImageDto:BaseDto
     public string Note { get; set; }
     
     [Display(Name = "Resim Başlığı")]
-    public string ImageTitle { get; set; }
+    public string Title { get; set; }
     
     
     [Display(Name = "Resim Kısa Açıklmaa")]
-    public string ImageAltText { get; set; }
+    public string AltText { get; set; }
     
     [Display(Name = "Profil Resmimi?")]
     public bool Profil { get; set; }

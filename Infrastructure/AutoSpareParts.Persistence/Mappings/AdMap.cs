@@ -1,17 +1,17 @@
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Enums;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Net;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-public class AdMap : IEntityTypeConfiguration<Ad>
+public sealed class AdMap : BaseEntityMap<Ad>
 {
-    public void Configure(EntityTypeBuilder<Ad> builder)
+    public override void Configure(EntityTypeBuilder<Ad> builder)
     {
-        builder.HasKey(ad => ad.Id);
-        builder.Property(ad => ad.Id).ValueGeneratedOnAdd();
+        base.Configure(builder);
         builder.Property(ad => ad.AdNo).HasMaxLength(30).IsRequired();
         builder.Property(ad => ad.Title).HasMaxLength(500).IsRequired();
         builder.Property(ad => ad.FormerPrice).HasColumnType("decimal(18,4)").IsRequired();
@@ -21,7 +21,6 @@ public class AdMap : IEntityTypeConfiguration<Ad>
         builder.Property(ad => ad.AdPageOrder).IsRequired();
         builder.Property(ad => ad.Showcase).IsRequired();
         builder.Property(ad => ad.AdDetail).HasMaxLength(1000);
-        builder.Property(ad => ad.Note).HasMaxLength(500);
 
         builder.HasOne(ad => ad.Product).WithMany(product => product.Ads)
             .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.Cascade);

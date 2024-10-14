@@ -36,7 +36,7 @@ public class UserSummaryCardViewComponent : ViewComponent
         if (profilResult.Result.ResultStatus == ResultStatus.Success)
         {
             if (profilResult.Result.Data != null)
-                ViewBag.UserImageProfilImagePath = profilResult.Result.Data.ImagePath;
+                ViewBag.UserImageProfilImagePath = profilResult.Result.Data.Path;
 
             if (countResult.Result.Data > 0)
             {

@@ -1,16 +1,16 @@
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Entities.Identity;
+using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-    public class RequestInfoLogMap:IEntityTypeConfiguration<RequestInfoLog>
+    public sealed class RequestInfoLogMap:BaseEntityMap<RequestInfoLog>
     {
-        public void Configure(EntityTypeBuilder<RequestInfoLog> builder)
+        public override void Configure(EntityTypeBuilder<RequestInfoLog> builder)
         {
-            builder.HasKey(requestInfoLog => requestInfoLog.Id);
-            builder.Property(requestInfoLog => requestInfoLog.Id).ValueGeneratedOnAdd();
+            base.Configure(builder);
             builder.Property(requestInfoLog => requestInfoLog.AreaName).HasMaxLength(100);
             builder.Property(requestInfoLog => requestInfoLog.ControllerName).HasMaxLength(100).IsRequired();
             builder.Property(requestInfoLog => requestInfoLog.ActionName).HasMaxLength(100).IsRequired();
@@ -21,7 +21,6 @@ namespace AutoSpareParts.Persistence.Mappings;
             builder.Property(requestInfoLog => requestInfoLog.RemoteIpAddress).HasMaxLength(200);
             builder.Property(requestInfoLog => requestInfoLog.LocalPort).HasMaxLength(7);
             builder.Property(requestInfoLog => requestInfoLog.RemotePort).HasMaxLength(7);
-            builder.Property(requestInfoLog => requestInfoLog.Note).HasMaxLength(500);
             builder.HasOne(requestInfoLog => requestInfoLog.AppUser).WithMany(user => user.RequestInfoLogs)
                 .HasForeignKey(requestInfoLog => requestInfoLog.UserId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
         }
