@@ -1,5 +1,5 @@
 using AutoSpareParts.Application.Repositories;
-using AutoSpareParts.Domain.Entities.NotDerived;
+using AutoSpareParts.Domain.Entities.NotDerivedFromBase;
 using AutoSpareParts.Persistence.Contexts;
 using AutoSpareParts.Persistence.Repositories.Common;
 

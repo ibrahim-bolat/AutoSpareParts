@@ -1,8 +1,8 @@
-using AutoSpareParts.Domain.Entities.NotDerived;
+using AutoSpareParts.Domain.Entities.NotDerivedFromBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AutoSpareParts.Persistence.Mappings.NotDerived;
+namespace AutoSpareParts.Persistence.Mappings.NotDerivedFromBase;
 
 public sealed class CityMap : IEntityTypeConfiguration<City>
 {

@@ -1,7 +1,7 @@
 using System.Reflection;
 using AutoSpareParts.Domain.Entities;
 using AutoSpareParts.Domain.Entities.Identity;
-using AutoSpareParts.Domain.Entities.NotDerived;
+using AutoSpareParts.Domain.Entities.NotDerivedFromBase;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
