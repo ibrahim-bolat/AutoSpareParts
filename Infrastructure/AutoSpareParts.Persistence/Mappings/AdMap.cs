@@ -18,7 +18,8 @@ public sealed class AdMap : BaseEntityMap<Ad>
         builder.Property(ad => ad.CurrentPrice).HasColumnType("decimal(18,4)").IsRequired();
         builder.Property(ad => ad.DiscountAmount).HasMaxLength(100).IsRequired();
         builder.Property(ad => ad.StarRating).HasDefaultValue(0);
-        builder.Property(ad => ad.AdPageOrder).IsRequired();
+        builder.Property(ad => ad.AdOrder).ValueGeneratedOnAdd();
+        builder.HasIndex(ad => ad.AdOrder).IsUnique();
         builder.Property(ad => ad.Showcase).IsRequired();
         builder.Property(ad => ad.AdDetail).HasMaxLength(1000);
 
@@ -43,7 +44,6 @@ public sealed class AdMap : BaseEntityMap<Ad>
             CurrentPrice = 450000.50m,
             DiscountAmount = "%25",
             StarRating =5,
-            AdPageOrder = 1,
             AdDetail = "FORD FOCUS KASA ARKA FREN DİSKİ RULMANLI 1 ADET FİYATIDIR. MAİS RENAULT ORJİNAL ÜRÜNÜDÜR.",
         }, new Ad()
         {
@@ -57,7 +57,6 @@ public sealed class AdMap : BaseEntityMap<Ad>
             CurrentPrice = 450000.50m,
             DiscountAmount = "%0",
             StarRating = 3,
-            AdPageOrder = 1,
             AdDetail = "Ford Corier YENİ KASA DEBRİYAJ  SETİ 1 ADET FİYATIDIR. Orijinal BOSCH ÜRÜNÜDÜR.",
         }, new Ad()
         {
@@ -71,7 +70,6 @@ public sealed class AdMap : BaseEntityMap<Ad>
             CurrentPrice = 450000.50m,
             DiscountAmount = "%20",
             StarRating = 4,
-            AdPageOrder = 1,
             AdDetail = "Ford Linea YENİ KASA Fren Diski 1 ADET FİYATIDIR. Orijinal BOSCH ÜRÜNÜDÜR.",
         }, new Ad()
         {
@@ -85,7 +83,6 @@ public sealed class AdMap : BaseEntityMap<Ad>
             CurrentPrice = 450000.50m,
             DiscountAmount = "%5",
             StarRating = 5,
-            AdPageOrder = 1,
             AdDetail = "Opel Astra 1.6 CDTI YENİ KASA Fren Balatası 1 ADET FİYATIDIR. Orijinal General Motor ÜRÜNÜDÜR.",
         });
     }

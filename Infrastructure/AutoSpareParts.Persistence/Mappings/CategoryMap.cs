@@ -11,6 +11,8 @@ public sealed class CategoryMap : BaseEntityMap<Category>
     {
         base.Configure(builder);    
         builder.Property(category => category.Name).HasMaxLength(250).IsRequired();
+        builder.Property(category => category.CategoryOrder).ValueGeneratedOnAdd();
+        builder.HasIndex(category => category.CategoryOrder).IsUnique();
         builder.HasOne(category => category.MainCategory).WithMany(mainCategory => mainCategory.Categories)
             .HasForeignKey(category => category.MainCategoryId).OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(category => category.Products).WithMany(ad => ad.Categories)

@@ -17,7 +17,8 @@
       <Folder Include="Features\AuthorizeEndpoints\BusinessRules" />
       <Folder Include="Features\AuthorizeEndpoints\MappingProfiles" />
       <Folder Include="Features\AuthorizeEndpoints\Validations" />
-      <Folder Include="Features\IpOperations\BusinessRules" />
+      <Folder Include="Features\IpOperations\BusinessRules\" />
+      <Folder Include="Features\MainCategories\BusinessRules\" />
       <Folder Include="Features\RoleOperations\BusinessRules" />
       <Folder Include="Features\RoleOperations\Constants" />
       <Folder Include="Features\UserImages\BusinessRules" />

@@ -1,0 +1,27 @@
+@model MainCategoryDto
+<div class="modal fade" id="updateMainCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="updateModalForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myUpdateModalLabel">Ip Güncelle</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body" id="updateFormModalBody">
+                    <div asp-validation-summary="All" class="text-danger ml-4"></div>
+                    <input asp-for="Id" id="updateID" class="form-control" type="hidden"/>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" id="updateName" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnUpdate">Güncelle</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

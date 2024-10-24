@@ -9,4 +9,5 @@ public static class AuthorizeEndpointConstants
     public const string UserOperation = "UserOperation";
     public const string RoleOperation = "RoleOperation";
     public const string IpOperation = "IpOperation";
+    public const string MainCategory = "MainCategory";
 }

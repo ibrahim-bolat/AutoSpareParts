@@ -13,6 +13,8 @@ public sealed class MainCategoryMap : BaseEntityMap<MainCategory>
         builder.HasKey(mainCategory => mainCategory.Id);
         builder.Property(mainCategory => mainCategory.Id).ValueGeneratedOnAdd();
         builder.Property(mainCategory => mainCategory.Name).HasMaxLength(250).IsRequired();
+        builder.Property(mainCategory => mainCategory.MainCategoryOrder).ValueGeneratedOnAdd();
+        builder.HasIndex(mainCategory => mainCategory.MainCategoryOrder).IsUnique();
         builder.HasMany(mainCategory => mainCategory.Categories).WithOne(category => category.MainCategory)
             .HasForeignKey(category => category.MainCategoryId).OnDelete(DeleteBehavior.Cascade);
         builder.HasData(new MainCategory()

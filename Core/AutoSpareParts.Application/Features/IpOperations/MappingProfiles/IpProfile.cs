@@ -5,9 +5,9 @@ using AutoSpareParts.Domain.Entities;
 
 namespace AutoSpareParts.Application.Features.IpOperations.MappingProfiles;
 
-public class RoleProfile:Profile
+public class IpProfile:Profile
 {
-    public RoleProfile()
+    public IpProfile()
     {
         CreateMap<IpAddress, IpDto>().ForMember(dest=>dest.Status,
                 opt=>opt.MapFrom(src => src.IsActive))

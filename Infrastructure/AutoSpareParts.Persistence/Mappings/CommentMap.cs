@@ -11,7 +11,8 @@ public sealed class CommentMap : BaseEntityMap<Comment>
     {
         base.Configure(builder);
         builder.Property(comment => comment.CommentDetail).HasMaxLength(1000).IsRequired();
-        builder.Property(comment => comment.CommentOrder).IsRequired();
+        builder.Property(comment => comment.CommentOrder).ValueGeneratedOnAdd();
+        builder.HasIndex(comment => comment.CommentOrder).IsUnique();
         builder.Property(comment => comment.CommentStarRating).HasDefaultValue(0);
         builder.HasOne(comment => comment.Ad).WithMany(ad => ad.Comments)
             .HasForeignKey(comment => comment.AdId).OnDelete(DeleteBehavior.Cascade);
@@ -23,7 +24,6 @@ public sealed class CommentMap : BaseEntityMap<Comment>
             UserId=1,
             AdId = 1,
             CommentDetail = "Çok Beðendim",
-            CommentOrder = 1,
             CommentStarRating = 5,
 
         }, new Comment()
@@ -32,7 +32,6 @@ public sealed class CommentMap : BaseEntityMap<Comment>
             UserId = 2,
             AdId = 1,
             CommentDetail = "Beðendim",
-            CommentOrder = 2,
             CommentStarRating = 4,
         }, new Comment()
         {
@@ -40,7 +39,6 @@ public sealed class CommentMap : BaseEntityMap<Comment>
             UserId = 1,
             AdId = 2,
             CommentDetail = "Çok Beðendim",
-            CommentOrder = 1,
             CommentStarRating = 5,
         }, new Comment()
         {
@@ -48,7 +46,6 @@ public sealed class CommentMap : BaseEntityMap<Comment>
             UserId = 2,
             AdId = 2,
             CommentDetail = "Beðendim",
-            CommentOrder = 2,
             CommentStarRating = 3,
         });
 

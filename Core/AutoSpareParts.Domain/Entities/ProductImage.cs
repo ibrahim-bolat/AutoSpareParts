@@ -4,6 +4,7 @@ namespace AutoSpareParts.Domain.Entities;
 public class ProductImage:BaseImage
     {
         public bool Vitrin { get; set; }
+        public int ProductImageOrder { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
     }

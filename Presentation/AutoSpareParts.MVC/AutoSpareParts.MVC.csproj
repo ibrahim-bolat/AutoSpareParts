@@ -6,6 +6,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>02c0bd63-58b4-47b9-9edd-d84fbeaba098</UserSecretsId>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Content Remove="Areas\Admin\Views\IpOperation\Index.cshtml" />
+    </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\Core\AutoSpareParts.Application\AutoSpareParts.Application.csproj" />
       <ProjectReference Include="..\..\Infrastructure\AutoSpareParts.Infrastructure\AutoSpareParts.Infrastructure.csproj" />
@@ -2216,6 +2220,7 @@
 
     <ItemGroup>
       <AdditionalFiles Include="Areas\Admin\Views\IpOperation\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\MainCategory\Index.cshtml" />
     </ItemGroup>
 
 </Project>

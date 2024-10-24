@@ -5,17 +5,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AutoSpareParts.Persistence.Mappings;
 
-    public sealed class ProductImageMap : BaseEntityMap<ProductImage>
+public sealed class ProductImageMap : BaseEntityMap<ProductImage>
+{
+    public override void Configure(EntityTypeBuilder<ProductImage> builder)
     {
-        public override void Configure(EntityTypeBuilder<ProductImage> builder)
-        {
-            base.Configure(builder);
-            builder.Property(productImage => productImage.Title).HasMaxLength(250).IsRequired();
-            builder.Property(productImage => productImage.Path).HasMaxLength(500).IsRequired();
-            builder.Property(productImage => productImage.AltText).HasMaxLength(250);
-            builder.HasOne(productImage => productImage.Product).WithMany(product => product.ProductImages)
-                .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasData(new ProductImage()
+        base.Configure(builder);
+        builder.Property(productImage => productImage.Title).HasMaxLength(250).IsRequired();
+        builder.Property(productImage => productImage.Path).HasMaxLength(500).IsRequired();
+        builder.Property(productImage => productImage.AltText).HasMaxLength(250);
+        builder.Property(productImage => productImage.ProductImageOrder).ValueGeneratedOnAdd();
+        builder.HasIndex(productImage => productImage.ProductImageOrder).IsUnique();
+        builder.HasOne(productImage => productImage.Product).WithMany(product => product.ProductImages)
+            .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasData(new ProductImage()
         {
             Id = 1,
             ProductId = 1,
@@ -32,5 +34,5 @@ namespace AutoSpareParts.Persistence.Mappings;
             AltText = "Ford Focuk Fren Disk Resmi",
             Vitrin = true,
         });
-        }
     }
+}
