@@ -17,7 +17,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/admin/userOperation/getAllUsers",
+            "url": "/admin/useroperation/getallusers",
             "type": "POST",
             "datatype": "json"
         },
@@ -41,7 +41,7 @@ $(document).ready(function ($) {
                 "data": "Id", "width": "50px", "render": function (data) {
                     return '<a class="btn btn-success mr-2" onclick="return getRole(' + data + ')"><i class="fa fa-tasks">Rol Ata</i></a>' +
                         '<a class="btn btn-info mr-2" href="account/profile/' + data + '"><i class="fa fa-info-circle">Detay</i></a>' +
-                        '<a class="btn btn-secondary mr-2" href="account/editProfile/'+data+'"><i class="fa fa-pencil-square-o">Profil Güncelle</i></a>' +
+                        '<a class="btn btn-secondary mr-2" href="account/editprofile/'+data+'"><i class="fa fa-pencil-square-o">Profil Güncelle</i></a>' +
                         '<a class="btn btn-warning mr-2 editPasswordButton" data-userid="'+data+'"><i class="fa fa-pencil-square-o">Şifre Güncelle</i></a>' +
                         '<a class="btn btn-danger" onclick="getByIdforDelete(' + data + ')"><i class="fa fa-trash-o">Sil</i></a>';
                 }
@@ -109,7 +109,7 @@ $(document).ready(function ($) {
     $('#userCreateModalForm').on('submit', '#createModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/admin/userOperation/createUser",
+            url: "/admin/useroperation/createuser",
             type: "POST",
             data: data,
             success: function (result) {
@@ -138,7 +138,7 @@ $(document).ready(function ($) {
         e.preventDefault();
         var Id = $('#deleteID').val();
         $.ajax({
-            url: '/admin/userOperation/deleteUser/' + Id,
+            url: '/admin/useroperation/deleteuser/' + Id,
             type: "POST",
             contentType: "application/json;charset=UTF-8",
             dataType: "json",
@@ -164,7 +164,7 @@ $(document).ready(function ($) {
         e.preventDefault();
         var Id = $(this).data("userid");
         $.ajax({
-            url: '/admin/userOperation/editPasswordUser',
+            url: '/admin/useroperation/editpassworduser',
             type: 'GET',
             data: { "Id": Id},
             dataType: 'html',
@@ -183,7 +183,7 @@ $(document).ready(function ($) {
     $('#editPasswordModalPartial').on('submit', '#editPasswordModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/admin/userOperation/editPasswordUser",
+            url: "/admin/useroperation/editpassworduser",
             type: "POST",
             data: data,
             success: function (result) {
@@ -212,7 +212,7 @@ $(document).ready(function ($) {
         })
         var postData = { roleIds: roleIds };
         $.ajax({
-            url: '/admin/userOperation/assignRolesByUserId/' + Id,
+            url: '/admin/useroperation/assignrolesbyuserid/' + Id,
             type: "POST",
             data: postData,
             dataType: "json",
@@ -235,11 +235,11 @@ $(document).ready(function ($) {
     //When Close Create Modal Reset ModelSate Errors and Form inputs
     $("#userCrateModal").on("hidden.bs.modal", function () {
         var createModalForm = $(this).find("#createModalForm");
-        ResetValidation(createModalForm);
+        resetValidation(createModalForm);
         clearCreateModalTextBox();
     });
     
-    <!-- Index -->
+    // Index
     if(app.ToastMessages.registerMessage==="True"){
         toastMessage(3000,"success","Kullanıcı Kaydedildi.",
             "Kullanıcı Kaydetme İşlemi Başarıyla Gerçekleştirildi.");
@@ -254,7 +254,7 @@ $(document).ready(function ($) {
 function getRole(Id) {
     var html ="";
     $.ajax({
-        url: '/admin/userOperation/getRoleById/' + Id,
+        url: '/admin/useroperation/getrolebyid/' + Id,
         type: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
@@ -296,7 +296,7 @@ function getByIdforDelete(Id) {
     clearDeleteModalTextBox();
     disabledDeleteModalTextBox(true);
     $.ajax({
-        url: '/admin/userOperation/getUserById/' + Id,
+        url: '/admin/useroperation/getuserbyid/' + Id,
         type: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
@@ -321,7 +321,7 @@ function getByIdforDelete(Id) {
 }
 
 //remove ModelSate Errors and reset Form
-function ResetValidation(currentForm) {
+function resetValidation(currentForm) {
     currentForm[0].reset();
     currentForm.find("[data-valmsg-summary=true]")
         .removeClass("validation-summary-errors")
@@ -409,7 +409,7 @@ function ReloadTable() {
     $('#userTable').DataTable().ajax.reload(null,false);
 }
 
-<!-- Toast Message -->
+// Toast Message
 function toastMessage(time, icon,title,text) {
     const Toast = Swal.mixin({
         toast: true,

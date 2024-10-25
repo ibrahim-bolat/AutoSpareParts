@@ -3,7 +3,7 @@ $(document).ready(function ($) {
     var tree = $('#tree').tree({
         primaryKey: 'id',
         uiLibrary: 'bootstrap4',
-        dataSource: '/admin/authorizeEndpoint/getAllAuthorizeEndpointsforAssignIp',
+        dataSource: '/admin/authorizeendpoint/getallauthorizeendpointsforassignip',
         width: 800,
         icons: {
             expand: '<i class="gj-icon chevron-right"></i>',
@@ -65,7 +65,7 @@ $(document).ready(function ($) {
         }
         
         $.ajax({
-            url: '/admin/authorizeEndpoint/assignIpAddresses',
+            url: '/admin/authorizeendpoint/assignipaddresses',
             type: "POST",
             data: { "ipAreaName": ipAreaName ,"ipMenuName":ipMenuName,"ipEndpointId":ipEndpointId, "ipIds":ipIds},
             dataType: "json",
@@ -96,7 +96,7 @@ $(document).ready(function ($) {
             var endpointId = $(this).attr("data-id");
         }
         $.ajax({
-            url: '/admin/authorizeEndpoint/getAllIpAdressesByEndpoint',
+            url: '/admin/authorizeEndpoint/getallipadressesbyendpoint',
             type: 'POST',
             data: { "areaName": areaName ,"menuName":menuName, "endpointId":endpointId},
             dataType: 'html',

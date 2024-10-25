@@ -17,7 +17,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/admin/mainCategory/getAllMainCategories",
+            "url": "/admin/maincategory/getallmaincategories",
             "type": "POST",
             "datatype": "json"
         },
@@ -38,14 +38,14 @@ $(document).ready(function ($) {
             {
                 "data": "Id","className": "text-center","width": "50px", "render": function (data, type, row, meta) {
                     if(row.Status){
-                            return'<a class="btn btn-primary mr-2" href="mainCategory/getCategories/' + data + '><i class="fa fa-tasks">Kategoriler</i></a>' +
+                            return '<a class="btn btn-primary mr-2" href="maincategory/getcategories/' + data + '"><i class="fa fa-tasks">Kategoriler</i></a>' +
                                 '<a class="btn btn-secondary mr-2" onclick="getByIdforUpdate(' + data + ')"><i class="fa fa-pencil-square-o">Ana Kategori Güncelle</i></a>' +
-                                '<a class="btn btn-danger" onclick="SetMainCategoryPassive(' + data + ')"><i class="fa fa-solid fa-times">Pasif Yap</i></a>';
+                                '<a class="btn btn-danger" onclick="setMainCategoryPassive(' + data + ')"><i class="fa fa-solid fa-times">Pasif Yap</i></a>';
                     }
                     else{
-                        return '<a class="btn btn-primary mr-2" href="mainCategory/getCategories/' + data + '><i class="fa fa-tasks">Kategoriler</i></a>' +
+                        return '<a class="btn btn-primary mr-2" href="maincategory/getcategories/' + data + '"><i class="fa fa-tasks">Kategoriler</i></a>' +
                             '<a class="btn btn-secondary mr-2" onclick="getByIdforUpdate(' + data + ')"><i class="fa fa-pencil-square-o">Ana Kategori Güncelle</i></a>' +
-                        '<a class="btn btn-success" onclick="SetMainCategoryActive(' + data + ')"><i class="fa fa-solid fa-check">Aktif Yap</i></a>';
+                        '<a class="btn btn-success" onclick="setMainCategoryActive(' + data + ')"><i class="fa fa-solid fa-check">Aktif Yap</i></a>';
                     }
                 }
             }
@@ -112,7 +112,7 @@ $(document).ready(function ($) {
     $('#createMainCategoryModalForm').on('submit', '#createModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/admin/mainCategory/createMainCategory",
+            url: "/admin/maincategory/createmaincategory",
             type: "POST",
             data: data,
             success: function (result) {
@@ -139,7 +139,7 @@ $(document).ready(function ($) {
     $('#updateMainCategoryModalForm').on('submit', '#updateModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/admin/mainCategory/updateMainCategory",
+            url: "/admin/maincategory/updatemaincategory",
             type: "POST",
             data: data,
             success: function (result) {
@@ -166,14 +166,14 @@ $(document).ready(function ($) {
     
     $("#createMainCategoryModalForm").on("hidden.bs.modal", function () {
         var createModalForm = $(this).find("#createMainCategoryModalForm");
-        ResetValidation(createModalForm);
+        resetValidation(createModalForm);
         clearCreateModalTextBox();
     });
     
     //When Close Update Modal Reset ModelSate Errors and Form inputs
     $("#updateMainCategoryModalForm").on("hidden.bs.modal", function () {
         var updateModalForm = $(this).find("#updateMainCategoryModalForm");
-        ResetValidation(updateModalForm);
+        resetValidation(updateModalForm);
         clearUpdateModalTextBox();
     });
 });
@@ -182,7 +182,7 @@ $(document).ready(function ($) {
 function getByIdforUpdate(Id) {
     clearUpdateModalTextBox();
     $.ajax({
-        url: '/admin/mainCategory/getMainCategoryById/' + Id,
+        url: '/admin/maincategory/getmaincategorybyid/' + Id,
         typr: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
@@ -205,7 +205,7 @@ function getByIdforUpdate(Id) {
 
 
 //Set IP Active
-function SetMainCategoryActive(Id) {
+function setMainCategoryActive(Id) {
     Swal.fire({
         title: 'Ana Kategoriyi aktif etmek İstediğinizden Emin misiniz?',
         text: 'Ana Kategoriyi  aktif etmeye onay verdiğiniz zaman Ana kategoriye kategori atanabilecektir.!',
@@ -218,7 +218,7 @@ function SetMainCategoryActive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/mainCategory/setMainCategoryActive/' + Id,
+                url: '/admin/maincategory/setmaincategoryactive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
@@ -252,7 +252,7 @@ function SetMainCategoryActive(Id) {
 }
 
 //Set IP Passive
-function SetMainCategoryPassive(Id) {
+function setMainCategoryPassive(Id) {
     Swal.fire({
         title: 'Ana Kategoriyi pasif etmek İstediğinizden Emin misiniz?',
         text: "Ana Kategoriyi pasif etmeye onay verdiğiniz zaman bu Ana Kategorinin atanmış olduğu kategorilerde pasif olacaktır.!",
@@ -265,7 +265,7 @@ function SetMainCategoryPassive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/mainCategory/setMainCategoryPassive/' + Id,
+                url: '/admin/maincategory/setmaincategorypassive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",                                  
                 dataType: "json",
@@ -298,7 +298,7 @@ function SetMainCategoryPassive(Id) {
     });
 }
 //remove ModelSate Errors and reset Form
-function ResetValidation(currentForm) {
+function resetValidation(currentForm) {
     currentForm[0].reset();
     currentForm.find("[data-valmsg-summary=true]")
         .removeClass("validation-summary-errors")

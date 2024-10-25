@@ -1,6 +1,6 @@
 ﻿var $=jQuery.noConflict();
 $(document).ready(function ($) {
-    <!-- Phone Input Mask -->
+    // Phone Input Mask
     
     $("#phonemasc").inputmask("+\\90(999)999-99-99");
     $(document).on("ajaxComplete", function(e){
@@ -14,7 +14,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var cityId = $("#cityId").val();
         $.ajax({
-            url: "/admin/address/getAllDistrictsByCityId",
+            url: "/admin/address/getalldistrictsbycityid",
             data: { cityId: cityId },
             type: "POST",
             dataType: "json",
@@ -43,7 +43,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var districtId = $("#districtId").val();
         $.ajax({
-            url: "/admin/address/getAllNeighborhoodsOrVillagesByDistrictId",
+            url: "/admin/address/getallneighborhoodsorvillagesbydistrictid",
             data: { districtId: districtId },
             type: "POST",
             dataType: "json",
@@ -69,7 +69,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var neighborhoodOrVillageId = $("#neighborhoodOrVillageId").val();
         $.ajax({
-            url: "/admin/address/getAllStreetsByNeighborhoodOrVillageId",
+            url: "/admin/address/getallstreetsbyneighborhoodorvillageid",
             data: { neighborhoodOrVillageId: neighborhoodOrVillageId },
             type: "POST",
             dataType: "json",
@@ -121,7 +121,7 @@ $(document).ready(function ($) {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: '/admin/address/deleteAddress',
+                    url: '/admin/address/deleteaddress',
                     data: {
                         addressId: Id
                     },
@@ -157,7 +157,7 @@ $(document).ready(function ($) {
         });
     });
 
-    <!-- CreateAddress -->
+    // CreateAddress
     if(app.ToastMessages.createAddressMessage==="True"){
         toastMessage(3000,"success","Adres Kaydedildi",
             "Adres Kaydetme İşlemi Başarıyla Gerçekleştirildi.");

@@ -1,15 +1,15 @@
 ﻿var $=jQuery.noConflict();
 $(document).ready(function ($) {
-    <!-- Edit Profile -->
-    <!-- Phone Input Mask -->
+    // Edit Profile
+    // Phone Input Mask
     $("#userphonemasc").inputmask("+\\90(999)999-99-99");
 
-    <!-- EditPasswordAccount -->
+    // EditPasswordAccount
     if(app.ToastMessages.editPasswordMessage==="True"){
         toastMessage(3000,"success","Şifre Güncellendi.",
             "Şifre Güncelleme İşlemi Başarıyla Gerçekleştirildi.");
     }
-    <!-- Forget Pass -->
+    // Forget Pass 
     if(app.ToastMessages.emailSendMessage==="True"){
         toastMessage(3000,"success","Doğrulama Maili Gönderildi.",
             "Şifre talebi için e-posta adresinize bilgilerindirici mail gönderilmiştir.");
@@ -19,7 +19,7 @@ $(document).ready(function ($) {
             "Şifre talebi için mail gönderme işleminde hata oluştu. Lütfen mail sunucu bilgilerini kontrol ediniz!");
     }
 
-    <!-- Login -->
+    // Login
     if(app.ToastMessages.loginMessage==="True"){
         toastMessage(3000,"success","Tebrikler Kayıt Oldunuz.",
             "Artık giriş yapabilirsiniz.");
@@ -36,13 +36,13 @@ $(document).ready(function ($) {
         toastMessage(3000,"error","Google ile Giriş Hatalı",
             "Google ile Giriş İşleminiz Başarısız Oldu!");
     }
-    <!-- Profile -->
+    // Profile
     if(app.ToastMessages.updateAddressMessage==="True"){
         toastMessage(3000,"success","Tebrikler",
             "Adres Başarıyla Güncellendi.");
     }
 
-    <!-- UpdatePassword -->
+    // UpdatePassword 
     if(app.ToastMessages.updatePasswordMessage==="False"){
         toastMessage(3000,"error","Hata! Şifre Güncellenemedi!!!",
             "Şifreyi güncellerken beklenmeyen hatayla karşılaşıldı.Kurallara uygun şifre oluşturmayı deneyiniz!");
@@ -63,7 +63,7 @@ $(document).ready(function ($) {
         window.location.href = app.Urls.externalLoginUrl+'?providerName='+ providerName + '&isPersistent=' + isPersistent+'&returnUrl='+returnUrl;
     });
     
-    <!-- Toast Message -->
+    // Toast Message
     function toastMessage(time, icon,title,text) {
         const Toast = Swal.mixin({
             toast: true,

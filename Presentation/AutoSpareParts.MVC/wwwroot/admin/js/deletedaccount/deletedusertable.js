@@ -17,7 +17,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/admin/deletedAccount/deletedUsers",
+            "url": "/admin/deletedaccount/deletedusers",
             "type": "POST",
             "datatype": "json"
         },
@@ -119,7 +119,7 @@ function SetUserActive(Id) {
         if (result.isConfirmed) {
             $.ajax({
                 type: "POST",
-                url: '/admin/deletedAccount/setActiveUser',
+                url: '/admin/deletedaccount/setactiveuser',
                 data: {
                     userId: Id
                 },

@@ -17,7 +17,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/admin/ipOperation/getAllIpAddresses",
+            "url": "/admin/ipoperation/getallipaddresses",
             "type": "POST",
             "datatype": "json"
         },
@@ -44,14 +44,14 @@ $(document).ready(function ($) {
             {
                 "data": "Id","className": "text-center","width": "50px", "render": function (data, type, row, meta) {
                     if(row.Status){
-                            return'<a class="btn btn-primary mr-2" href="AuthorizeEndpoint/AuthorizeEndpoints"><i class="fa fa-tasks">Endpoint Yetkilendirme</i></a>' +
+                            return'<a class="btn btn-primary mr-2" href="authorizeendpoint/authorizeendpoints"><i class="fa fa-tasks">Endpoint Yetkilendirme</i></a>' +
                                 '<a class="btn btn-secondary mr-2" onclick="getByIdforUpdate(' + data + ')"><i class="fa fa-pencil-square-o">Ip Güncelle</i></a>' +
-                                '<a class="btn btn-danger" onclick="SetIpAddressPassive(' + data + ')"><i class="fa fa-solid fa-times">Pasif Yap</i></a>';
+                                '<a class="btn btn-danger" onclick="setIpAddressPassive(' + data + ')"><i class="fa fa-solid fa-times">Pasif Yap</i></a>';
                     }
                     else{
-                        return '<a class="btn btn-primary mr-2" href="AuthorizeEndpoint/AuthorizeEndpoints"><i class="fa fa-tasks">Endpoint Yetkilendirme</i></a>' +
+                        return '<a class="btn btn-primary mr-2" href="authorizeendpoint/authorizeendpoints"><i class="fa fa-tasks">Endpoint Yetkilendirme</i></a>' +
                         '<a class="btn btn-secondary mr-2" onclick="getByIdforUpdate(' + data + ')"><i class="fa fa-pencil-square-o">Ip Güncelle</i></a>' +
-                        '<a class="btn btn-success" onclick="SetIpAddressActive(' + data + ')"><i class="fa fa-solid fa-check">Aktif Yap</i></a>';
+                        '<a class="btn btn-success" onclick="setIpAddressActive(' + data + ')"><i class="fa fa-solid fa-check">Aktif Yap</i></a>';
                     }
                 }
             }
@@ -118,7 +118,7 @@ $(document).ready(function ($) {
     $('#ipCreateModalForm').on('submit', '#createModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/admin/ipOperation/createIpAddress",
+            url: "/admin/ipoperation/createipaddress",
             type: "POST",
             data: data,
             success: function (result) {
@@ -145,7 +145,7 @@ $(document).ready(function ($) {
     $('#ipUpdateModalForm').on('submit', '#updateModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/admin/ipOperation/updateIpAddress",
+            url: "/admin/ipoperation/updateipaddress",
             type: "POST",
             data: data,
             success: function (result) {
@@ -172,14 +172,14 @@ $(document).ready(function ($) {
     
     $("#ipCreateModal").on("hidden.bs.modal", function () {
         var createModalForm = $(this).find("#createModalForm");
-        ResetValidation(createModalForm);
+        resetValidation(createModalForm);
         clearCreateModalTextBox();
     });
     
     //When Close Update Modal Reset ModelSate Errors and Form inputs
     $("#ipUpdateModal").on("hidden.bs.modal", function () {
         var updateModalForm = $(this).find("#updateModalForm");
-        ResetValidation(updateModalForm);
+        resetValidation(updateModalForm);
         clearUpdateModalTextBox();
     });
 
@@ -211,7 +211,7 @@ $(document).ready(function ($) {
 function getByIdforUpdate(Id) {
     clearUpdateModalTextBox();
     $.ajax({
-        url: '/admin/ipOperation/getIpAddressById/' + Id,
+        url: '/admin/ipoperation/getipaddressbyid/' + Id,
         typr: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
@@ -237,7 +237,7 @@ function getByIdforUpdate(Id) {
 
 
 //Set IP Active
-function SetIpAddressActive(Id) {
+function setIpAddressActive(Id) {
     Swal.fire({
         title: 'IPyi aktif etmek İstediğinizden Emin misiniz?',
         text: "IPyi aktif etmeye onay verdiğiniz zaman IP aktif Endpointlere atanabilecektir.!",
@@ -250,7 +250,7 @@ function SetIpAddressActive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/ipOperation/setIpAddressActive/' + Id,
+                url: '/admin/ipoperation/setipaddressactive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
@@ -284,7 +284,7 @@ function SetIpAddressActive(Id) {
 }
 
 //Set IP Passive
-function SetIpAddressPassive(Id) {
+function setIpAddressPassive(Id) {
     Swal.fire({
         title: 'IPyi pasif etmek İstediğinizden Emin misiniz?',
         text: "IPyi pasif etmeye onay verdiğiniz zaman bu IPnin atanmış olduğu endpointler çıkarılacaktır.!",
@@ -297,7 +297,7 @@ function SetIpAddressPassive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/ipOperation/setIpAddressPassive/' + Id,
+                url: '/admin/ipoperation/setipaddresspassive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",                                  
                 dataType: "json",
@@ -330,7 +330,7 @@ function SetIpAddressPassive(Id) {
     });
 }
 //remove ModelSate Errors and reset Form
-function ResetValidation(currentForm) {
+function resetValidation(currentForm) {
     currentForm[0].reset();
     currentForm.find("[data-valmsg-summary=true]")
         .removeClass("validation-summary-errors")

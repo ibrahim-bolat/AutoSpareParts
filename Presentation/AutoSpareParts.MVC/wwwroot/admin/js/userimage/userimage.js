@@ -16,7 +16,7 @@ $(document).ready(function ($) {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: '/admin/userImage/setProfilImage',
+                    url: '/admin/userimage/setprofilimage',
                     data: {
                         id: Id,
                         userId:userId
@@ -68,7 +68,7 @@ $(document).ready(function ($) {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
-                    url: '/admin/userImage/deleteUserImage',
+                    url: '/admin/userimage/deleteuserimage',
                     data: {
                         id: Id
                     },
@@ -103,13 +103,13 @@ $(document).ready(function ($) {
         });
     });
 
-    <!-- CreateUserImage -->
+    // CreateUserImage
     if(app.ToastMessages.createUserImageMessage==="True"){
         toastMessage(5000,"success","Resim Eklendi.",
             "Resim Ekleme İşlemi Başarıyla Gerçekleştirildi.");
     }
 
-    <!-- Toast Message -->
+    // Toast Message
     function toastMessage(time, icon,title,text) {
         const Toast = Swal.mixin({
             toast: true,

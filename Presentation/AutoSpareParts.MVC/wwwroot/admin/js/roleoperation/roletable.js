@@ -17,7 +17,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/admin/roleOperation/getAllRoles",
+            "url": "/admin/roleoperation/getallroles",
             "type": "POST",
             "datatype": "json"
         },
@@ -43,23 +43,23 @@ $(document).ready(function ($) {
                 "data": "Id","className": "text-center","width": "50px", "render": function (data, type, row, meta) {
                     if(row.Status){
                         if(data === 1 || data === 2 || data === 3){
-                            return'<a class="btn btn-primary mr-2" href="AuthorizeEndpoint/Index"><i class="fa fa-tasks">Yetkilendirme</i></a>' +
-                                '<a class="btn btn-info mr-2" href="RoleOperation/UsersOfTheRole/' + data + '"><i class="fa fa-info-circle">Rolün Kullanıcıları</i></a>' +
+                            return'<a class="btn btn-primary mr-2" href="authorizeendpoint/index"><i class="fa fa-tasks">Yetkilendirme</i></a>' +
+                                '<a class="btn btn-info mr-2" href="roleoperation/usersoftherole/' + data + '"><i class="fa fa-info-circle">Rolün Kullanıcıları</i></a>' +
                                 '<a class="btn btn-warning mr-2 disabled">Default Rol</a>' +
                                 '<a class="btn btn-warning disabled">Default Rol</a>';
                         }
                         else{
-                            return'<a class="btn btn-primary mr-2" href="AuthorizeEndpoint/Index"><i class="fa fa-tasks">Yetkilendirme</i></a>' +
-                                '<a class="btn btn-info mr-2" href="RoleOperation/UsersOfTheRole/' + data + '"><i class="fa fa-info-circle">Rolün Kullanıcıları</i></a>' +
+                            return'<a class="btn btn-primary mr-2" href="authorizeendpoint/index"><i class="fa fa-tasks">Yetkilendirme</i></a>' +
+                                '<a class="btn btn-info mr-2" href="roleoperation/usersoftherole/' + data + '"><i class="fa fa-info-circle">Rolün Kullanıcıları</i></a>' +
                                 '<a class="btn btn-secondary mr-2" onclick="getByIdforUpdate(' + data + ')"><i class="fa fa-pencil-square-o">Rol Güncelle</i></a>' +
-                                '<a class="btn btn-danger" onclick="SetRolePassive(' + data + ')"><i class="fa fa-solid fa-times">Pasif Yap</i></a>';
+                                '<a class="btn btn-danger" onclick="setRolePassive(' + data + ')"><i class="fa fa-solid fa-times">Pasif Yap</i></a>';
                         }
                     }
                     else{
-                        return '<a class="btn btn-primary mr-2" href="AuthorizeEndpoint/Index"><i class="fa fa-tasks">Yetkilendirme</i></a>' +
-                        '<a class="btn btn-info mr-2" href="RoleOperation/UsersOfTheRole/' + data + '"><i class="fa fa-info-circle">Rolün Kullanıcıları</i></a>' +
+                        return '<a class="btn btn-primary mr-2" href="authorizeendpoint/index"><i class="fa fa-tasks">Yetkilendirme</i></a>' +
+                        '<a class="btn btn-info mr-2" href="roleoperation/usersoftherole/' + data + '"><i class="fa fa-info-circle">Rolün Kullanıcıları</i></a>' +
                         '<a class="btn btn-secondary mr-2" onclick="getByIdforUpdate(' + data + ')"><i class="fa fa-pencil-square-o">Rol Güncelle</i></a>' +
-                        '<a class="btn btn-success" onclick="SetRoleActive(' + data + ')"><i class="fa fa-solid fa-check">Aktif Yap</i></a>';
+                        '<a class="btn btn-success" onclick="setRoleActive(' + data + ')"><i class="fa fa-solid fa-check">Aktif Yap</i></a>';
                     }
                 }
             }
@@ -76,7 +76,7 @@ $(document).ready(function ($) {
     $('#roleCreateModalForm').on('submit', '#createModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/admin/roleOperation/createRole",
+            url: "/admin/roleoperation/createrole",
             type: "POST",
             data: data,
             success: function (result) {
@@ -103,7 +103,7 @@ $(document).ready(function ($) {
     $('#roleUpdateModalForm').on('submit', '#updateModalForm', function () {
         var data = $(this).serialize();
         $.ajax({
-            url: "/admin/roleOperation/updateRole",
+            url: "/admin/roleoperation/updaterole",
             type: "POST",
             data: data,
             success: function (result) {
@@ -129,14 +129,14 @@ $(document).ready(function ($) {
     //When Close Create Modal Reset ModelSate Errors and Form inputs
     $("#roleCreateModal").on("hidden.bs.modal", function () {
         var createModalForm = $(this).find("#createModalForm");
-        ResetValidation(createModalForm);
+        resetValidation(createModalForm);
         clearCreateModalTextBox();
     });
     
     //When Close Update Modal Reset ModelSate Errors and Form inputs
     $("#roleUpdateModal").on("hidden.bs.modal", function () {
         var updateModalForm = $(this).find("#updateModalForm");
-        ResetValidation(updateModalForm);
+        resetValidation(updateModalForm);
         clearUpdateModalTextBox();
     });
 
@@ -146,7 +146,7 @@ $(document).ready(function ($) {
 function getByIdforUpdate(Id) {
     clearUpdateModalTextBox();
     $.ajax({
-        url: '/admin/roleOperation/getRoleById/' + Id,
+        url: '/admin/roleoperation/getrolebyid/' + Id,
         typr: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
@@ -169,7 +169,7 @@ function getByIdforUpdate(Id) {
 
 
 //Set Role Active
-function SetRoleActive(Id) {
+function setRoleActive(Id) {
     Swal.fire({
         title: 'Rolü aktif etmek İstediğinizden Emin misiniz?',
         text: "Rolü aktif etmeye onay verdiğiniz zaman rol aktif kullanıcılara atanabilecektir.!",
@@ -182,7 +182,7 @@ function SetRoleActive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/roleOperation/setRoleActive/' + Id,
+                url: '/admin/roleoperation/setroleactive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
@@ -216,7 +216,7 @@ function SetRoleActive(Id) {
 }
 
 //Set Role Passive
-function SetRolePassive(Id) {
+function setRolePassive(Id) {
     Swal.fire({
         title: 'Rolü pasif etmek İstediğinizden Emin misiniz?',
         text: "Rolü pasif etmeye onay verdiğiniz zaman bu role sahip kullanıcılar rolden çıkarılacaktır.!",
@@ -229,7 +229,7 @@ function SetRolePassive(Id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/roleOperation/setRolePassive/' + Id,
+                url: '/admin/roleoperation/setrolepassive/' + Id,
                 type: "POST",
                 contentType: "application/json;charset=UTF-8",
                 dataType: "json",
@@ -263,7 +263,7 @@ function SetRolePassive(Id) {
 }
 
 //remove ModelSate Errors and reset Form
-function ResetValidation(currentForm) {
+function resetValidation(currentForm) {
     currentForm[0].reset();
     currentForm.find("[data-valmsg-summary=true]")
         .removeClass("validation-summary-errors")

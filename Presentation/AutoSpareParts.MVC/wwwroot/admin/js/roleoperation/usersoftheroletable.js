@@ -18,7 +18,7 @@ $(document).ready(function ($) {
             'url': '/lib/datatables/turkceDil.json'
         },
         "ajax": {
-            "url": "/admin/roleOperation/usersOfTheRole?id=" + roleId,
+            "url": "/admin/roleoperation/usersoftherole?id=" + roleId,
             "type": "POST",
             "datatype": "json"
         },
@@ -40,7 +40,7 @@ $(document).ready(function ($) {
             {"data": "Email", "name": "Email", "autoWidth": true},
             {
                 "data": "Id", "width": "50px", "render": function (data) {
-                    return  '<a class="btn btn-danger" onclick="RemoveUserFromRole(' + data + ','+ roleId + ')"><i class="fa fa-trash-o">Rolden Çıkar</i></a>';
+                    return  '<a class="btn btn-danger" onclick="removeUserFromRole(' + data + ','+ roleId + ')"><i class="fa fa-trash-o">Rolden Çıkar</i></a>';
                 }
             }
         ],
@@ -57,7 +57,7 @@ $(document).ready(function ($) {
 
 
 //Remove User From Role
-function RemoveUserFromRole(userId,roleId) {
+function removeUserFromRole(userId,roleId) {
     Swal.fire({
         title: 'Kullanıcıyı rolden çıkarmak İstediğinizden Emin misiniz?',
         text: "Kullanıcıyı rolden çıkarmaya onay verdiğiniz zaman kullanıcı ilgili rolden çıkarılarak yetkileiri kullanamayacaktır!",
@@ -71,7 +71,7 @@ function RemoveUserFromRole(userId,roleId) {
         if (result.isConfirmed) {
             $.ajax({
                 type: "POST",
-                url: '/admin/roleOperation/removeUserFromRole/',
+                url: '/admin/roleoperation/removeuserfromrole/',
                 data: {
                     userId: userId,
                     roleId: roleId
