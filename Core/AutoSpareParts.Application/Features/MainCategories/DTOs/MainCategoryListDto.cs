@@ -14,6 +14,9 @@ public record MainCategoryListDto : BaseDto
     [Display(Name = "Ana Kategori Sırası")]
     public int MainCategoryOrder { get; init; }
 
+    [Display(Name = "Güncellenme Zamanı")]
+    public DateTime ModifiedTime { get; init; }
+
     [Display(Name = "Durumu")]
     public bool Status { get; init; }
 }

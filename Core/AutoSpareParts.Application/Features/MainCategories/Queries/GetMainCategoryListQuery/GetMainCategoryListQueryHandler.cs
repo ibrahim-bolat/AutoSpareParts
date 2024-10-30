@@ -28,29 +28,31 @@ public class GetMainCategoryListQueryHandler : IRequestHandler<GetMainCategoryLi
         var sortColumnDirection = request.DatatableRequestDto.Order.FirstOrDefault()!.Dir.ToString();
         if (!string.IsNullOrEmpty(request.DatatableRequestDto.Search.Value))
         {
-            mainCategoryData = mainCategoryData.Where(m => m.Name.ToLower().Contains(request.DatatableRequestDto.Search.Value.ToLower()));
+            mainCategoryData = mainCategoryData.Where(m => m.Name.ToLower().Contains(request.DatatableRequestDto.Search.Value.ToLower())
+                                       || m.MainCategoryOrder.ToString().Contains(request.DatatableRequestDto.Search.Value.ToString()));
         }
         if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
         {
-            //Func<AppRole, string> orderingFunction = (c => sortColumn  == nameof(c.Name) ? c.Name : c.Id.ToString());
             if (sortColumnDirection == OrderDirType.Desc.ToString())
             {
-                mainCategoryData = mainCategoryData.OrderByDescending(c => c.Status).ThenByDescending(c => sortColumn == nameof(c.Name) ? c.Name : c.Id.ToString()).AsQueryable();
+                mainCategoryData = mainCategoryData.OrderByDescending(c => c.Status).ThenByDescending(c => sortColumn == nameof(c.Name) ? c.Name :
+                    sortColumn == nameof(c.MainCategoryOrder) ? c.MainCategoryOrder.ToString() :c.Id.ToString()).ThenByDescending(c => c.ModifiedTime).AsQueryable();
             }
             else
             {
-                mainCategoryData = mainCategoryData.OrderByDescending(c => c.Status).ThenBy(c => sortColumn == nameof(c.Name) ? c.Name : c.Id.ToString()).AsQueryable();
+                mainCategoryData = mainCategoryData.OrderByDescending(c => c.Status).ThenBy(c => sortColumn == nameof(c.Name) ? c.Name :
+                    sortColumn == nameof(c.MainCategoryOrder) ? c.MainCategoryOrder.ToString() : c.Id.ToString()).ThenByDescending(c => c.ModifiedTime).AsQueryable();
             }
         }
         int recordsTotal = mainCategoryData.Count();
         var data = await mainCategoryData.Skip(skip).Take(pageSize).ToListAsync();
-        List<MainCategoryListDto> roleList = _mapper.Map<List<MainCategoryListDto>>(data);
+        List<MainCategoryListDto> categoryList = _mapper.Map<List<MainCategoryListDto>>(data);
         var response = new DatatableResponseDto<MainCategoryListDto>
         {
             Draw = request.DatatableRequestDto.Draw,
             RecordsTotal = recordsTotal,
             RecordsFiltered = recordsTotal,
-            Data = roleList
+            Data = categoryList
         };
         return new GetMainCategoryListQueryResponse
         {

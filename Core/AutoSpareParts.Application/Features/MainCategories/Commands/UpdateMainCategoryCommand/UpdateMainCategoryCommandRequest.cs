@@ -5,5 +5,5 @@ namespace AutoSpareParts.Application.Features.MainCategories.Commands.UpdateMain
 
 public class UpdateMainCategoryCommandRequest : IRequest<UpdateMainCategoryCommandResponse>
 {
-    public MainCategoryDto MainCategoryDto{ get; set; }
+    public MainCategoryListDto MainCategoryListDto{ get; set; }
 }

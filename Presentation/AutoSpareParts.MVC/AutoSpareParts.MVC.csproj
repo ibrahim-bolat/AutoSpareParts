@@ -2223,4 +2223,8 @@
       <AdditionalFiles Include="Areas\Admin\Views\MainCategory\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\lib\moment\" />
+    </ItemGroup>
+
 </Project>

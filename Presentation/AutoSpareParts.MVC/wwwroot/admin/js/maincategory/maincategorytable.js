@@ -3,7 +3,7 @@ $(document).ready(function ($) {
     var tables = $("#mainCategoryTable").DataTable({
         "pageLength": 10,
         "ordering": true,
-        "order": [[0, "asc"]],
+        "order": [[2, "asc"]],
         "info": true,
         "paging": true,
         "searching": true,
@@ -26,15 +26,20 @@ $(document).ready(function ($) {
             "visible": false,
             "searchable": false
         },
-            {
-                "targets": [3],
-                "searchable": false,
-                "orderable": false
-            }],
+        {
+            "targets": [3],
+            render: DataTable.render.datetime('DD/MM/YYYY HH:mm:ss')
+        },
+        {
+            "targets": [4],
+            "searchable": false,
+            "orderable": false
+         }],
         "columns": [
             {"data": "Id", "name": "Id", "autoWidth": true},
             {"data": "Name", "name": "Ana Kategori Adı", "autoWidth": true},
-            { "data": "MainCategoryOrder", "name": "Ana Kategori Sırası", "autoWidth": true},
+            {"data": "MainCategoryOrder", "name": "Ana Kategori Sırası", "autoWidth": true},
+            { "data": "ModifiedTime", "name": "Güncellenme Zamanı", "autoWidth": true},
             {
                 "data": "Id","className": "text-center","width": "50px", "render": function (data, type, row, meta) {
                     if(row.Status){
@@ -59,7 +64,7 @@ $(document).ready(function ($) {
                 filename: 'Ana Kategori Listesi',
                 title: 'Ana Kategori Listesi',
                 exportOptions: {
-                    columns: [1, 2]
+                    columns: [1, 2, 3]
                 },
                 className: "btn-export-excel"
             },
@@ -70,7 +75,7 @@ $(document).ready(function ($) {
                 title: 'Ana Kategori Listesi',
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [1, 2]
+                    columns: [1, 2, 3]
                 },
                 className: "btn-export-pdf",
                 customize: function (doc) {
@@ -97,7 +102,7 @@ $(document).ready(function ($) {
                 text: '<i class="fa fa-file-o"> Yazdır</i>',
                 title: 'Ana Kategori Listesi',
                 exportOptions: {
-                    columns: [1, 2]
+                    columns: [1, 2, 3]
                 },
                 className: "btn-export-print"
             }
@@ -178,19 +183,21 @@ $(document).ready(function ($) {
     });
 });
 
-//Get Ip By Id For Update
+//Get MainCategory By Id For Update
 function getByIdforUpdate(Id) {
     clearUpdateModalTextBox();
     $.ajax({
         url: '/admin/maincategory/getmaincategorybyid/' + Id,
-        typr: "GET",
+        type: "GET",
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
         success: function (result) {
             if (result.success) {
-                $('#updateID').val(result.ip.Id);
-                $('#updateName').val(result.ip.Status);
-                $('#ipUpdateModal').modal('show');
+                $('#updateID').val(result.mainCategory.Id);
+                $('#updateName').val(result.mainCategory.Name);
+                $('#updateMainCategoryOrder').val(result.mainCategory.MainCategoryOrder);
+                $('#updateStatus').val(result.mainCategory.Status);
+                $('#updateMainCategoryModal').modal('show');
             } else {
                 toastMessage(3000,"error","Hata.", "Ana Kategori Getirilemedi");
             }
@@ -204,7 +211,7 @@ function getByIdforUpdate(Id) {
 }
 
 
-//Set IP Active
+//Set MainCategory Active
 function setMainCategoryActive(Id) {
     Swal.fire({
         title: 'Ana Kategoriyi aktif etmek İstediğinizden Emin misiniz?',
@@ -251,7 +258,7 @@ function setMainCategoryActive(Id) {
     });
 }
 
-//Set IP Passive
+//Set MainCategory Passive
 function setMainCategoryPassive(Id) {
     Swal.fire({
         title: 'Ana Kategoriyi pasif etmek İstediğinizden Emin misiniz?',
@@ -323,50 +330,38 @@ function resetValidation(currentForm) {
 
 //Clear Create Modal Form  Entire Features
 function clearCreateModalTextBox() {
-    $('#createRangeStart').val("");
-    $('#createRangeStart-error').val("");
-    $('#createRangeEnd').val("");
-    $('#createRangeEnd-error').val("");
-    $('#createIpListType').val("");
-    $('#createIpListType-error').val("");
+    $('#createName').val("");
+    $('#createName-error').val("");
     $('#btnAdd').show();
-    $('#createRangeStart').css('border-color', 'lightgrey');
-    $('#createRangeEnd').css('border-color', 'lightgrey');
-    $('#createIpListType').css('border-color', 'lightgrey');
+    $('#createName').css('border-color', 'lightgrey');
 }
 
 //Clear Update Modal Form  Entire Features
 function clearUpdateModalTextBox() {
     $('#updateID').val("");
     $('#updateID-error').val("");
+    $('#updateName').val("");
+    $('#updateName-error').val("");
+    $('#updateMainCategoryOrder').val("");
+    $('#updateMainCategoryOrder-error').val("");
     $('#updateStatus').val("");
     $('#updateStatus-error').val("");
-    $('#updateRangeStart').val("");
-    $('#updateRangeStart-error').val("");
-    $('#updateRangeEnd').val("");
-    $('#updateRangeEnd-error').val("");
-    $('#updateIpListType').val("");
-    $('#updateIpListType-error').val("");
     $('#btnUpdate').show();
     $('#updateID').css('border-color', 'lightgrey');
+    $('#updateName').css('border-color', 'lightgrey');
+    $('#updateMainCategoryOrder').css('border-color', 'lightgrey');
     $('#updateStatus').css('border-color', 'lightgrey');
-    $('#updateRangeStart').css('border-color', 'lightgrey');
-    $('#updateRangeEnd').css('border-color', 'lightgrey');
-    $('#updateIpListType').css('border-color', 'lightgrey');
 }
 
 //Disable Create Modal Form  Entire TextBox
 function disabledCreateModalTextBox(value = true) {
-    $('#createRangeStart').attr("disabled", value);
-    $('#createRangeEnd').attr("disabled", value);
-    $('#createIpListType').attr("disabled", value);
+    $('#createName').attr("disabled", value);
 }
 
 //Disable Update Modal Form  Entire TextBox
 function disabledUpdateModalTextBox(value = true) {
-    $('#updateRangeStart').attr("disabled", value);
-    $('#updateRangeEnd').attr("disabled", value);
-    $('#updateIpListType').attr("disabled", value);
+    $('#updateName').attr("disabled", value);
+    $('#updateMainCategoryOrder').attr("disabled", value);
 }
 
 //Reload DataTable

@@ -136,6 +136,7 @@
                             <th class="text-center">Id</th>
                             <th class="text-center">Ana Kategori Adı</th>
                             <th class="text-center">Ana Kategori Sırası</th>
+                            <th class="text-center">Güncellenme Zamanı</th>
                             <th class="text-center">İşlemler</th>
                         </tr>
                     </thead>
@@ -151,6 +152,7 @@
     <partial name="PartialViews/_UpdateMainCategoryModalPartial" />
 </div>
 @section Scripts {
+    <script src="~/lib/moment/moment.min.js"></script>
     <script src="~/lib/datatables/js/datatables.min.js"></script>
     <script src="~/admin/js/maincategory/maincategorytable.js" asp-append-version="true"></script>
 }

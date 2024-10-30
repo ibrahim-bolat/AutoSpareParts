@@ -27,10 +27,10 @@ public class UpdateMainCategoryCommandHandler : IRequestHandler<UpdateMainCatego
     public async Task<UpdateMainCategoryCommandResponse> Handle(UpdateMainCategoryCommandRequest request,
         CancellationToken cancellationToken)
     {
-        MainCategory mainCategory = await _unitOfWork.MainCategories.GetByIdAsync(request.MainCategoryDto.Id);
+        MainCategory mainCategory = await _unitOfWork.MainCategories.GetByIdAsync(request.MainCategoryListDto.Id);
         if (mainCategory != null)
         {
-            mainCategory = _mapper.Map(request.MainCategoryDto, mainCategory);
+            mainCategory = _mapper.Map(request.MainCategoryListDto, mainCategory);
             mainCategory.ModifiedTime = DateTime.Now;
             mainCategory.ModifiedByName = _httpContextAccessor.HttpContext?.User.Identity?.Name;
             await _unitOfWork.MainCategories.UpdateAsync(mainCategory);
@@ -39,7 +39,7 @@ public class UpdateMainCategoryCommandHandler : IRequestHandler<UpdateMainCatego
             {
                 return new UpdateMainCategoryCommandResponse
                 {
-                    Result = new DataResult<MainCategoryDto>(ResultStatus.Success, Messages.MainCategoryUpdated, request.MainCategoryDto)
+                    Result = new DataResult<MainCategoryListDto>(ResultStatus.Success, Messages.MainCategoryUpdated, request.MainCategoryListDto)
                 };
             }
             return new UpdateMainCategoryCommandResponse
