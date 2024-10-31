@@ -29,5 +29,6 @@ public class AppUser:IdentityUser<int>,IEntity
         
         public  List<RequestInfoLog> RequestInfoLogs{ get; set; }
         public List<Comment> Comments { get; set; }
+        public List<Order> Orders { get; set; }
 }
     

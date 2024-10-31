@@ -13,9 +13,6 @@ public sealed class ProductMap : BaseEntityMap<Product>
     {
         base.Configure(builder);
         builder.Property(product => product.Name).HasMaxLength(250).IsRequired();
-        builder.Property(product => product.StockCode).HasMaxLength(250).IsRequired();
-        builder.Property(product => product.StockStatus).IsRequired();
-        builder.Property(product => product.StockQuantity).HasDefaultValue(0).IsRequired();
         builder.Property(product => product.ProductStatus)
             .HasConversion(
                 a => a.ToString(),
@@ -32,11 +29,18 @@ public sealed class ProductMap : BaseEntityMap<Product>
         builder.Property(product => product.SalePrice).HasColumnType("decimal(18,4)").IsRequired();
 
         builder.Property(product => product.ProductDetail).HasMaxLength(1000);
+
+        builder.HasOne(product => product.Inventory).WithOne(inventory => inventory.Product)
+            .HasForeignKey<Inventory>(inventory => inventory.Id).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasMany(product => product.Categories).WithMany(category => category.Products)
-            .UsingEntity(e => e.ToTable("CategoryProducts")); ;
+            .UsingEntity(e => e.ToTable("CategoryProducts"));
 
         builder.HasMany(product => product.Models).WithMany(model => model.Products)
-            .UsingEntity(e => e.ToTable("ModelProducts")); ;
+            .UsingEntity(e => e.ToTable("ModelProducts"));
+
+        builder.HasMany(product => product.Discounts).WithMany(discount => discount.Products)
+            .UsingEntity(e => e.ToTable("ProductDiscounts"));
 
         builder.HasMany(product => product.Oems).WithOne(oem => oem.Product)
             .HasForeignKey(oem => oem.ProductId).OnDelete(DeleteBehavior.SetNull);
@@ -47,13 +51,13 @@ public sealed class ProductMap : BaseEntityMap<Product>
         builder.HasMany(product => product.Ads).WithOne(ad => ad.Product)
             .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasMany(product => product.OrderDetails).WithOne(orderDetail => orderDetail.Product)
+            .HasForeignKey(orderDetail => orderDetail.ProductId).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasData(new Product()
         {
             Id = 1,
             Name = "Ford Focus 1.6 Fren Balatası",
-            StockCode = "IVECO5802794866",
-            StockStatus = true,
-            StockQuantity = 500,
             ProductionDate = DateOnly.FromDateTime(DateTime.Now),
             ProductStatus = ProductStatus.FirstHand,
             GuaranteeStatus = GuaranteeStatus.Yes,
@@ -66,9 +70,6 @@ public sealed class ProductMap : BaseEntityMap<Product>
         {
             Id = 2,
             Name = "Ford Corier 1.5 Debriyaj Seti",
-            StockCode = "IVECO5802794845",
-            StockStatus = true,
-            StockQuantity = 1000,
             ProductionDate = DateOnly.FromDateTime(DateTime.Now),
             ProductStatus = ProductStatus.FirstHand,
             GuaranteeStatus = GuaranteeStatus.Yes,
@@ -81,9 +82,6 @@ public sealed class ProductMap : BaseEntityMap<Product>
         {
             Id = 3,
             Name = "Fiat Linea 1.3 Fren Diski",
-            StockCode = "IVECO5802794850",
-            StockStatus = true,
-            StockQuantity = 1500,
             ProductionDate = DateOnly.FromDateTime(DateTime.Now),
             ProductStatus = ProductStatus.SecondHand,
             GuaranteeStatus = GuaranteeStatus.No,
@@ -96,9 +94,6 @@ public sealed class ProductMap : BaseEntityMap<Product>
         {
             Id = 4,
             Name = "Opel Astra 1.6 CDTI Fren Balatası",
-            StockCode = "IVECO5802794870",
-            StockStatus = true,
-            StockQuantity = 2000,
             ProductionDate = DateOnly.FromDateTime(DateTime.Now),
             ProductStatus = ProductStatus.FirstHand,
             GuaranteeStatus = GuaranteeStatus.Yes,

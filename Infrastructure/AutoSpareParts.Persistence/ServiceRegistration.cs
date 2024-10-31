@@ -61,13 +61,18 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<ICategoryRepository, CategoryRepository>();
         serviceCollection.AddScoped<ICityRepository, CityRepository>();
         serviceCollection.AddScoped<ICommentRepository, CommentRepository>();
+        serviceCollection.AddScoped<IDiscountRepository, DiscountRepository>();
         serviceCollection.AddScoped<IDistrictRepository, DistrictRepository>();
         serviceCollection.AddScoped<IEndpointRepository, EndpointRepository>();
+        serviceCollection.AddScoped<IInventoryRepository, InventoryRepository>();
         serviceCollection.AddScoped<IIpAddressRepository, IpAddressRepository>();
         serviceCollection.AddScoped<IMainCategoryRepository, MainCategoryRepository>();
         serviceCollection.AddScoped<IModelRepository, ModelRepository>();
         serviceCollection.AddScoped<INeighborhoodOrVillageRepository, NeighborhoodOrVillageRepository>();
         serviceCollection.AddScoped<IOemRepository, OemRepository>();
+        serviceCollection.AddScoped<IOrderRepository, OrderRepository>();
+        serviceCollection.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+        serviceCollection.AddScoped<IPaymentRepository, PaymentRepository>();
         serviceCollection.AddScoped<IProductRepository, ProductRepository>();
         serviceCollection.AddScoped<IProductImageRepository, ProductImageRepository>();
         serviceCollection.AddScoped<IRequestInfoLogRepository, RequestInfoLogRepository>();

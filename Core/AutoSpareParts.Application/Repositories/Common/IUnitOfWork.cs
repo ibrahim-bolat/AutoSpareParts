@@ -12,13 +12,18 @@ public interface IUnitOfWork : IAsyncDisposable
     ICategoryRepository Categories { get; }
     ICityRepository Cities { get; }
     ICommentRepository Comments { get; }
+    IDiscountRepository Discounts { get; }
     IDistrictRepository Districts { get; }
     IEndpointRepository Endpoints { get; }
+    IInventoryRepository Inventories { get; }
     IIpAddressRepository IpAddresses { get; }
     IMainCategoryRepository MainCategories { get; }
     IModelRepository Models { get; }
     INeighborhoodOrVillageRepository NeighborhoodOrVillages { get; }
     IOemRepository Oems { get; }
+    IOrderRepository Orders { get; }
+    IOrderDetailRepository OrderDetails { get; }
+    IPaymentRepository Payments { get; }
     IProductRepository Products { get; }
     IProductImageRepository ProductImages { get; }
     IRequestInfoLogRepository RequestInfoLogs { get; }

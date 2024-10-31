@@ -23,10 +23,12 @@ public class UnitOfWork : IUnitOfWork
 
     public ICommentRepository Comments { get; }
 
+    public IDiscountRepository Discounts { get; }
     public IDistrictRepository Districts { get; }
 
     public IEndpointRepository Endpoints { get; }
 
+    public IInventoryRepository Inventories { get; }
     public IIpAddressRepository IpAddresses { get; }
 
     public IMainCategoryRepository MainCategories { get; }
@@ -37,6 +39,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IOemRepository Oems { get; }
 
+    public IOrderRepository Orders { get; }
+    public IOrderDetailRepository OrderDetails { get; }
+    public IPaymentRepository Payments { get; }
     public IProductRepository Products { get; }
 
     public IProductImageRepository ProductImages { get; }
@@ -50,11 +55,12 @@ public class UnitOfWork : IUnitOfWork
     public IVehicleAddressRepository VehicleAddresses { get; }
 
     public UnitOfWork(DataContext dbContext, IAdRepository adRepository, IAddressRepository addressRepository, IBrandRepository brandRepository,
-        IBrandSeriesRepository brandSeriesRepository, ICategoryRepository categoryRepository, ICityRepository cityRepository, ICommentRepository commentRepository, 
-        IDistrictRepository districtRepository, IEndpointRepository endpointRepository, IIpAddressRepository ýpAddressRepository, IMainCategoryRepository mainCategoryRepository, 
-        IModelRepository modelRepository, INeighborhoodOrVillageRepository neighborhoodOrVillageRepository, IOemRepository oemRepository, IProductRepository productRepository, 
-        IProductImageRepository productImageRepository, IRequestInfoLogRepository requestInfoLogRepository, IStreetRepository streetRepository, IUserImageRepository userImageRepository, 
-        IVehicleAddressRepository vehicleAddressRepository)
+        IBrandSeriesRepository brandSeriesRepository, ICategoryRepository categoryRepository, ICityRepository cityRepository, ICommentRepository commentRepository,
+        IDiscountRepository discounts, IDistrictRepository districtRepository, IEndpointRepository endpointRepository, IInventoryRepository ýnventories,
+        IIpAddressRepository ýpAddressRepository, IMainCategoryRepository mainCategoryRepository, IModelRepository modelRepository,
+        INeighborhoodOrVillageRepository neighborhoodOrVillageRepository, IOemRepository oemRepository, IOrderRepository orders, IOrderDetailRepository orderDetails,
+        IPaymentRepository payments, IProductRepository productRepository, IProductImageRepository productImageRepository, IRequestInfoLogRepository requestInfoLogRepository,
+        IStreetRepository streetRepository, IUserImageRepository userImageRepository, IVehicleAddressRepository vehicleAddressRepository)
     {
         _dataContext = dbContext;
         Ads = adRepository;
@@ -64,13 +70,18 @@ public class UnitOfWork : IUnitOfWork
         Categories = categoryRepository;
         Cities = cityRepository;
         Comments = commentRepository;
+        Discounts = discounts;
         Districts = districtRepository;
         Endpoints = endpointRepository;
+        Inventories = ýnventories;
         IpAddresses = ýpAddressRepository;
         MainCategories = mainCategoryRepository;
         Models = modelRepository;
         NeighborhoodOrVillages = neighborhoodOrVillageRepository;
         Oems = oemRepository;
+        Orders = orders;
+        OrderDetails = orderDetails;
+        Payments = payments;
         Products = productRepository;
         ProductImages = productImageRepository;
         RequestInfoLogs = requestInfoLogRepository;

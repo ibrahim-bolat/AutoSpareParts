@@ -8,7 +8,7 @@ public record MainCategoryDto : BaseDto
 {
     public int Id { get; init; }
 
-    [Display(Name = "Kategori Adı")]
+    [Display(Name = "Ana Kategori Adı")]
     public string Name { get; init; }
 
 }
