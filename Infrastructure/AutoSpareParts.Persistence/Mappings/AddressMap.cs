@@ -32,6 +32,6 @@ public sealed class AddressMap : BaseEntityMap<Address>
         builder.Property(address => address.PostalCode).HasMaxLength(5);
         builder.Property(address => address.AddressDetails).HasMaxLength(500).IsRequired();
         builder.HasOne(address => address.AppUser).WithMany(user => user.Addresses)
-            .HasForeignKey(address => address.UserId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(address => address.UserId).OnDelete(DeleteBehavior.SetNull);
     }
 }

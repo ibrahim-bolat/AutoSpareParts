@@ -16,7 +16,7 @@ public sealed class ProductImageMap : BaseEntityMap<ProductImage>
         builder.Property(productImage => productImage.ProductImageOrder).ValueGeneratedOnAdd();
         builder.HasIndex(productImage => productImage.ProductImageOrder).IsUnique();
         builder.HasOne(productImage => productImage.Product).WithMany(product => product.ProductImages)
-            .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.SetNull);
         builder.HasData(new ProductImage()
         {
             Id = 1,

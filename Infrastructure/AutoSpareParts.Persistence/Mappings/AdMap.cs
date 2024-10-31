@@ -24,13 +24,13 @@ public sealed class AdMap : BaseEntityMap<Ad>
         builder.Property(ad => ad.AdDetail).HasMaxLength(1000);
 
         builder.HasOne(ad => ad.Product).WithMany(product => product.Ads)
-            .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(ad => ad.AppUser).WithMany(user => user.Ads)
-            .HasForeignKey(ad => ad.UserId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(ad => ad.UserId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(ad => ad.Comments).WithOne(comment => comment.Ad)
-            .HasForeignKey(comment => comment.AdId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(comment => comment.AdId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasData(new Ad()
         {

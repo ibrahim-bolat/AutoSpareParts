@@ -40,7 +40,7 @@ public sealed class ModelMap : BaseEntityMap<Model>
                 a => a.ToString(),
                 a => (BodyType)Enum.Parse(typeof(BodyType), a)).IsRequired();
         builder.HasOne(model => model.BrandSeries).WithMany(brandSeries => brandSeries.Models)
-            .HasForeignKey(model => model.BrandSeriesId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(model => model.BrandSeriesId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(model => model.Products).WithMany(product => product.Models)
             .UsingEntity(e => e.ToTable("ModelProducts")); ;

@@ -16,7 +16,7 @@ public sealed class MainCategoryMap : BaseEntityMap<MainCategory>
         builder.Property(mainCategory => mainCategory.MainCategoryOrder).ValueGeneratedOnAdd();
         //builder.HasIndex(mainCategory => mainCategory.MainCategoryOrder).IsUnique();
         builder.HasMany(mainCategory => mainCategory.Categories).WithOne(category => category.MainCategory)
-            .HasForeignKey(category => category.MainCategoryId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(category => category.MainCategoryId).OnDelete(DeleteBehavior.SetNull);
         builder.HasData(new MainCategory()
         {
             Id = 1,

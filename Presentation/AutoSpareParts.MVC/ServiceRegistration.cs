@@ -42,7 +42,7 @@ public static class ServiceRegistration
             };
             cookieOptions.SlidingExpiration = true;
             cookieOptions.ExpireTimeSpan = TimeSpan.FromHours(2);
-            cookieOptions.AccessDeniedPath = new PathString($"/Error/index?statusCode={401}");
+            cookieOptions.AccessDeniedPath = new PathString($"/error/index?statusCode={401}");
         });
         
         //facebook and google login authenticate
@@ -50,7 +50,7 @@ public static class ServiceRegistration
         {
             faceOptions.AppId = configuration["FacebookAppId"];
             faceOptions.AppSecret = configuration["FacebookAppSecret"];
-            faceOptions.AccessDeniedPath = new PathString("/Admin/Account/Login");
+            faceOptions.AccessDeniedPath = new PathString("/admin/account/login");
             faceOptions.ReturnUrlParameter = "";
         })
         .AddGoogle(googleOptions =>
@@ -62,12 +62,12 @@ public static class ServiceRegistration
         });;
         
         //all project authorize
-        serviceCollection.AddAuthorization(options =>
-        {
-            options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-        }); 
+        //serviceCollection.AddAuthorization(options =>
+        //{
+        //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        //        .RequireAuthenticatedUser()
+        //        .Build();
+        //}); 
         
         //for fix token error
         serviceCollection.Configure<RouteOptions>(options =>

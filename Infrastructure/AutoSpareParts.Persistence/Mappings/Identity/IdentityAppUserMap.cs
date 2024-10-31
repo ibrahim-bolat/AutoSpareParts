@@ -21,15 +21,15 @@ namespace AutoSpareParts.Persistence.Mappings.Identity;
                     a => (GenderType)Enum.Parse(typeof(GenderType), a));
             builder.Property(user => user.Note).HasMaxLength(500);
             builder.HasMany(user => user.Ads).WithOne(ad => ad.AppUser)
-                .HasForeignKey(ad => ad.UserId).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(ad => ad.UserId).OnDelete(DeleteBehavior.SetNull);
             builder.HasMany(user => user.Addresses).WithOne(address => address.AppUser)
-                .HasForeignKey(address => address.UserId).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(address => address.UserId).OnDelete(DeleteBehavior.SetNull);
             builder.HasMany(user => user.UserImages).WithOne(userImage => userImage.AppUser)
-                .HasForeignKey(userImage => userImage.UserId).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(userImage => userImage.UserId).OnDelete(DeleteBehavior.SetNull);
             builder.HasMany(user => user.RequestInfoLogs).WithOne(requestInfoLog => requestInfoLog.AppUser)
-                .HasForeignKey(requestInfoLog => requestInfoLog.UserId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(requestInfoLog => requestInfoLog.UserId).IsRequired(false).OnDelete(DeleteBehavior.SetNull);
             builder.HasMany(user => user.Comments).WithOne(comment => comment.AppUser)
-                .HasForeignKey(comment => comment.UserId).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(comment => comment.UserId).OnDelete(DeleteBehavior.SetNull);
 
         var hasher = new PasswordHasher<AppUser>();
             builder.HasData(new AppUser

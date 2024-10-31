@@ -22,6 +22,6 @@ namespace AutoSpareParts.Persistence.Mappings;
             builder.Property(requestInfoLog => requestInfoLog.LocalPort).HasMaxLength(7);
             builder.Property(requestInfoLog => requestInfoLog.RemotePort).HasMaxLength(7);
             builder.HasOne(requestInfoLog => requestInfoLog.AppUser).WithMany(user => user.RequestInfoLogs)
-                .HasForeignKey(requestInfoLog => requestInfoLog.UserId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(requestInfoLog => requestInfoLog.UserId).IsRequired(false).OnDelete(DeleteBehavior.SetNull);
         }
     }

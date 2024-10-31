@@ -39,13 +39,13 @@ public sealed class ProductMap : BaseEntityMap<Product>
             .UsingEntity(e => e.ToTable("ModelProducts")); ;
 
         builder.HasMany(product => product.Oems).WithOne(oem => oem.Product)
-            .HasForeignKey(oem => oem.ProductId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(oem => oem.ProductId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(product => product.ProductImages).WithOne(productImages => productImages.Product)
-            .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(product => product.Ads).WithOne(ad => ad.Product)
-            .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasData(new Product()
         {

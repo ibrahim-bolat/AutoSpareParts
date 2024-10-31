@@ -12,9 +12,9 @@ public sealed class BrandSeriesMap : BaseEntityMap<BrandSeries>
         base.Configure(builder);
         builder.Property(brandSeries => brandSeries.Name).HasMaxLength(250).IsRequired();
         builder.HasOne(brandSeries => brandSeries.Brand).WithMany(brand => brand.BrandSeries)
-            .HasForeignKey(brandSeries => brandSeries.BrandId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(brandSeries => brandSeries.BrandId).OnDelete(DeleteBehavior.SetNull);
         builder.HasMany(brandSeries => brandSeries.Models).WithOne(model => model.BrandSeries)
-            .HasForeignKey(brandSeries => brandSeries.BrandSeriesId).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(brandSeries => brandSeries.BrandSeriesId).OnDelete(DeleteBehavior.SetNull);
         builder.HasData(new BrandSeries()
         {
             Id = 1,
