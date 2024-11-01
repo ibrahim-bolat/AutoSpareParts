@@ -26,7 +26,6 @@ public class AppUser:IdentityUser<int>,IEntity
         public List<Ad> Ads { get; set; }
         public  List<Address> Addresses{ get; set; }
         public  List<UserImage> UserImages{ get; set; }
-        
         public  List<RequestInfoLog> RequestInfoLogs{ get; set; }
         public List<Comment> Comments { get; set; }
         public List<Order> Orders { get; set; }

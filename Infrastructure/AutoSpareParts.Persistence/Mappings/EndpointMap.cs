@@ -17,8 +17,10 @@ namespace AutoSpareParts.Persistence.Mappings;
             builder.Property(endpoint => endpoint.EndpointName).HasMaxLength(100).IsRequired();
             builder.Property(endpoint => endpoint.ControllerName).HasMaxLength(100).IsRequired();
             builder.Property(endpoint => endpoint.AreaName).HasMaxLength(100);
+
             builder.HasMany(endpoint => endpoint.AppRoles).WithMany(appRole => appRole.Endpoints)
                 .UsingEntity(e => e.ToTable("EndpointRoles"));;
+
             builder.HasMany(endpoint => endpoint.IpAddresses).WithMany(ip => ip.Endpoints)
                 .UsingEntity(e => e.ToTable("EndpointIpAddreses"));;
         }

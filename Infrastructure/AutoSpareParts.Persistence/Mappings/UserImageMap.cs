@@ -14,9 +14,11 @@ public sealed class UserImageMap : BaseEntityMap<UserImage>
         builder.Property(userImage => userImage.Path).HasMaxLength(500).IsRequired();
         builder.Property(userImage => userImage.AltText).HasMaxLength(250);
         builder.Property(userImage => userImage.UserImageOrder).ValueGeneratedOnAdd();
-        builder.HasIndex(userImage => userImage.UserImageOrder).IsUnique();
+        //builder.HasIndex(userImage => userImage.UserImageOrder).IsUnique();
+
         builder.HasOne(userImage => userImage.AppUser).WithMany(user => user.UserImages)
                 .HasForeignKey(userImage => userImage.UserId).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasData(new UserImage()
         {
             Id = 1,

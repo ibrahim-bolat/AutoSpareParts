@@ -16,11 +16,7 @@ public sealed class AddressMap : BaseEntityMap<Address>
         builder.Property(address => address.Email).HasMaxLength(100).IsRequired();
         builder.Property(address => address.PhoneNumber).HasMaxLength(17).IsRequired();
         builder.Property(address => address.AddressTitle).HasMaxLength(100).IsRequired();
-        builder.Property(address => address.AddressType)
-            .HasConversion(
-                a => a.ToString(),
-                a => (AddressType)Enum.Parse(typeof(AddressType), a))
-            .IsRequired();
+        builder.Property(address => address.AddressType).HasConversion( a => a.ToString(), a => (AddressType)Enum.Parse(typeof(AddressType), a)).IsRequired();
         builder.Property(address => address.CityId).HasMaxLength(10).IsRequired();
         builder.Property(address => address.CityName).HasMaxLength(250).IsRequired();
         builder.Property(address => address.DistrictId).HasMaxLength(10).IsRequired();
@@ -31,6 +27,7 @@ public sealed class AddressMap : BaseEntityMap<Address>
         builder.Property(address => address.StreetName).HasMaxLength(500);
         builder.Property(address => address.PostalCode).HasMaxLength(5);
         builder.Property(address => address.AddressDetails).HasMaxLength(500).IsRequired();
+
         builder.HasOne(address => address.AppUser).WithMany(user => user.Addresses)
             .HasForeignKey(address => address.UserId).OnDelete(DeleteBehavior.SetNull);
     }

@@ -13,8 +13,9 @@ public sealed class DiscountMap : BaseEntityMap<Discount>
     {
         base.Configure(builder);
         builder.Property(discount => discount.Name).HasMaxLength(250).IsRequired();
-        builder.Property(discount => discount.Percent).HasColumnType("decimal(5,4)").IsRequired();
+        builder.Property(discount => discount.Percent).HasColumnType("decimal(5,2)").IsRequired();
         builder.Property(discount => discount.DiscountDetail).HasMaxLength(1000);
+
         builder.HasMany(discount => discount.Products).WithMany(product => product.Discounts)
                .UsingEntity(e => e.ToTable("ProductDiscounts"));
     }

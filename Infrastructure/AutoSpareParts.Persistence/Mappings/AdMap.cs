@@ -17,17 +17,17 @@ public sealed class AdMap : BaseEntityMap<Ad>
         builder.Property(ad => ad.FormerPrice).HasColumnType("decimal(18,4)").IsRequired();
         builder.Property(ad => ad.CurrentPrice).HasColumnType("decimal(18,4)").IsRequired();
         builder.Property(ad => ad.DiscountAmount).HasMaxLength(100).IsRequired();
-        builder.Property(ad => ad.StarRating).HasDefaultValue(0);
+        builder.Property(ad => ad.StarCount).HasDefaultValue(0);
         builder.Property(ad => ad.AdOrder).ValueGeneratedOnAdd();
-        builder.HasIndex(ad => ad.AdOrder).IsUnique();
+        //builder.HasIndex(ad => ad.AdOrder).IsUnique();
         builder.Property(ad => ad.Showcase).IsRequired();
         builder.Property(ad => ad.AdDetail).HasMaxLength(1000);
 
-        builder.HasOne(ad => ad.Product).WithMany(product => product.Ads)
-            .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
-
         builder.HasOne(ad => ad.AppUser).WithMany(user => user.Ads)
             .HasForeignKey(ad => ad.UserId).OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(ad => ad.Product).WithMany(product => product.Ads)
+            .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(ad => ad.Comments).WithOne(comment => comment.Ad)
             .HasForeignKey(comment => comment.AdId).OnDelete(DeleteBehavior.SetNull);
@@ -43,7 +43,7 @@ public sealed class AdMap : BaseEntityMap<Ad>
             FormerPrice = 550000.50m,
             CurrentPrice = 450000.50m,
             DiscountAmount = "%25",
-            StarRating =5,
+            StarCount =5,
             AdDetail = "FORD FOCUS KASA ARKA FREN DİSKİ RULMANLI 1 ADET FİYATIDIR. MAİS RENAULT ORJİNAL ÜRÜNÜDÜR.",
         }, new Ad()
         {
@@ -56,7 +56,7 @@ public sealed class AdMap : BaseEntityMap<Ad>
             FormerPrice = 450000.50m,
             CurrentPrice = 450000.50m,
             DiscountAmount = "%0",
-            StarRating = 3,
+            StarCount = 3,
             AdDetail = "Ford Corier YENİ KASA DEBRİYAJ  SETİ 1 ADET FİYATIDIR. Orijinal BOSCH ÜRÜNÜDÜR.",
         }, new Ad()
         {
@@ -69,7 +69,7 @@ public sealed class AdMap : BaseEntityMap<Ad>
             FormerPrice = 650000.50m,
             CurrentPrice = 450000.50m,
             DiscountAmount = "%20",
-            StarRating = 4,
+            StarCount = 4,
             AdDetail = "Ford Linea YENİ KASA Fren Diski 1 ADET FİYATIDIR. Orijinal BOSCH ÜRÜNÜDÜR.",
         }, new Ad()
         {
@@ -82,7 +82,7 @@ public sealed class AdMap : BaseEntityMap<Ad>
             FormerPrice = 470000.50m,
             CurrentPrice = 450000.50m,
             DiscountAmount = "%5",
-            StarRating = 5,
+            StarCount = 5,
             AdDetail = "Opel Astra 1.6 CDTI YENİ KASA Fren Balatası 1 ADET FİYATIDIR. Orijinal General Motor ÜRÜNÜDÜR.",
         });
     }

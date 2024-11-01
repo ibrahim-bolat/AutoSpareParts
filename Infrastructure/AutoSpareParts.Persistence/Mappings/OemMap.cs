@@ -12,8 +12,10 @@ public sealed class OemMap : BaseEntityMap<Oem>
         base.Configure(builder);
         builder.Property(oem => oem.OemNo).HasMaxLength(250).IsRequired();
         builder.Property(oem => oem.OemBrandName).HasMaxLength(250).IsRequired();
+
         builder.HasOne(oem => oem.Product).WithMany(product => product.Oems)
             .HasForeignKey(oem => oem.ProductId).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasData(new Oem()
         {
             Id = 1,

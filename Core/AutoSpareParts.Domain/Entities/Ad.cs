@@ -14,16 +14,17 @@ public class Ad : BaseEntity
     public decimal FormerPrice { get; set; } // 500.500 TL gibi
     public decimal CurrentPrice { get; set; } // 500.500 TL gibi
     public string DiscountAmount { get; set; } //  %25 gibi
-    public int StarRating { get; set; } //  3 yıldız gibi
+    public int StarCount { get; set; } //  3 yıldız gibi
+    public int GiveStarUserCount { get; set; } //  350 kişi
     public int AdOrder { get; set; } //  5.sırada gibi
     public bool Showcase { get; set; } //  Vitrin (yayımlansınmı?)
     public string AdDetail { get; set; } // İlan (Yedek Parça) Hakkında Uzun Açıklamalar 
 
-    public int ProductId { get; set; }
-    public Product Product { get; set; }
-
     public int UserId { get; set; }
     public AppUser AppUser { get; set; }
+
+    public int ProductId { get; set; }
+    public Product Product { get; set; }
 
     public List<Comment> Comments { get; set; }
 }

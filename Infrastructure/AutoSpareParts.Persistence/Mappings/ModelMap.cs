@@ -15,35 +15,20 @@ public sealed class ModelMap : BaseEntityMap<Model>
         base.Configure(builder);
         builder.Property(model => model.Name).HasMaxLength(500).IsRequired();
         builder.Property(model => model.EngineType).HasMaxLength(250).IsRequired();
-
-        builder.Property(ad => ad.EngineCapacity)
-            .HasConversion(
-                a => a.ToString(),
-                a => (EngineCapacityType)Enum.Parse(typeof(EngineCapacityType), a)).IsRequired();
-        builder.Property(ad => ad.EnginePower)
-            .HasConversion(
-                a => a.ToString(),
-                a => (EnginePowerType)Enum.Parse(typeof(EnginePowerType), a)).IsRequired();
+        builder.Property(ad => ad.EngineCapacity).HasConversion(a => a.ToString(), a => (EngineCapacityType)Enum.Parse(typeof(EngineCapacityType), a)).IsRequired();
+        builder.Property(ad => ad.EnginePower).HasConversion(a => a.ToString(),a => (EnginePowerType)Enum.Parse(typeof(EnginePowerType), a)).IsRequired();
         builder.Property(model => model.EquipmentVariant).HasMaxLength(100).IsRequired();
         builder.Property(model => model.ModelYear).HasMaxLength(4).IsFixedLength().IsRequired();
+        builder.Property(ad => ad.FuelType).HasConversion(a => a.ToString(),a => (FuelType)Enum.Parse(typeof(FuelType), a)).IsRequired();
+        builder.Property(ad => ad.GearType).HasConversion(a => a.ToString(),a => (GearType)Enum.Parse(typeof(GearType), a)).IsRequired();
+        builder.Property(ad => ad.BodyType).HasConversion(a => a.ToString(),a => (BodyType)Enum.Parse(typeof(BodyType), a)).IsRequired();
 
-        builder.Property(ad => ad.FuelType)
-            .HasConversion(
-                a => a.ToString(),
-                a => (FuelType)Enum.Parse(typeof(FuelType), a)).IsRequired();
-        builder.Property(ad => ad.GearType)
-            .HasConversion(
-                a => a.ToString(),
-                a => (GearType)Enum.Parse(typeof(GearType), a)).IsRequired();
-        builder.Property(ad => ad.BodyType)
-            .HasConversion(
-                a => a.ToString(),
-                a => (BodyType)Enum.Parse(typeof(BodyType), a)).IsRequired();
         builder.HasOne(model => model.BrandSeries).WithMany(brandSeries => brandSeries.Models)
             .HasForeignKey(model => model.BrandSeriesId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(model => model.Products).WithMany(product => product.Models)
             .UsingEntity(e => e.ToTable("ModelProducts")); ;
+
         builder.HasData(new Model()
         {
             Id = 1,

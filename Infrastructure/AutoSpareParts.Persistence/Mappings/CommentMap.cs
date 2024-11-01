@@ -12,12 +12,15 @@ public sealed class CommentMap : BaseEntityMap<Comment>
         base.Configure(builder);
         builder.Property(comment => comment.CommentDetail).HasMaxLength(1000).IsRequired();
         builder.Property(comment => comment.CommentOrder).ValueGeneratedOnAdd();
-        builder.HasIndex(comment => comment.CommentOrder).IsUnique();
+        //builder.HasIndex(comment => comment.CommentOrder).IsUnique();
         builder.Property(comment => comment.CommentStarRating).HasDefaultValue(0);
-        builder.HasOne(comment => comment.Ad).WithMany(ad => ad.Comments)
-            .HasForeignKey(comment => comment.AdId).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasOne(comment => comment.AppUser).WithMany(user => user.Comments)
             .HasForeignKey(comment => comment.UserId).OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(comment => comment.Ad).WithMany(ad => ad.Comments)
+            .HasForeignKey(comment => comment.AdId).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasData(new Comment()
         {
             Id = 1,

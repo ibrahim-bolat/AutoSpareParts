@@ -13,34 +13,18 @@ public sealed class ProductMap : BaseEntityMap<Product>
     {
         base.Configure(builder);
         builder.Property(product => product.Name).HasMaxLength(250).IsRequired();
-        builder.Property(product => product.ProductStatus)
-            .HasConversion(
-                a => a.ToString(),
-                a => (ProductStatus)Enum.Parse(typeof(ProductStatus), a)).IsRequired();
-        builder.Property(product => product.GuaranteeStatus)
-            .HasConversion(
-                a => a.ToString(),
-                a => (GuaranteeStatus)Enum.Parse(typeof(GuaranteeStatus), a)).IsRequired();
-        builder.Property(product => product.OriginalityStatus)
-            .HasConversion(
-                a => a.ToString(),
-                a => (OriginalityStatus)Enum.Parse(typeof(OriginalityStatus), a)).IsRequired();
+        builder.Property(product => product.ProductStatus).HasConversion(a => a.ToString(),a => (ProductStatus)Enum.Parse(typeof(ProductStatus), a)).IsRequired();
+        builder.Property(product => product.GuaranteeStatus).HasConversion(a => a.ToString(),a => (GuaranteeStatus)Enum.Parse(typeof(GuaranteeStatus), a)).IsRequired();
+        builder.Property(product => product.OriginalityStatus).HasConversion(a => a.ToString(),a => (OriginalityStatus)Enum.Parse(typeof(OriginalityStatus), a)).IsRequired();
         builder.Property(product => product.PurchasePrice).HasColumnType("decimal(18,4)").IsRequired();
         builder.Property(product => product.SalePrice).HasColumnType("decimal(18,4)").IsRequired();
-
         builder.Property(product => product.ProductDetail).HasMaxLength(1000);
 
         builder.HasOne(product => product.Inventory).WithOne(inventory => inventory.Product)
             .HasForeignKey<Inventory>(inventory => inventory.Id).OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(product => product.Categories).WithMany(category => category.Products)
-            .UsingEntity(e => e.ToTable("CategoryProducts"));
-
-        builder.HasMany(product => product.Models).WithMany(model => model.Products)
-            .UsingEntity(e => e.ToTable("ModelProducts"));
-
-        builder.HasMany(product => product.Discounts).WithMany(discount => discount.Products)
-            .UsingEntity(e => e.ToTable("ProductDiscounts"));
+        builder.HasMany(product => product.Ads).WithOne(ad => ad.Product)
+            .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(product => product.Oems).WithOne(oem => oem.Product)
             .HasForeignKey(oem => oem.ProductId).OnDelete(DeleteBehavior.SetNull);
@@ -48,11 +32,17 @@ public sealed class ProductMap : BaseEntityMap<Product>
         builder.HasMany(product => product.ProductImages).WithOne(productImages => productImages.Product)
             .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(product => product.Ads).WithOne(ad => ad.Product)
-            .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
-
         builder.HasMany(product => product.OrderDetails).WithOne(orderDetail => orderDetail.Product)
             .HasForeignKey(orderDetail => orderDetail.ProductId).OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasMany(product => product.Categories).WithMany(category => category.Products)
+             .UsingEntity(e => e.ToTable("CategoryProducts"));
+
+        builder.HasMany(product => product.Models).WithMany(model => model.Products)
+            .UsingEntity(e => e.ToTable("ModelProducts"));
+
+        builder.HasMany(product => product.Discounts).WithMany(discount => discount.Products)
+            .UsingEntity(e => e.ToTable("ProductDiscounts"));
 
         builder.HasData(new Product()
         {

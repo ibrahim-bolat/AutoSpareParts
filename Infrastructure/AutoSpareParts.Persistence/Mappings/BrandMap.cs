@@ -14,8 +14,10 @@ public sealed class BrandMap : BaseEntityMap<Brand>
         builder.Property(brand => brand.Id).ValueGeneratedOnAdd();
         builder.Property(brand => brand.Name).HasMaxLength(250).IsRequired();
         builder.Property(brand => brand.Note).HasMaxLength(500);
+
         builder.HasMany(brand => brand.BrandSeries).WithOne(brandSeries => brandSeries.Brand)
             .HasForeignKey(brandSeries => brandSeries.BrandId).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasData(new Brand()
         {
             Id = 1,

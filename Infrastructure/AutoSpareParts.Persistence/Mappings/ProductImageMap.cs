@@ -14,9 +14,11 @@ public sealed class ProductImageMap : BaseEntityMap<ProductImage>
         builder.Property(productImage => productImage.Path).HasMaxLength(500).IsRequired();
         builder.Property(productImage => productImage.AltText).HasMaxLength(250);
         builder.Property(productImage => productImage.ProductImageOrder).ValueGeneratedOnAdd();
-        builder.HasIndex(productImage => productImage.ProductImageOrder).IsUnique();
+        //builder.HasIndex(productImage => productImage.ProductImageOrder).IsUnique();
+
         builder.HasOne(productImage => productImage.Product).WithMany(product => product.ProductImages)
             .HasForeignKey(productImage => productImage.ProductId).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasData(new ProductImage()
         {
             Id = 1,

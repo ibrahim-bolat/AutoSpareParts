@@ -4,8 +4,11 @@ using AutoSpareParts.Domain.Enums;
 
 namespace AutoSpareParts.Domain.Entities;
 
+//Siparişlerin Genel Tablosu
 public class Order : BaseEntity
 {
+    public string OrderCode { get; set; } //ABCD6E-756 gibi
+    public OrderStatus OrderStatus { get; set; }  //Gönderildi, Gönderilmedi, İptal Edildi Gibi
     public int TotalProductQuantity { get; set; }
     public Payment Payment { get; set; }
     public int UserId { get; set; }
