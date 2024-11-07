@@ -23,6 +23,9 @@ public sealed class ProductMap : BaseEntityMap<Product>
         builder.HasOne(product => product.Inventory).WithOne(inventory => inventory.Product)
             .HasForeignKey<Inventory>(inventory => inventory.Id).OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasOne(product => product.Supplier).WithMany(supplier => supplier.Products)
+            .HasForeignKey(product => product.SupplierId).OnDelete(DeleteBehavior.SetNull);
+
         builder.HasMany(product => product.Ads).WithOne(ad => ad.Product)
             .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
 

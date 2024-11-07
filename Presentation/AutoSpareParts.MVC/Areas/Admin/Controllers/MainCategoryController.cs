@@ -2,11 +2,11 @@
 using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.CustomAttributes;
 using AutoSpareParts.Application.DTOs.Common;
-using AutoSpareParts.Application.Features.IpOperations.Queries.GetByIdIpAddressQuery;
+using AutoSpareParts.Application.Features.IPAddresses.Queries.GetIPAddressByIdQuery;
 using AutoSpareParts.Application.Features.MainCategories.Commands.CreateMainCategoryCommand;
 using AutoSpareParts.Application.Features.MainCategories.Commands.UpdateMainCategoryCommand;
 using AutoSpareParts.Application.Features.MainCategories.DTOs;
-using AutoSpareParts.Application.Features.MainCategories.Queries.GetByIdMainCategoryQuery;
+using AutoSpareParts.Application.Features.MainCategories.Queries.GetMainCategoryByIdQuery;
 using AutoSpareParts.Application.Features.MainCategories.Queries.GetMainCategoryListQuery;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
@@ -51,7 +51,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.MainCategory, EndpointType = EndpointType.Writing, Definition = "Create MainCategory")]
+        [Endpoint(Menu = MenuDecription.MainCategory, EndpointType = EndpointType.Writing, Definition = "Create MainCategory")]
         public async Task<IActionResult> CreateMainCategory(MainCategoryDto mainCategoryDto)
         {
             if (!ModelState.IsValid)
@@ -72,7 +72,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.MainCategory, EndpointType = EndpointType.Updating, Definition = "Update MainCategory")]
+        [Endpoint(Menu = MenuDecription.MainCategory, EndpointType = EndpointType.Updating, Definition = "Update MainCategory")]
         public async Task<IActionResult> UpdateMainCategory(MainCategoryListDto mainCategoryListDto)
         {
             if (!ModelState.IsValid)
@@ -99,10 +99,10 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.MainCategory, EndpointType = EndpointType.Reading, Definition = "Get By Id MainCategory Details")]
+        [Endpoint(Menu = MenuDecription.MainCategory, EndpointType = EndpointType.Reading, Definition = "Get By EmloyeeId MainCategory Details")]
         public async Task<IActionResult> GetMainCategoryById(int id)
         {
-            var dresult = await _mediator.Send(new GetByIdMainCategoryQueryRequest()
+            var dresult = await _mediator.Send(new GetMainCategoryByIdQueryRequest()
             {
                 Id = id
             });

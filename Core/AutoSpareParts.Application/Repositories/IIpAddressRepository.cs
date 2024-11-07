@@ -4,7 +4,7 @@ using AutoSpareParts.Domain.Entities;
 
 namespace AutoSpareParts.Application.Repositories;
 
-public interface IIpAddressRepository:IRepository<IpAddress>
+public interface IIPAddressRepository:IRepository<IPAddress>
 {
 
 }

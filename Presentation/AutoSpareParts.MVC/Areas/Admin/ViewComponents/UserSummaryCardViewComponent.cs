@@ -1,7 +1,7 @@
-﻿using AutoSpareParts.Application.Features.Accounts.Queries.GetByIdForUserSummaryCardQuery;
-using AutoSpareParts.Application.Features.UserImages.Queries.GetByUserIdAllUserImageQuery;
-using AutoSpareParts.Application.Features.UserImages.Queries.GetByUserIdProfilImageQuery;
-using AutoSpareParts.Application.Features.UserImages.Queries.GetByUserIdUserImageCountQuery;
+﻿using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeSummaryCardByIdQuery;
+using AutoSpareParts.Application.Features.EmployeeImages.Queries.GetEmployeeImageListByEmployeeIdQuery;
+using AutoSpareParts.Application.Features.EmployeeImages.Queries.GetEmployeeProfilImageByEmployeeIdQuery;
+using AutoSpareParts.Application.Features.EmployeeImages.Queries.GetEmployeeImageCountByEmployeeIdQuery;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,16 +22,16 @@ public class UserSummaryCardViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync(int userId)
     {
-        var countResult = await _mediator.Send(new GetByUserIdUserImageCountQueryRequest()
+        var countResult = await _mediator.Send(new GetEmployeeImageCountByEmployeeIdQueryRequest()
         {
-            UserId = userId
+            EmployeeId = userId
         });
         if (countResult.Result.ResultStatus == ResultStatus.Success)
             ViewBag.UserImageCount = countResult.Result.Data;
         
-        var profilResult = await _mediator.Send(new GetByUserIdProfilImageQueryRequest()
+        var profilResult = await _mediator.Send(new GetEmployeeProfilImageByEmployeeIdQueryRequest()
         {
-            UserId = userId
+            EmployeeId = userId
         });
         if (profilResult.Result.ResultStatus == ResultStatus.Success)
         {
@@ -40,9 +40,9 @@ public class UserSummaryCardViewComponent : ViewComponent
 
             if (countResult.Result.Data > 0)
             {
-                var allImageResult = await _mediator.Send(new GetByUserIdAllUserImageQueryRequest()
+                var allImageResult = await _mediator.Send(new GetEmployeeImageListByEmployeeIdQueryRequest()
                 {
-                    UserId = userId
+                    EmployeeId = userId
                 });
                 if (allImageResult.Result.ResultStatus == ResultStatus.Success)
                 {
@@ -54,9 +54,9 @@ public class UserSummaryCardViewComponent : ViewComponent
         {
             if (countResult.Result.Data > 0)
             {
-                var allImageResult = await _mediator.Send(new GetByUserIdAllUserImageQueryRequest()
+                var allImageResult = await _mediator.Send(new GetEmployeeImageListByEmployeeIdQueryRequest()
                 {
-                    UserId = userId
+                    EmployeeId = userId
                 });
                 if (allImageResult.Result.ResultStatus == ResultStatus.Success)
                 {

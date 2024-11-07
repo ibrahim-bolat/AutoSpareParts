@@ -5,9 +5,9 @@ using AutoSpareParts.Persistence.Repositories.Common;
 
 namespace AutoSpareParts.Persistence.Repositories;
 
-public class IpAddressRepository : Repository<IpAddress>, IIpAddressRepository
+public class IPAddressRepository : Repository<IPAddress>, IIPAddressRepository
 {
-    public IpAddressRepository(DataContext dbContext):base(dbContext)
+    public IPAddressRepository(DataContext dbContext):base(dbContext)
     {
     }
 }

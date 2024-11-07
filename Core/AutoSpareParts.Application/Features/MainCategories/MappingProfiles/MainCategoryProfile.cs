@@ -1,6 +1,6 @@
 using AutoMapper;
 using AutoSpareParts.Application.Extensions;
-using AutoSpareParts.Application.Features.IpOperations.DTOs;
+using AutoSpareParts.Application.Features.IPAddresses.DTOs;
 using AutoSpareParts.Application.Features.MainCategories.DTOs;
 using AutoSpareParts.Domain.Entities;
 

@@ -1,4 +1,4 @@
-@model IList<UserImageDto>
+@model IList<EmployeeImageDto>
 <div class="card">
     <div class="card-header">
         <h3>Kullanıcı Fotoğrafları</h3>
@@ -20,8 +20,8 @@
                                         </a>
                                     </div>
                                     <div class="heading_section d-flex justify-content-center py-2">
-                                        <button type="button" class="btn btn-outline-success mr-2 rounded userImageSetProfilButton" data-userid="@image.UserId" data-id="@image.Id">Profil Yap</button>
-                                        <button type="button" class="btn btn-outline-danger mr-2 rounded userImageDeleteProfilButton" data-userid="@image.UserId" data-id="@image.Id">Sil</button>
+                                        <button type="button" class="btn btn-outline-success mr-2 rounded userImageSetProfilButton" data-userid="@image.EmployeeId" data-id="@image.Id">Profil Yap</button>
+                                        <button type="button" class="btn btn-outline-danger mr-2 rounded userImageDeleteProfilButton" data-userid="@image.EmployeeId" data-id="@image.Id">Sil</button>
                                     </div>
                                 </div>
                             }

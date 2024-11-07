@@ -20,8 +20,8 @@ public class Ad : BaseEntity
     public bool Showcase { get; set; } //  Vitrin (yayımlansınmı?)
     public string AdDetail { get; set; } // İlan (Yedek Parça) Hakkında Uzun Açıklamalar 
 
-    public int UserId { get; set; }
-    public AppUser AppUser { get; set; }
+    public int EmployeeId { get; set; }
+    public Employee Employee { get; set; }
 
     public int ProductId { get; set; }
     public Product Product { get; set; }

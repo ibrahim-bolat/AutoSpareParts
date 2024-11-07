@@ -55,17 +55,22 @@ public static class ServiceRegistration
         //repositories
         //serviceCollection.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         serviceCollection.AddScoped<IAdRepository, AdRepository>();
-        serviceCollection.AddScoped<IAddressRepository, AddressRepository>();
         serviceCollection.AddScoped<IBrandRepository, BrandRepository>();
         serviceCollection.AddScoped<IBrandSeriesRepository, BrandSeriesRepository>();
         serviceCollection.AddScoped<ICategoryRepository, CategoryRepository>();
         serviceCollection.AddScoped<ICityRepository, CityRepository>();
         serviceCollection.AddScoped<ICommentRepository, CommentRepository>();
+        serviceCollection.AddScoped<ICustomerRepository, CustomerRepository>();
+        serviceCollection.AddScoped<ICustomerAddressRepository, CustomerAddressRepository>();
+        serviceCollection.AddScoped<ICustomerImageRepository, CustomerImageRepository>();
         serviceCollection.AddScoped<IDiscountRepository, DiscountRepository>();
         serviceCollection.AddScoped<IDistrictRepository, DistrictRepository>();
+        serviceCollection.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        serviceCollection.AddScoped<IEmployeeAddressRepository, EmployeeAddressRepository>();
+        serviceCollection.AddScoped<IEmployeeImageRepository, EmployeeImageRepository>();
         serviceCollection.AddScoped<IEndpointRepository, EndpointRepository>();
         serviceCollection.AddScoped<IInventoryRepository, InventoryRepository>();
-        serviceCollection.AddScoped<IIpAddressRepository, IpAddressRepository>();
+        serviceCollection.AddScoped<IIPAddressRepository, IPAddressRepository>();
         serviceCollection.AddScoped<IMainCategoryRepository, MainCategoryRepository>();
         serviceCollection.AddScoped<IModelRepository, ModelRepository>();
         serviceCollection.AddScoped<INeighborhoodOrVillageRepository, NeighborhoodOrVillageRepository>();
@@ -77,8 +82,8 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<IProductImageRepository, ProductImageRepository>();
         serviceCollection.AddScoped<IRequestInfoLogRepository, RequestInfoLogRepository>();
         serviceCollection.AddScoped<IStreetRepository, StreetRepository>();
-        serviceCollection.AddScoped<IUserImageRepository, UserImageRepository>();
-        serviceCollection.AddScoped<IVehicleAddressRepository, VehicleAddressRepository>();
+        serviceCollection.AddScoped<ISupplierRepository, SupplierRepository>();
+        serviceCollection.AddScoped<ISupplierAddressRepository, SupplierAddressRepository>();
         serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

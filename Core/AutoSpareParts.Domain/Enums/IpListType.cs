@@ -1,7 +1,7 @@
 using System.ComponentModel;
 
 namespace AutoSpareParts.Domain.Enums;
-public enum IpListType
+public enum IPListType
     {
         [Description("Beyaz Liste")]
         WhiteList = 1,

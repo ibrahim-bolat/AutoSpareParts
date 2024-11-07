@@ -11,8 +11,9 @@ public class Order : BaseEntity
     public OrderStatus OrderStatus { get; set; }  //Gönderildi, Gönderilmedi, İptal Edildi Gibi
     public int TotalProductQuantity { get; set; }
     public Payment Payment { get; set; }
-    public int UserId { get; set; }
-    public AppUser AppUser { get; set; }
-
+    public int EmployeeId { get; set; }
+    public Employee Employee { get; set; }
+    public int CustomerId { get; set; }
+    public Customer Customer { get; set; }
     public List<OrderDetail> OrderDetails { get; set; }
 }

@@ -1,5 +1,5 @@
 using AutoMapper;
-using AutoSpareParts.Application.Features.UserOperations.DTOs;
+using AutoSpareParts.Application.Features.Employees.DTOs;
 using AutoSpareParts.Domain.Entities.Identity;
 
 namespace AutoSpareParts.Application.MappingProfiles;

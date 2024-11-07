@@ -1,6 +1,6 @@
-﻿@model LoginDto
+﻿@model LoginEmployeeDto
 @{
-    Layout = "Account/_AccountLayout";
+    Layout = "EmployeeAccount/_AccountLayout";
     ViewBag.Title = "Giriş";
 }
 
@@ -53,7 +53,7 @@
                 var app = app || {};
                 app.ToastMessages = app.ToastMessages || {};
                 app.Urls = app.Urls || {};
-                app.Urls.externalLoginUrl = '@(Url.Action("ExternalLogin", "Account", new { area = "Admin" }))';
+                app.Urls.externalLoginUrl = '@(Url.Action("ExternalLogin", "EmployeeAccount", new { area = "Admin" }))';
                 app.ToastMessages.loginMessage = '@TempData["LoginSuccess"]';
                 app.ToastMessages.facebookLoginMessage = '@TempData["facebookLoginStatus"]';
                 app.ToastMessages.googleLoginMessage = '@TempData["googleLoginStatus"]';

@@ -1,4 +1,4 @@
-﻿using AutoSpareParts.Application.Features.UserImages.Queries.GetByUserIdAllUserImageQuery;
+﻿using AutoSpareParts.Application.Features.EmployeeImages.Queries.GetEmployeeImageListByEmployeeIdQuery;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +19,9 @@ public class UserImageCardViewComponent : ViewComponent
         {
             if (userId > 0)
             {
-                var dresult = await _mediator.Send(new GetByUserIdAllUserImageQueryRequest()
+                var dresult = await _mediator.Send(new GetEmployeeImageListByEmployeeIdQueryRequest()
                 {
-                    UserId = userId,
+                    EmployeeId = userId,
                 });
                 if (dresult.Result.ResultStatus == ResultStatus.Success)
                 {

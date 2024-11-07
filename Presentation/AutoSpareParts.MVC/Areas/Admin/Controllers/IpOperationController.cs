@@ -1,17 +1,17 @@
 using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.CustomAttributes;
 using AutoSpareParts.Application.DTOs.Common;
-using AutoSpareParts.Application.Features.IpOperations.Commands.CreateIpAddressCommand;
-using AutoSpareParts.Application.Features.IpOperations.Commands.SetIpAddressActiveCommand;
-using AutoSpareParts.Application.Features.IpOperations.Commands.SetIpAddressPassiveCommand;
-using AutoSpareParts.Application.Features.IpOperations.Commands.UpdateIpAddressCommand;
-using AutoSpareParts.Application.Features.IpOperations.DTOs;
-using AutoSpareParts.Application.Features.IpOperations.Queries.GetByIdIpAddressQuery;
-using AutoSpareParts.Application.Features.IpOperations.Queries.GetIpAddressListQuery;
+using AutoSpareParts.Application.Features.IPAddresses.Commands.CreatIPpAddressCommand;
+using AutoSpareParts.Application.Features.IPAddresses.Commands.SetActiveIPAddressCommand;
+using AutoSpareParts.Application.Features.IPAddresses.Commands.SetPassiveIPAddressCommand;
+using AutoSpareParts.Application.Features.IPAddresses.Commands.UpdateIPAddressCommand;
+using AutoSpareParts.Application.Features.IPAddresses.DTOs;
+using AutoSpareParts.Application.Features.IPAddresses.Queries.GetIPAddressByIdQuery;
+using AutoSpareParts.Application.Features.IPAddresses.Queries.GetIPAddressListQuery;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Messages = AutoSpareParts.Application.Features.IpOperations.Constants.Messages;
+using Messages = AutoSpareParts.Application.Features.IPAddresses.Constants.Messages;
 
 
 namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
@@ -50,9 +50,9 @@ public class IpOperationController : Controller
 
 
     [HttpPost]
-    [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.IpOperation, EndpointType = EndpointType.Writing,
-        Definition = "Create IpAddress")]
-    public async Task<IActionResult> CreateIpAddress(IpDto ipDto)
+    [Endpoint(Menu = MenuDecription.IPAddress, EndpointType = EndpointType.Writing,
+        Definition = "Create IPAddress")]
+    public async Task<IActionResult> CreateIpAddress(IPDto ipDto)
     {
         if (!ModelState.IsValid)
         {
@@ -73,9 +73,9 @@ public class IpOperationController : Controller
 
 
     [HttpPost]
-    [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.IpOperation, EndpointType = EndpointType.Updating,
-        Definition = "Update IpAddress")]
-    public async Task<IActionResult> UpdateIpAddress(IpDto ipDto)
+    [Endpoint(Menu = MenuDecription.IPAddress, EndpointType = EndpointType.Updating,
+        Definition = "Update IPAddress")]
+    public async Task<IActionResult> UpdateIpAddress(IPDto ipDto)
     {
         if (!ModelState.IsValid)
         {
@@ -86,9 +86,9 @@ public class IpOperationController : Controller
         {
             IpDto = ipDto
         });
-        if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.IpNotFound))
+        if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.IPNotFound))
         {
-            ModelState.AddModelError("IpNotFound", Messages.IpNotFound);
+            ModelState.AddModelError("IPNotFound", Messages.IPNotFound);
             return PartialView("PartialViews/_IpUpdateModalPartial", ipDto);
         }
 
@@ -103,7 +103,7 @@ public class IpOperationController : Controller
     [HttpPost]
     public async Task<IActionResult> SetIpAddressActive(int id)
     {
-        var dresult = await _mediator.Send(new SetIpAddressActiveCommandRequest()
+        var dresult = await _mediator.Send(new SetActiveIpAddressCommandRequest()
         {
             Id = id
         });
@@ -114,17 +114,17 @@ public class IpOperationController : Controller
         }
 
         if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.IpNotFound))
+            dresult.Result.Message.Equals(Messages.IPNotFound))
         {
-            ModelState.AddModelError("IpNotFound", Messages.IpNotFound);
+            ModelState.AddModelError("IPNotFound", Messages.IPNotFound);
             var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
             return Json(new { success = false, errors = errors });
         }
 
         if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.IpActive))
+            dresult.Result.Message.Equals(Messages.IPActive))
         {
-            ModelState.AddModelError("IpActive", Messages.IpActive);
+            ModelState.AddModelError("IPActive", Messages.IPActive);
             var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
             return Json(new { success = false, errors = errors });
         }
@@ -135,7 +135,7 @@ public class IpOperationController : Controller
     [HttpPost]
     public async Task<IActionResult> SetIpAddressPassive(int id)
     {
-        var dresult = await _mediator.Send(new SetIpAddressPassiveCommandRequest()
+        var dresult = await _mediator.Send(new SetPassiveIpAddressCommandRequest()
         {
             Id = id
         });
@@ -146,17 +146,17 @@ public class IpOperationController : Controller
         }
 
         if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.IpNotFound))
+            dresult.Result.Message.Equals(Messages.IPNotFound))
         {
-            ModelState.AddModelError("IpNotFound", Messages.IpNotFound);
+            ModelState.AddModelError("IPNotFound", Messages.IPNotFound);
             var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
             return Json(new { success = false, errors = errors });
         }
 
         if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.IpNotActive))
+            dresult.Result.Message.Equals(Messages.IPNotActive))
         {
-            ModelState.AddModelError("IpNotActive", Messages.IpNotActive);
+            ModelState.AddModelError("IPNotActive", Messages.IPNotActive);
             var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
             return Json(new { success = false, errors = errors });
         }
@@ -165,11 +165,11 @@ public class IpOperationController : Controller
     }
 
     [HttpGet]
-    [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.IpOperation, EndpointType = EndpointType.Reading,
-        Definition = "Get By Id IpAddress Details")]
+    [Endpoint(Menu = MenuDecription.IPAddress, EndpointType = EndpointType.Reading,
+        Definition = "Get By EmloyeeId IPAddress Details")]
     public async Task<IActionResult> GetIpAddressById(int id)
     {
-        var dresult = await _mediator.Send(new GetByIdIpAddressQueryRequest()
+        var dresult = await _mediator.Send(new GetIpAddressByIdQueryRequest()
         {
             Id = id
         });
@@ -178,9 +178,9 @@ public class IpOperationController : Controller
             return Json(new { success = true, ip = dresult.Result.Data });
         }
 
-        if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.IpNotFound))
+        if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.IPNotFound))
         {
-            ModelState.AddModelError("IpNotFound", Messages.IpNotFound);
+            ModelState.AddModelError("IPNotFound", Messages.IPNotFound);
             var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
             return Json(new { success = false, errors = errors });
         }

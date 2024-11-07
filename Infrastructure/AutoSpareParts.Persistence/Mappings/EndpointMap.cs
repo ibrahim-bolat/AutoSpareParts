@@ -21,7 +21,7 @@ namespace AutoSpareParts.Persistence.Mappings;
             builder.HasMany(endpoint => endpoint.AppRoles).WithMany(appRole => appRole.Endpoints)
                 .UsingEntity(e => e.ToTable("EndpointRoles"));;
 
-            builder.HasMany(endpoint => endpoint.IpAddresses).WithMany(ip => ip.Endpoints)
+            builder.HasMany(endpoint => endpoint.IPAddresses).WithMany(ip => ip.Endpoints)
                 .UsingEntity(e => e.ToTable("EndpointIpAddreses"));;
         }
     }

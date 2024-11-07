@@ -13,8 +13,8 @@ namespace AutoSpareParts.Domain.Entities
         public string CommentDetail{ get; set; }  // Yorum açıklaması
         public int CommentOrder { get; set; }  // 10.sıra gibi
         public int CommentStarRating { get; set; } //  3 yıldız gibi
-        public int UserId { get; set; }
-        public AppUser AppUser { get; set; }
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
         public int AdId { get; set; }
         public Ad Ad { get; set; }
     }

@@ -20,6 +20,8 @@ namespace AutoSpareParts.Domain.Entities
         public decimal SalePrice { get; set; } // 600.100 TL gibi satış fiyatı
         public string ProductDetail { get; set; } // İlan (Yedek Parça) Hakkında Uzun Açıklamalar 
         public Inventory Inventory { get; set; }
+        public int SupplierId { get; set; }
+        public Supplier Supplier { get; set; }
         public List<Category> Categories { get; set; }
         public List<Model> Models { get; set; }
         public List<Oem> Oems { get; set; }

@@ -23,8 +23,8 @@ public sealed class AdMap : BaseEntityMap<Ad>
         builder.Property(ad => ad.Showcase).IsRequired();
         builder.Property(ad => ad.AdDetail).HasMaxLength(1000);
 
-        builder.HasOne(ad => ad.AppUser).WithMany(user => user.Ads)
-            .HasForeignKey(ad => ad.UserId).OnDelete(DeleteBehavior.SetNull);
+        builder.HasOne(ad => ad.Employee).WithMany(employee => employee.Ads)
+            .HasForeignKey(ad => ad.EmployeeId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(ad => ad.Product).WithMany(product => product.Ads)
             .HasForeignKey(ad => ad.ProductId).OnDelete(DeleteBehavior.SetNull);
@@ -36,7 +36,7 @@ public sealed class AdMap : BaseEntityMap<Ad>
         {
             Id = 1,
             ProductId = 1,
-            UserId = 1,
+            EmployeeId = 1,
             AdNo = "111111111",
             Title = "Ford Focus 1.6 Fren Balatası Orijinal",
             AdDate = DateTime.Now,
@@ -49,7 +49,7 @@ public sealed class AdMap : BaseEntityMap<Ad>
         {
             Id = 2,
             ProductId = 2,
-            UserId= 2,
+            EmployeeId = 2,
             AdNo = "11111112",
             Title = "Ford Corier 1.5 Debriyaj Seti Gıcırmı Gıcır",
             AdDate = DateTime.Now,
@@ -62,7 +62,7 @@ public sealed class AdMap : BaseEntityMap<Ad>
         {
             Id = 3,
             ProductId = 3,
-            UserId = 1,
+            EmployeeId = 1,
             AdNo = "11111113",
             Title = "Fiat Linea 1.3 Fren Diski",
             AdDate = DateTime.Now,
@@ -75,7 +75,7 @@ public sealed class AdMap : BaseEntityMap<Ad>
         {
             Id = 4,
             ProductId = 4,
-            UserId = 2,
+            EmployeeId = 2,
             AdNo = "11111114",
             Title = "Opel Astra 1.6 CDTI Fren Balatası",
             AdDate = DateTime.Now,

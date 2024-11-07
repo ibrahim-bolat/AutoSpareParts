@@ -16,5 +16,5 @@ public class Endpoint:BaseEntity
     public string Code { get; set; }
     
     public  List<AppRole> AppRoles{ get; set; }
-    public  List<IpAddress> IpAddresses{ get; set; }
+    public  List<IPAddress> IPAddresses{ get; set; }
 }

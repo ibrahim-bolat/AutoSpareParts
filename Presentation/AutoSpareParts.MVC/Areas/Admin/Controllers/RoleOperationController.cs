@@ -1,18 +1,21 @@
 using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.CustomAttributes;
 using AutoSpareParts.Application.DTOs.Common;
-using AutoSpareParts.Application.Features.RoleOperations.Commands.CreateRoleCommand;
-using AutoSpareParts.Application.Features.RoleOperations.Commands.RemoveUserFromRoleCommand;
-using AutoSpareParts.Application.Features.RoleOperations.Commands.SetRoleActiveCommand;
-using AutoSpareParts.Application.Features.RoleOperations.Commands.SetRolePassiveCommand;
-using AutoSpareParts.Application.Features.RoleOperations.Commands.UpdateRoleCommand;
-using AutoSpareParts.Application.Features.RoleOperations.DTOs;
-using AutoSpareParts.Application.Features.RoleOperations.Queries.GetByIdRoleQuery;
-using AutoSpareParts.Application.Features.RoleOperations.Queries.GetRoleListQuery;
-using AutoSpareParts.Application.Features.RoleOperations.Queries.GetUsersOfTheRoleQuery;
+using AutoSpareParts.Application.Features.Employees.Commands.CreateRoleCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.RemoveUserFromRoleCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.SetActiveRoleCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.SetPassiveRoleCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.UpdateRoleCommand;
+using AutoSpareParts.Application.Features.Employees.DTOs;
+using AutoSpareParts.Application.Features.Employees.Queries.GetRoleByIdQuery;
+using AutoSpareParts.Application.Features.Employees.Queries.GetRoleListQuery;
+using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeesOfRoleQuery;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.Constants;
+using AutoSpareParts.Application.Features.Roles.Constants;
+using AutoSpareParts.Application.Features.Employees.Constants;
 
 
 namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
@@ -29,7 +32,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpGet]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.RoleOperation, EndpointType = EndpointType.Reading, Definition = "Get RoleOperation Index Page")]
+        [Endpoint(Menu = MenuDecription.Role, EndpointType = EndpointType.Reading, Definition = "Get Role Index Page")]
         public IActionResult  Index()
         {
             return View();
@@ -53,10 +56,10 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpGet]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.RoleOperation, EndpointType = EndpointType.Reading, Definition = "Get Users Of TheRole Index Page")]
+        [Endpoint(Menu = MenuDecription.Role, EndpointType = EndpointType.Reading, Definition = "Get Users Of TheRole Index Page")]
         public  async Task<IActionResult> UsersOfTheRole(int id)
         {
-            var dresult = await _mediator.Send(new GetByIdRoleQueryRequest()
+            var dresult = await _mediator.Send(new GetRoleByIdQueryRequest()
             {
                 Id=id.ToString()
             });
@@ -70,7 +73,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         [HttpPost]
         public  async Task<IActionResult> UsersOfTheRole(DatatableRequestDto datatableRequestDto,[FromQuery]string id)
         {
-            var dresult = await _mediator.Send(new GetUsersOfTheRoleQueryRequest()
+            var dresult = await _mediator.Send(new GetEmployeesOfRoleQueryRequest()
             {
                 Id=id,
                 DatatableRequestDto = datatableRequestDto
@@ -87,7 +90,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         [HttpPost]
         public  async Task<IActionResult> RemoveUserFromRole(int userId,int roleId)
         {
-            var dresult = await _mediator.Send(new RemoveUserFromRoleCommandRequest()
+            var dresult = await _mediator.Send(new RemoveEmployeeFromRoleCommandRequest()
             {
                 UserId = userId.ToString(),
                 RoleId = roleId.ToString()
@@ -98,16 +101,16 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
                 return Json(new { success = true });
             }
             if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.UserNotFound))
+                dresult.Result.Message.Equals(Messages.EmployeeNotFound))
             {
-                ModelState.AddModelError("UserNotFound", Messages.UserNotFound);
+                ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
                 var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
                 return Json(new { success = false, errors = errors });
             }
             if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.UserNotActive))
+                dresult.Result.Message.Equals(Messages.EmployeeNotActive))
             {
-                ModelState.AddModelError("UserNotActive", Messages.UserNotActive);
+                ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
                 var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
                 return Json(new { success = false, errors = errors });
             }
@@ -121,7 +124,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpPost]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.RoleOperation, EndpointType = EndpointType.Writing, Definition = "Create Role")]
+        [Endpoint(Menu = MenuDecription.Role, EndpointType = EndpointType.Writing, Definition = "Create Role")]
         public async Task<IActionResult> CreateRole(RoleDto roleDto)
         {
             if (!ModelState.IsValid)
@@ -145,7 +148,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpPost]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.RoleOperation, EndpointType = EndpointType.Updating, Definition = "Update Role")]
+        [Endpoint(Menu = MenuDecription.Role, EndpointType = EndpointType.Updating, Definition = "Update Role")]
         public async Task<IActionResult> UpdateRole(RoleDto roleDto)
         {
             if (!ModelState.IsValid)
@@ -181,7 +184,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         [HttpPost]
         public async Task<IActionResult> SetRoleActive(int id)
         {
-            var dresult = await _mediator.Send(new SetRoleActiveCommandRequest()
+            var dresult = await _mediator.Send(new SetActiveRoleCommandRequest()
             {
                 Id = id
             });
@@ -223,7 +226,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         [HttpPost]
         public async Task<IActionResult> SetRolePassive(int id)
         {
-            var dresult = await _mediator.Send(new SetRolePassiveCommandRequest()
+            var dresult = await _mediator.Send(new SetPassiveRoleCommandRequest()
             {
                 Id = id
             });
@@ -263,10 +266,10 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
         
         [HttpGet]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.RoleOperation, EndpointType = EndpointType.Reading, Definition = "Get By Id Role Details")]
+        [Endpoint(Menu = MenuDecription.Role, EndpointType = EndpointType.Reading, Definition = "Get By EmloyeeId Role Details")]
         public async Task<IActionResult> GetRoleById(string id)
         {
-            var dresult = await _mediator.Send(new GetByIdRoleQueryRequest()
+            var dresult = await _mediator.Send(new GetRoleByIdQueryRequest()
             {
                 Id = id
             });

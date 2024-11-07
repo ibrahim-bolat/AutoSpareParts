@@ -1,4 +1,4 @@
-@model HashSet<IpAssignDto>
+@model HashSet<AssignIPAddressDto>
 <div class="modal fade" id="endpointIpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form id="endpointIpModalForm">
@@ -28,7 +28,7 @@
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <label id="ipListType@(ip.Id)" class="control-label" asp-for="@ip.IpListType">@ip.IpListType</label>
+                                    <label id="ipListType@(ip.Id)" class="control-label" asp-for="@ip.IPListType">@ip.IPListType</label>
                                 </div>
                             </div>
                         }

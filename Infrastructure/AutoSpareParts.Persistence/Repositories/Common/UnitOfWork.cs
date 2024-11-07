@@ -1,9 +1,6 @@
 using AutoSpareParts.Application.Repositories;
 using AutoSpareParts.Application.Repositories.Common;
-using AutoSpareParts.Domain.Entities.Common;
 using AutoSpareParts.Persistence.Contexts;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AutoSpareParts.Persistence.Repositories.Common;
 
@@ -11,83 +8,75 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly DataContext _dataContext;
     public IAdRepository Ads { get; }
-    public IAddressRepository Addresses { get; }
-
     public IBrandRepository Brands { get; }
-
     public IBrandSeriesRepository BrandSeries { get; }
-
     public ICategoryRepository Categories { get; }
-
     public ICityRepository Cities { get; }
-
     public ICommentRepository Comments { get; }
-
+    public ICustomerRepository Customers { get; }
+    public ICustomerAddressRepository CustomerAddresses { get; }
+    public ICustomerImageRepository CustomerImages { get; }
     public IDiscountRepository Discounts { get; }
     public IDistrictRepository Districts { get; }
-
+    public IEmployeeRepository Employees { get; }
+    public IEmployeeAddressRepository EmployeeAddresses { get; }
+    public IEmployeeImageRepository EmployeeImages { get; }
     public IEndpointRepository Endpoints { get; }
-
     public IInventoryRepository Inventories { get; }
-    public IIpAddressRepository IpAddresses { get; }
-
+    public IIPAddressRepository IPAddresses { get; }
     public IMainCategoryRepository MainCategories { get; }
-
     public IModelRepository Models { get; }
-
     public INeighborhoodOrVillageRepository NeighborhoodOrVillages { get; }
-
     public IOemRepository Oems { get; }
-
     public IOrderRepository Orders { get; }
     public IOrderDetailRepository OrderDetails { get; }
     public IPaymentRepository Payments { get; }
     public IProductRepository Products { get; }
-
     public IProductImageRepository ProductImages { get; }
-
     public IRequestInfoLogRepository RequestInfoLogs { get; }
-
     public IStreetRepository Streets { get; }
+    public ISupplierRepository Suppliers { get; }
+    public ISupplierAddressRepository SupplierAddresses { get; }
 
-    public IUserImageRepository UserImages { get; }
-
-    public IVehicleAddressRepository VehicleAddresses { get; }
-
-    public UnitOfWork(DataContext dbContext, IAdRepository adRepository, IAddressRepository addressRepository, IBrandRepository brandRepository,
-        IBrandSeriesRepository brandSeriesRepository, ICategoryRepository categoryRepository, ICityRepository cityRepository, ICommentRepository commentRepository,
-        IDiscountRepository discounts, IDistrictRepository districtRepository, IEndpointRepository endpointRepository, IInventoryRepository ýnventories,
-        IIpAddressRepository ýpAddressRepository, IMainCategoryRepository mainCategoryRepository, IModelRepository modelRepository,
-        INeighborhoodOrVillageRepository neighborhoodOrVillageRepository, IOemRepository oemRepository, IOrderRepository orders, IOrderDetailRepository orderDetails,
-        IPaymentRepository payments, IProductRepository productRepository, IProductImageRepository productImageRepository, IRequestInfoLogRepository requestInfoLogRepository,
-        IStreetRepository streetRepository, IUserImageRepository userImageRepository, IVehicleAddressRepository vehicleAddressRepository)
+    public UnitOfWork(DataContext dataContext, IAdRepository ads, IBrandRepository brands, IBrandSeriesRepository brandSeries, ICategoryRepository categories, 
+        ICityRepository cities, ICommentRepository comments, ICustomerRepository customers, ICustomerAddressRepository customerAddresses, ICustomerImageRepository customerImages, 
+        IDiscountRepository discounts, IDistrictRepository districts, IEmployeeRepository employees, IEmployeeAddressRepository employeeAddresses, 
+        IEmployeeImageRepository employeeImages, IEndpointRepository endpoints, IInventoryRepository ýnventories, IIPAddressRepository ýpAddresses, 
+        IMainCategoryRepository mainCategories, IModelRepository models, INeighborhoodOrVillageRepository neighborhoodOrVillages, IOemRepository oems, 
+        IOrderRepository orders, IOrderDetailRepository orderDetails, IPaymentRepository payments, IProductRepository products, IProductImageRepository productImages, 
+        IRequestInfoLogRepository requestInfoLogs, IStreetRepository streets, ISupplierRepository suppliers, ISupplierAddressRepository supplierAddresses)
     {
-        _dataContext = dbContext;
-        Ads = adRepository;
-        Addresses = addressRepository;
-        Brands = brandRepository;
-        BrandSeries = brandSeriesRepository;
-        Categories = categoryRepository;
-        Cities = cityRepository;
-        Comments = commentRepository;
+        _dataContext = dataContext;
+        Ads = ads;
+        Brands = brands;
+        BrandSeries = brandSeries;
+        Categories = categories;
+        Cities = cities;
+        Comments = comments;
+        Customers = customers;
+        CustomerAddresses = customerAddresses;
+        CustomerImages = customerImages;
         Discounts = discounts;
-        Districts = districtRepository;
-        Endpoints = endpointRepository;
+        Districts = districts;
+        Employees = employees;
+        EmployeeAddresses = employeeAddresses;
+        EmployeeImages = employeeImages;
+        Endpoints = endpoints;
         Inventories = ýnventories;
-        IpAddresses = ýpAddressRepository;
-        MainCategories = mainCategoryRepository;
-        Models = modelRepository;
-        NeighborhoodOrVillages = neighborhoodOrVillageRepository;
-        Oems = oemRepository;
+        IPAddresses = ýpAddresses;
+        MainCategories = mainCategories;
+        Models = models;
+        NeighborhoodOrVillages = neighborhoodOrVillages;
+        Oems = oems;
         Orders = orders;
         OrderDetails = orderDetails;
         Payments = payments;
-        Products = productRepository;
-        ProductImages = productImageRepository;
-        RequestInfoLogs = requestInfoLogRepository;
-        Streets = streetRepository;
-        UserImages = userImageRepository;
-        VehicleAddresses = vehicleAddressRepository;
+        Products = products;
+        ProductImages = productImages;
+        RequestInfoLogs = requestInfoLogs;
+        Streets = streets;
+        Suppliers = suppliers;
+        SupplierAddresses = supplierAddresses;
     }
 
     public async ValueTask DisposeAsync()

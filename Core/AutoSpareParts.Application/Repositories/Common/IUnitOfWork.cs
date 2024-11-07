@@ -1,22 +1,24 @@
-using AutoSpareParts.Domain.Entities.Common;
-using Microsoft.EntityFrameworkCore;
-
 namespace AutoSpareParts.Application.Repositories.Common;
 
 public interface IUnitOfWork : IAsyncDisposable
 {
     IAdRepository Ads { get; }
-    IAddressRepository Addresses { get; }
     IBrandRepository Brands { get; }
     IBrandSeriesRepository BrandSeries { get; }
     ICategoryRepository Categories { get; }
     ICityRepository Cities { get; }
     ICommentRepository Comments { get; }
+    ICustomerRepository Customers { get; }
+    ICustomerAddressRepository CustomerAddresses { get; }
+    ICustomerImageRepository CustomerImages { get; }
     IDiscountRepository Discounts { get; }
     IDistrictRepository Districts { get; }
+    IEmployeeRepository Employees { get; }
+    IEmployeeAddressRepository EmployeeAddresses { get; }
+    IEmployeeImageRepository EmployeeImages{ get; }
     IEndpointRepository Endpoints { get; }
     IInventoryRepository Inventories { get; }
-    IIpAddressRepository IpAddresses { get; }
+    IIPAddressRepository IPAddresses { get; }
     IMainCategoryRepository MainCategories { get; }
     IModelRepository Models { get; }
     INeighborhoodOrVillageRepository NeighborhoodOrVillages { get; }
@@ -28,7 +30,7 @@ public interface IUnitOfWork : IAsyncDisposable
     IProductImageRepository ProductImages { get; }
     IRequestInfoLogRepository RequestInfoLogs { get; }
     IStreetRepository Streets { get; }
-    IUserImageRepository UserImages { get; }
-    IVehicleAddressRepository VehicleAddresses { get; }
+    ISupplierRepository Suppliers { get; }
+    ISupplierAddressRepository SupplierAddresses { get; }
     Task<int> SaveAsync();
 }

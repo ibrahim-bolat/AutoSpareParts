@@ -1,4 +1,4 @@
-@model CreateUserImageDto
+@model CreateEmployeeImageDto
 @{
     Layout = "Admin/_AdminLayout";
     ViewBag.Title = "Resim Ekle";
@@ -63,10 +63,10 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <!-- User Card Summary-->
-                                @await Component.InvokeAsync("UserSummaryCard",new { userId=Model.UserId })
+                                @await Component.InvokeAsync("UserSummaryCard",new { userId=Model.EmployeeId })
                                 <!-- User Card Summary-->
                                 <!-- UserImage Card-->
-                                @await Component.InvokeAsync("UserImageCard",new { userId=Model.UserId })
+                                @await Component.InvokeAsync("UserImageCard",new { userId=Model.EmployeeId })
                                 <!-- UserImage Card-->
                             </div>
                             <div class="col-lg-8">
@@ -108,7 +108,7 @@
                                                     <input asp-for="Profil" class="mt-2"/>
                                                 </div>
                                             </div>
-                                            <input type="hidden" asp-for="UserId" class="form-control"/>
+                                            <input type="hidden" asp-for="EmployeeId" class="form-control"/>
                                             <div class="form-group row">
                                                 <div class="offset-sm-3 col-sm-9">
                                                     <input type="submit" value="Kaydet" class="btn btn-primary btn-sm"/>

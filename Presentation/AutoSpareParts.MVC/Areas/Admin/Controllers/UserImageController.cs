@@ -1,13 +1,13 @@
 using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.CustomAttributes;
-using AutoSpareParts.Application.Features.UserImages.Commands.CreateUserImageCommand;
-using AutoSpareParts.Application.Features.UserImages.Commands.DeleteUserImageCommand;
-using AutoSpareParts.Application.Features.UserImages.Commands.SetProfilImageCommand;
-using AutoSpareParts.Application.Features.UserImages.DTOs;
+using AutoSpareParts.Application.Features.EmployeeImages.Commands.CreateEmployeeImageCommand;
+using AutoSpareParts.Application.Features.EmployeeImages.Commands.DeleteEmployeeImageCommand;
+using AutoSpareParts.Application.Features.EmployeeImages.Commands.SetEmployeeProfilImageCommand;
+using AutoSpareParts.Application.Features.EmployeeImages.DTOs;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Messages = AutoSpareParts.Application.Features.UserImages.Constants.Messages;
+using Messages = AutoSpareParts.Application.Features.EmployeeImages.Constants.Messages;
 
 namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
 
@@ -22,34 +22,34 @@ public class UserImageController : Controller
     }
     
     [HttpGet]
-    [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserImage, EndpointType = EndpointType.Reading, Definition = "Get By Id User for Create UserImage")]
+    [Endpoint(Menu = MenuDecription.EmployeeImage, EndpointType = EndpointType.Reading, Definition = "Get By EmloyeeId User for Create EmployeeImage")]
     public IActionResult CreateUserImage(int userId)
     {
-        CreateUserImageDto createUserImageDto = new CreateUserImageDto();
-        createUserImageDto.UserId = userId;
+        CreateEmployeeImageDto createUserImageDto = new CreateEmployeeImageDto();
+        createUserImageDto.EmployeeId = userId;
         return View(createUserImageDto);
     }
     
     [HttpPost]
-    [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserImage, EndpointType = EndpointType.Writing, Definition = "Create UserImage")]
-    public async Task<IActionResult> CreateUserImage(CreateUserImageDto createUserImageDto)
+    [Endpoint(Menu = MenuDecription.EmployeeImage, EndpointType = EndpointType.Writing, Definition = "Create EmployeeImage")]
+    public async Task<IActionResult> CreateUserImage(CreateEmployeeImageDto createUserImageDto)
     {
         if (ModelState.IsValid)
         {
-            var dresult = await _mediator.Send(new CreateUserImageCommandRequest
+            var dresult = await _mediator.Send(new CreateEmployeeImageCommandRequest
             {
-                UserImageAddDto = createUserImageDto, 
+                CreateEmployeeImageDto = createUserImageDto, 
                 CreatedByName = User.Identity?.Name
             });
-            if (dresult.Result.Message == Messages.UserImageCountMoreThan4)
+            if (dresult.Result.Message == Messages.EmployeeImageCountMoreThan4)
             { 
-                ModelState.AddModelError("UserImageCountMoreThan4", Messages.UserImageCountMoreThan4);
+                ModelState.AddModelError("EmployeeImageCountMoreThan4", Messages.EmployeeImageCountMoreThan4);
                 return View(createUserImageDto);
             }
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
                 TempData["CreateUserImageSuccess"] = true;
-                return RedirectToAction("createUserImage", "UserImage" ,new { area = "Admin" ,userId=createUserImageDto.UserId});
+                return RedirectToAction("createUserImage", "EmployeeImage" ,new { area = "Admin" ,userId=createUserImageDto.EmployeeId});
             }
         }
         return View(createUserImageDto);
@@ -59,10 +59,10 @@ public class UserImageController : Controller
     {
         if (id>0)
         {
-            var dresult = await _mediator.Send(new SetProfilImageCommandRequest
+            var dresult = await _mediator.Send(new SetEmployeeProfilImageCommandRequest
             {
                 Id = id,
-                UserId = userId,
+                EmployeeId = userId,
                 ModifiedByName = User.Identity?.Name
             });
             if (dresult.Result.ResultStatus==ResultStatus.Success)
@@ -76,12 +76,12 @@ public class UserImageController : Controller
     
         
     [HttpPost]
-    [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserImage, EndpointType = EndpointType.Deleting, Definition = "Delete UserImage")]
+    [Endpoint(Menu = MenuDecription.EmployeeImage, EndpointType = EndpointType.Deleting, Definition = "Delete EmployeeImage")]
     public async Task<IActionResult> DeleteUserImage(int id)
     {
         if (id > 0)
         {
-            var dresult = await _mediator.Send(new DeleteUserImageCommandRequest
+            var dresult = await _mediator.Send(new DeleteEmployeeImageCommandRequest
             {
                 Id = id, 
                 ModifiedByName = User.Identity?.Name

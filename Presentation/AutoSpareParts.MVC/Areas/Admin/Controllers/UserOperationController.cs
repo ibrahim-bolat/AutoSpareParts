@@ -1,18 +1,21 @@
-using AutoSpareParts.Application.Features.UserOperations.Commands.AssignUserRoleListCommand;
-using AutoSpareParts.Application.Features.UserOperations.Commands.CreateUserCommand;
-using AutoSpareParts.Application.Features.UserOperations.Commands.SetDeletedUserCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.AssignRoleListToEmployeeCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.CreateEmployeeCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.SetPassiveEmployeeCommand;
 using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.CustomAttributes;
 using AutoSpareParts.Application.DTOs.Common;
-using AutoSpareParts.Application.Features.UserOperations.Commands.EditPasswordUserCommand;
-using AutoSpareParts.Application.Features.UserOperations.DTOs;
-using AutoSpareParts.Application.Features.UserOperations.Queries.GetActiveUserListQuery;
-using AutoSpareParts.Application.Features.UserOperations.Queries.GetByIdForUserSummaryQuery;
-using AutoSpareParts.Application.Features.UserOperations.Queries.GetByIdUserRoleListQuery;
-using AutoSpareParts.Application.Features.UserOperations.Queries.GetEditPasswordUserByIdQuery;
+using AutoSpareParts.Application.Features.Employees.Commands.EditEmployeePasswordCommand;
+using AutoSpareParts.Application.Features.Employees.DTOs;
+using AutoSpareParts.Application.Features.Employees.Queries.GetActiveEmployeeListQuery;
+using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeSummaryByIdQuery;
+using AutoSpareParts.Application.Features.Employees.Queries.GetRoleListByEmployeeIdQuery;
+using AutoSpareParts.Application.Features.Employees.Queries.GetEditEmployeePasswordByIdQuery;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.Constants;
+using AutoSpareParts.Application.Features.Roles.Constants;
+using AutoSpareParts.Application.Features.Employees.Constants;
 
 
 namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
@@ -30,7 +33,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpGet]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserOperation, EndpointType = EndpointType.Reading, Definition = "Get UserOperation Index Page")]
+        [Endpoint(Menu = MenuDecription.Employee, EndpointType = EndpointType.Reading, Definition = "Get Employee Index Page")]
         public IActionResult Index()
         {
             return View();
@@ -40,7 +43,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         public async Task<ActionResult>  GetAllUsers(DatatableRequestDto datatableRequestDto)
         {
  
-            var dresult = await _mediator.Send(new GetActiveUserListQueryRequest()
+            var dresult = await _mediator.Send(new GetActiveEmployeeListQueryRequest()
             {
                 DatatableRequestDto = datatableRequestDto
             });
@@ -54,16 +57,16 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpPost]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserOperation, EndpointType = EndpointType.Writing, Definition = "Create User")]
-        public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
+        [Endpoint(Menu = MenuDecription.Employee, EndpointType = EndpointType.Writing, Definition = "Create User")]
+        public async Task<IActionResult> CreateUser(CreateEmployeeDto createUserDto)
         {
             if (!ModelState.IsValid)
             {
                 return PartialView("PartialViews/_UserCreateModalPartial", createUserDto);
             }
-            var dresult = await _mediator.Send(new CreateUserCommandRequest()
+            var dresult = await _mediator.Send(new CreateEmployeeCommandRequest()
             {
-                CreateUserDto = createUserDto
+                CreateEmployeeDto = createUserDto
             });
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
@@ -78,10 +81,10 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpGet]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserOperation, EndpointType = EndpointType.Reading, Definition = "Get By Id User Summary")]
+        [Endpoint(Menu = MenuDecription.Employee, EndpointType = EndpointType.Reading, Definition = "Get By EmloyeeId User Summary")]
         public async Task<IActionResult> GetUserById(string id)
         {
-            var dresult = await _mediator.Send(new GetByIdForUserSummaryQueryRequest()
+            var dresult = await _mediator.Send(new GetEmployeeSummaryByIdQueryRequest()
             {
                 Id = id
             });
@@ -89,15 +92,15 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
             {
                 return Json(new { success = true, user = dresult.Result.Data });
             }
-            if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.UserNotActive))
+            if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotActive))
             {
-                ModelState.AddModelError("UserNotActive", Messages.UserNotActive);
+                ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
                 var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
                 return Json(new { success = false, errors = errors });
             }
-            if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.UserNotFound))
+            if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotFound))
             {
-                ModelState.AddModelError("UserNotFound", Messages.UserNotFound);
+                ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
                 var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
                 return Json(new { success = false, errors = errors });
             }
@@ -106,10 +109,10 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
 
 
         [HttpPost]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserOperation, EndpointType = EndpointType.Deleting, Definition = "Delete User")]
+        [Endpoint(Menu = MenuDecription.Employee, EndpointType = EndpointType.Deleting, Definition = "Delete User")]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            var dresult = await _mediator.Send(new SetDeletedUserCommandRequest()
+            var dresult = await _mediator.Send(new SetPassiveEmployeeCommandRequest()
             {
                 Id = id
             });
@@ -118,17 +121,17 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
                 return Json(new { success = true });
             }
             if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.UserNotActive))
+                dresult.Result.Message.Equals(Messages.EmployeeNotActive))
             {
-                ModelState.AddModelError("UserNotActive",
-                    Messages.UserNotActive);
+                ModelState.AddModelError("EmployeeNotActive",
+                    Messages.EmployeeNotActive);
                 var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
                 return Json(new { success = false, errors = errors });
             }
             if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.UserNotFound))
+                dresult.Result.Message.Equals(Messages.EmployeeNotFound))
             {
-                ModelState.AddModelError("UserNotFound", Messages.UserNotFound);
+                ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
                 var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
                 return Json(new { success = false, errors = errors });
             }
@@ -142,12 +145,12 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpGet]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserOperation, EndpointType = EndpointType.Reading, Definition = "Get By Id User Role List")]
+        [Endpoint(Menu = MenuDecription.Employee, EndpointType = EndpointType.Reading, Definition = "Get By EmloyeeId User Role List")]
         public async Task<IActionResult> GetRoleById(string id)
         {
-            var dresult = await _mediator.Send(new GetByIdUserRoleListQueryRequest()
+            var dresult = await _mediator.Send(new GetRoleListByEmployeeIdQueryRequest()
             {
-                Id=id,
+                EmployeeId=id,
             });
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
@@ -157,12 +160,12 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
 
         [HttpPost]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserOperation, EndpointType = EndpointType.Updating, Definition = "Change Role to User")]
+        [Endpoint(Menu = MenuDecription.Employee, EndpointType = EndpointType.Updating, Definition = "Change Role to User")]
         public async Task<IActionResult> AssignRolesByUserId(string id, List<int> roleIds)
         {
             if (!string.IsNullOrEmpty(id) && roleIds != null)
             {
-                var dresult = await _mediator.Send(new AssignUserRoleListCommandRequest()
+                var dresult = await _mediator.Send(new AssignRoleListToEmployeeCommandRequest()
                 {
                     Id=id,
                     RoleIds = roleIds
@@ -177,10 +180,10 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
         
         [HttpGet]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserOperation, EndpointType = EndpointType.Reading, Definition = "Get Edit Password User By Id")]
+        [Endpoint(Menu = MenuDecription.Employee, EndpointType = EndpointType.Reading, Definition = "Get Edit Password User By EmloyeeId")]
         public async Task<IActionResult> EditPasswordUser(int id)
         {
-            var dresult = await _mediator.Send(new GetEditPasswordUserByIdQueryRequest()
+            var dresult = await _mediator.Send(new GetEditEmployeePasswordByIdQueryRequest()
             {
                 Id = id.ToString()
             });
@@ -192,29 +195,29 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
         }
         
         [HttpPost]
-        [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.UserOperation, EndpointType = EndpointType.Updating, Definition = "Edit Password User")]
-        public async Task<IActionResult> EditPasswordUser(EditPasswordUserDto editPasswordUserDto)
+        [Endpoint(Menu = MenuDecription.Employee, EndpointType = EndpointType.Updating, Definition = "Edit Password User")]
+        public async Task<IActionResult> EditPasswordUser(EditEmployeePasswordDto editPasswordUserDto)
         {
             if (ModelState.IsValid)
             {
-                var dresult = await _mediator.Send(new EditPasswordUserCommandRequest()
+                var dresult = await _mediator.Send(new EditEmployeePasswordCommandRequest()
                 {
-                    EditPasswordUserDto = editPasswordUserDto,
+                    EditEmployeePasswordDto = editPasswordUserDto,
                 });
                 if (dresult.Result.ResultStatus == ResultStatus.Success)
                 {
                     return Json(new { success = true });
                 }
                 if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                    dresult.Result.Message.Equals(Messages.UserNotActive))
+                    dresult.Result.Message.Equals(Messages.EmployeeNotActive))
                 {
-                    ModelState.AddModelError("UserNotActive", Messages.UserNotActive);
+                    ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
                     return PartialView("PartialViews/_EditPasswordModalPartial",editPasswordUserDto);
                 }
                 if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                    dresult.Result.Message.Equals(Messages.UserNotFound))
+                    dresult.Result.Message.Equals(Messages.EmployeeNotFound))
                 {
-                    ModelState.AddModelError("UserNotFound", Messages.UserNotFound);
+                    ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
                     return PartialView("PartialViews/_EditPasswordModalPartial",editPasswordUserDto);
                 }
                 if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.IdentityErrorList != null)

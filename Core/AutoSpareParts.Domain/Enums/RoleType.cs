@@ -20,8 +20,8 @@ public enum RoleType
     User = 5,
     
     [Description("Müşteri")]
-    Buyer = 6,
+    Customer = 6,
     
-    [Description("Satıcı")]
-    Seller = 7
+    [Description("Personel")]
+    Employee = 7
 }

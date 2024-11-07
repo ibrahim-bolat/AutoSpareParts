@@ -1,11 +1,12 @@
-using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.CustomAttributes;
 using AutoSpareParts.Application.DTOs.Common;
-using AutoSpareParts.Application.Features.UserOperations.Commands.SetActiveUserCommand;
-using AutoSpareParts.Application.Features.UserOperations.Queries.GetDeletedUserListQuery;
+using AutoSpareParts.Application.Features.Employees.Constants;
+using AutoSpareParts.Application.Features.Employees.Commands.SetActiveEmployeeCommand;
+using AutoSpareParts.Application.Features.Employees.Queries.GetPassiveEmployeeListQuery;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using AutoSpareParts.Application.Constants;
 
 namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
 
@@ -20,7 +21,7 @@ public class DeletedAccountController : Controller
     }
 
     [HttpGet]
-    [AuthorizeEndpoint(Menu = AuthorizeEndpointConstants.DeletedAccount, EndpointType = EndpointType.Reading, Definition = "Get DeletedAccount Index Page")]
+    [Endpoint(Menu = MenuDecription.DeletedAccount, EndpointType = EndpointType.Reading, Definition = "Get DeletedAccount Index Page")]
     public IActionResult Index()
     {
         return View();
@@ -29,7 +30,7 @@ public class DeletedAccountController : Controller
     [HttpPost]
     public async Task<ActionResult> DeletedUsers(DatatableRequestDto datatableRequestDto)
     {
-        var dresult = await _mediator.Send(new GetDeletedUserListQueryRequest()
+        var dresult = await _mediator.Send(new GetPassiveEmployeeListQueryRequest()
         {
             DatatableRequestDto = datatableRequestDto
         });
@@ -44,7 +45,7 @@ public class DeletedAccountController : Controller
     [HttpPost]
     public async Task<IActionResult> SetActiveUser(int userId)
     {
-        var dresult = await _mediator.Send(new SetActiveUserCommandRequest()
+        var dresult = await _mediator.Send(new SetActiveEmployeeCommandRequest()
         {
             Id = userId.ToString()
         });
@@ -53,16 +54,16 @@ public class DeletedAccountController : Controller
             return Json(new { success = true });
         }
         if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.UserActive))
+            dresult.Result.Message.Equals(Messages.EmployeeActive))
         {
-            ModelState.AddModelError("UserActive",Messages.UserActive);
+            ModelState.AddModelError(nameof(Messages.EmployeeNotFound),Messages.EmployeeActive);
             var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
             return Json(new { success = false, errors = errors });
         }
         if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.UserNotFound))
+            dresult.Result.Message.Equals(Messages.EmployeeNotFound))
         {
-            ModelState.AddModelError("UserNotFound", Messages.UserNotFound);
+            ModelState.AddModelError(nameof(Messages.EmployeeNotFound), Messages.EmployeeNotFound);
             var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
             return Json(new { success = false, errors = errors });
         }

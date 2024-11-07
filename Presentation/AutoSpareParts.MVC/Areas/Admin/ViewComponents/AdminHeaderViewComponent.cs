@@ -1,5 +1,5 @@
-﻿using AutoSpareParts.Application.Features.Accounts.Queries.GetByUserNameUserImageQuery;
-using AutoSpareParts.Application.Features.UserOperations.Queries.GetByIdForUserSummaryQuery;
+﻿using AutoSpareParts.Application.Features.Employees.Queries.GetByUserNameUserImageQuery;
+using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeSummaryByIdQuery;
 using AutoSpareParts.Domain.Entities.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -24,9 +24,9 @@ public class AdminHeaderAvatarViewComponent : ViewComponent
             {
                 UserName = User.Identity?.Name,
             });
-            ViewBag.UserId = imageResult.Result.Data.Select(i => i.UserId).FirstOrDefault();
+            ViewBag.UserId = imageResult.Result.Data.Select(i => i.EmployeeId).FirstOrDefault();
             ViewBag.ProfilPhoto = "/admin/images/avatar/unspecifieduseravatar.png";
-            var userResult = await _mediator.Send(new GetByIdForUserSummaryQueryRequest()
+            var userResult = await _mediator.Send(new GetEmployeeSummaryByIdQueryRequest()
             {
                 Id = ViewBag.UserId.ToString()
             });
