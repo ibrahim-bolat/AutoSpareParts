@@ -28,46 +28,32 @@ public static class ServiceRegistration
                 providerOptions => providerOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(5), errorCodesToAdd: null));
         });
 
+        // IdentityOptions
+        serviceCollection.Configure<IdentityOptions>(configuration.GetSection("IdentityOptions"));
 
         //identity appuser
-        serviceCollection.AddIdentity<AppUser, AppRole>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-                options.User.AllowedUserNameCharacters =
-                    "abcçdefghiıjklmnoöpqrsştuüvwxyzABCÇDEFGHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._@+";
-                options.SignIn.RequireConfirmedEmail = false;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
-            }).AddErrorDescriber<CustomIdentityErrorDescriber>()
+        serviceCollection.AddIdentity<AppUser, AppRole>()
+            .AddErrorDescriber<CustomIdentityErrorDescriber>()
             .AddEntityFrameworkStores<DataContext>()
             .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
 
         //identity employee
-        serviceCollection.AddIdentityCore<Employee>(options =>
-        {
-            options.User.RequireUniqueEmail = true;
-            options.User.AllowedUserNameCharacters =
-                "abcçdefghiıjklmnoöpqrsştuüvwxyzABCÇDEFGHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._@+";
-            options.SignIn.RequireConfirmedEmail = false;
-            options.SignIn.RequireConfirmedPhoneNumber = false;
-        }).AddSignInManager()
+        serviceCollection.AddIdentityCore<Employee>()
           .AddRoles<AppRole>()
           .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddEntityFrameworkStores<DataContext>()
           .AddTokenProvider<DataProtectorTokenProvider<Employee>>(TokenOptions.DefaultProvider);
 
         //identity customer
-        serviceCollection.AddIdentityCore<Customer>(options =>
-        {
-            options.User.RequireUniqueEmail = true;
-            options.User.AllowedUserNameCharacters =
-                "abcçdefghiıjklmnoöpqrsştuüvwxyzABCÇDEFGHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._@+";
-            options.SignIn.RequireConfirmedEmail = false;
-            options.SignIn.RequireConfirmedPhoneNumber = false;
-        }).AddSignInManager()
+        serviceCollection.AddIdentityCore<Customer>()
           .AddRoles<AppRole>()
           .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddEntityFrameworkStores<DataContext>()
           .AddTokenProvider<DataProtectorTokenProvider<Customer>>(TokenOptions.DefaultProvider);
+
+        // Farkl� kullan�c� t�rleri i�in SignInManager i ayr�ca eklemek gerekiyor DI'a ��nk� AddIdentityCore da bunlar eklenmiyor
+        serviceCollection.TryAddScoped<SignInManager<Employee>>();
+        serviceCollection.TryAddScoped<SignInManager<Customer>>();
 
         //user security stamp validate time
         serviceCollection.Configure<SecurityStampValidatorOptions>(options =>

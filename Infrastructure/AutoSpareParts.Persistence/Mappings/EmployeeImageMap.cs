@@ -23,7 +23,7 @@ public sealed class EmployeeImageMap : BaseEntityMap<EmployeeImage>
         {
             Id = 1,
             Title = "ProfilResmi",
-            Path = "/admin/images/userimages/1/profil.jpg",
+            Path = "/admin/images/employeeimages/1/profil.jpg",
             AltText = "Profil",
             Profil = true,
             EmployeeId = 1,
