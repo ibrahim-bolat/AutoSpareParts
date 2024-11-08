@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Security.Principal;
 
 namespace AutoSpareParts.Persistence;
 
@@ -27,7 +29,7 @@ public static class ServiceRegistration
         });
 
 
-        //identity 
+        //identity appuser
         serviceCollection.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -38,6 +40,34 @@ public static class ServiceRegistration
             }).AddErrorDescriber<CustomIdentityErrorDescriber>()
             .AddEntityFrameworkStores<DataContext>()
             .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
+
+        //identity employee
+        serviceCollection.AddIdentityCore<Employee>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+            options.User.AllowedUserNameCharacters =
+                "abcçdefghiıjklmnoöpqrsştuüvwxyzABCÇDEFGHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._@+";
+            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+        }).AddSignInManager()
+          .AddRoles<AppRole>()
+          .AddErrorDescriber<CustomIdentityErrorDescriber>()
+          .AddEntityFrameworkStores<DataContext>()
+          .AddTokenProvider<DataProtectorTokenProvider<Employee>>(TokenOptions.DefaultProvider);
+
+        //identity customer
+        serviceCollection.AddIdentityCore<Customer>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+            options.User.AllowedUserNameCharacters =
+                "abcçdefghiıjklmnoöpqrsştuüvwxyzABCÇDEFGHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._@+";
+            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+        }).AddSignInManager()
+          .AddRoles<AppRole>()
+          .AddErrorDescriber<CustomIdentityErrorDescriber>()
+          .AddEntityFrameworkStores<DataContext>()
+          .AddTokenProvider<DataProtectorTokenProvider<Customer>>(TokenOptions.DefaultProvider);
 
         //user security stamp validate time
         serviceCollection.Configure<SecurityStampValidatorOptions>(options =>

@@ -10,42 +10,42 @@ using Microsoft.AspNetCore.Http;
 
 namespace AutoSpareParts.Application.Features.IPAddresses.Commands.UpdateIPAddressCommand;
 
-public class UpdateIpAddressCommandHandler : IRequestHandler<UpdateIpAddressCommandRequest, UpdateIpAddressCommandResponse>
+public class UpdateIPAddressCommandHandler : IRequestHandler<UpdateIPAddressCommandRequest, UpdateIPAddressCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMapper _mapper;
 
-    public UpdateIpAddressCommandHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+    public UpdateIPAddressCommandHandler(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
     }
 
-    public async Task<UpdateIpAddressCommandResponse> Handle(UpdateIpAddressCommandRequest request,
+    public async Task<UpdateIPAddressCommandResponse> Handle(UpdateIPAddressCommandRequest request,
         CancellationToken cancellationToken)
     {
-        IPAddress IP = await _unitOfWork.IPAddresses.GetByIdAsync(request.IpDto.Id);
+        IPAddress IP = await _unitOfWork.IPAddresses.GetByIdAsync(request.IPDto.Id);
         if (IP != null)
         {
-            IP= _mapper.Map(request.IpDto,IP);
+            IP= _mapper.Map(request.IPDto,IP);
             IP.ModifiedTime = DateTime.Now;
             IP.ModifiedByName = _httpContextAccessor.HttpContext?.User.Identity?.Name;
             await _unitOfWork.IPAddresses.UpdateAsync(IP);
             int result = await _unitOfWork.SaveAsync();
             if (result > 0)
             {
-                return new UpdateIpAddressCommandResponse
+                return new UpdateIPAddressCommandResponse
                 {
-                    Result = new DataResult<IPDto>(ResultStatus.Success, Messages.IPUpdated, request.IpDto)
+                    Result = new DataResult<IPDto>(ResultStatus.Success, Messages.IPUpdated, request.IPDto)
                 };
             }
-            return new UpdateIpAddressCommandResponse{
+            return new UpdateIPAddressCommandResponse{
                 Result = new Result(ResultStatus.Error, Messages.IPNotUpdated)
             };
         }
-        return new UpdateIpAddressCommandResponse{
+        return new UpdateIPAddressCommandResponse{
             Result = new Result(ResultStatus.Error, Messages.IPNotFound)
         };
     }

@@ -14,7 +14,7 @@ public class IdentityAppUserMap : IEntityTypeConfiguration<AppUser>
         builder.ToTable("IdentityUsers").UseTptMappingStrategy();// Table Per Type (TPT) Davraışı Uygulanacak
         builder.Property(user => user.FirstName).HasMaxLength(100).IsRequired();
         builder.Property(user => user.LastName).HasMaxLength(100).IsRequired();
-        builder.Property(user => user.UserIdendityNo).HasMaxLength(11);
+        builder.Property(user => user.IdendityNo).HasMaxLength(11);
         builder.Property(user => user.DateOfBirth).IsRequired(false);
         builder.Property(user => user.GenderType).HasConversion( a => a.ToString(), a => (GenderType)Enum.Parse(typeof(GenderType), a));
         builder.Property(user => user.Note).HasMaxLength(500);

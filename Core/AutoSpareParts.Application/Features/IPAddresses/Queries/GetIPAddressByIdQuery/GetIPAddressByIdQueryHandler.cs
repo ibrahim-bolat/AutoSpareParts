@@ -8,28 +8,28 @@ using MediatR;
 
 namespace AutoSpareParts.Application.Features.IPAddresses.Queries.GetIPAddressByIdQuery;
 
-public class GetByIdIpAddressQueryHandler:IRequestHandler<GetIpAddressByIdQueryRequest,GetIpAddressByIdQueryResponse>
+public class GetIPAddressByIdQueryHandler:IRequestHandler<GetIPAddressByIdQueryRequest,GetIPAddressByIdQueryResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public GetByIdIpAddressQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetIPAddressByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task<GetIpAddressByIdQueryResponse> Handle(GetIpAddressByIdQueryRequest request, CancellationToken cancellationToken)
+    public async Task<GetIPAddressByIdQueryResponse> Handle(GetIPAddressByIdQueryRequest request, CancellationToken cancellationToken)
     {
         var IP = await _unitOfWork.IPAddresses.GetByIdAsync(request.Id);
         if (IP != null)
         {
             IPDto IPDto = _mapper.Map<IPDto>(IP);
-            return new GetIpAddressByIdQueryResponse{
+            return new GetIPAddressByIdQueryResponse{
                 Result = new DataResult<IPDto>(ResultStatus.Success, IPDto)
             };
         }
-        return new GetIpAddressByIdQueryResponse{
+        return new GetIPAddressByIdQueryResponse{
             Result = new DataResult<IPDto>(ResultStatus.Error, Messages.IPNotFound,null)
         };
     }

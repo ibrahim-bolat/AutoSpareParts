@@ -4,7 +4,7 @@ using AutoSpareParts.Application.Wrappers.Abstract;
 
 namespace AutoSpareParts.Application.Features.IPAddresses.Queries.GetIPAddressByIdQuery
 {
-    public class GetIpAddressByIdQueryResponse
+    public class GetIPAddressByIdQueryResponse
     {
         public IDataResult<IPDto> Result { get; set; }
     }

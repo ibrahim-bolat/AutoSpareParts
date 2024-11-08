@@ -26,7 +26,7 @@ public class RemoveEmployeeFromRoleCommandHandler : IRequestHandler<RemoveEmploy
         CancellationToken cancellationToken)
     {
         IdentityResult roleResult;
-        Employee employee = await _employeeManager.FindByIdAsync(request.UserId);
+        Employee employee = await _employeeManager.FindByIdAsync(request.EmployeeId);
         AppRole role = await _roleManager.FindByIdAsync(request.RoleId);
         if (employee != null && role != null)
         {

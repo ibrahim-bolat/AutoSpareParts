@@ -57,7 +57,7 @@ public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommandRequest
         }
         return new UpdateRoleCommandResponse
         {
-            Result = new Result(ResultStatus.Error, Messages.RoleDefaultRole)
+            Result = new Result(ResultStatus.Error, Messages.DefaultRole)
         };
     }
 }

@@ -5,7 +5,7 @@ using AutoSpareParts.Application.Wrappers.Abstract;
 
 namespace AutoSpareParts.Application.Features.IPAddresses.Queries.GetIPAddressListQuery;
 
-public class GetIpAddressListQueryResponse
+public class GetIPAddressListQueryResponse
 {
     public IDataResult<DatatableResponseDto<IPListDto>> Result { get; set; }
 }

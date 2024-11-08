@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoSpareParts.Application.DTOs.Base;
-using AutoSpareParts.Application.Features.Employees.Validations.CustomValidations;
+using AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.Validations.CustomValidations;
 using AutoSpareParts.Domain.Enums;
 
 namespace AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.DTOs;
@@ -22,7 +22,7 @@ public record EmployeeDto : BaseDto
     public GenderType GenderType { get; init; }
 
     [Display(Name = "Kimlik No")]
-    public string UserIdendityNo { get; init; }
+    public string IdendityNo { get; init; }
 
     [Display(Name = "Telefon")]
     [DataType(DataType.PhoneNumber)]

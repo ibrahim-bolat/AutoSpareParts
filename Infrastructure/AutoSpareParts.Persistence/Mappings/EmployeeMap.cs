@@ -28,7 +28,7 @@ public sealed class EmployeeMap : IEntityTypeConfiguration<Employee>
         builder.HasMany(employee => employee.EmployeeImages).WithOne(employeeImage => employeeImage.Employee)
             .HasForeignKey(employeeImage => employeeImage.EmployeeId).OnDelete(DeleteBehavior.SetNull);
 
-        var hasher = new PasswordHasher<AppUser>();
+        var hasher = new PasswordHasher<Employee>();
         builder.HasData(new Employee()
         {
             Id = 1,

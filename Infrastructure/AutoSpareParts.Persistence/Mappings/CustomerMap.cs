@@ -25,7 +25,7 @@ public sealed class CustomerMap : IEntityTypeConfiguration<Customer>
         builder.HasMany(customer => customer.CustomerImages).WithOne(customerImage => customerImage.Customer)
             .HasForeignKey(customerImage => customerImage.CustomerId).OnDelete(DeleteBehavior.SetNull);
 
-        var hasher = new PasswordHasher<AppUser>();
+        var hasher = new PasswordHasher<Customer>();
         builder.HasData(new Customer()
         {
             Id = 3,

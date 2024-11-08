@@ -1,365 +1,187 @@
-using AutoSpareParts.Application.Features.Employees.Commands.ConfirmEmployeeEmailCommand;
-using AutoSpareParts.Application.Features.Employees.Commands.LoginEmployeeCommand;
-using AutoSpareParts.Application.Features.Employees.Commands.RegisterEmployeeCommand;
-using AutoSpareParts.Application.Features.Employees.Commands.UpdateEmployeePasswordCommand;
-using AutoSpareParts.Application.Features.Employees.Commands.UpdateEmployeeCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.AssignRoleListToEmployeeCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.CreateEmployeeCommand;
+using AutoSpareParts.Application.Features.Employees.Commands.SetPassiveEmployeeCommand;
 using AutoSpareParts.Application.Constants;
 using AutoSpareParts.Application.CustomAttributes;
+using AutoSpareParts.Application.DTOs.Common;
 using AutoSpareParts.Application.Features.Employees.Commands.EditEmployeePasswordCommand;
-using AutoSpareParts.Application.Features.Employees.Commands.ExternalLoginEmployeeCommand;
-using AutoSpareParts.Application.Features.Employees.Queries.ForgetEmployeePasswordQuery;
-using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeProfileDetailByIdQuery;
-using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeByIdQuery;
+using AutoSpareParts.Application.Features.Employees.DTOs;
+using AutoSpareParts.Application.Features.Employees.Queries.GetActiveEmployeeListQuery;
+using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeSummaryByIdQuery;
 using AutoSpareParts.Application.Features.Employees.Queries.GetEditEmployeePasswordByIdQuery;
-using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeExternalLoginAuthenticationPropertiesQuery;
-using AutoSpareParts.Application.Features.Employees.Queries.LogoutEmployeeQuery;
-using AutoSpareParts.Application.Features.Employees.Queries.VerifyEmployeeTokenQuery;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-using AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.DTOs;
-using AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.Constants;
-using AutoSpareParts.Application.Features.Roles.Constants;
 using AutoSpareParts.Application.Features.Employees.Constants;
+using AutoSpareParts.Application.Features.Roles.Queries.GetRoleListByEmployeeIdQuery;
+using AutoSpareParts.MVC.Controllers;
+
 
 namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
+
 
 [Area("Admin")]
 public class EmployeeController : Controller
 {
+
     private readonly IMediator _mediator;
+    private readonly string IndexAction = "Index";
 
     public EmployeeController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
-    [AllowAnonymous]
     [HttpGet]
-    public IActionResult Register()
+    [Endpoint(Menu = MenuDefinition.Employee, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetIndex)]
+    public IActionResult Index()
     {
         return View();
     }
 
-    [AllowAnonymous]
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterEmployeeDto registerDto)
+    public async Task<ActionResult> GetEmployeeList(DatatableRequestDto datatableRequestDto)
     {
-        if (ModelState.IsValid)
+
+        var dresult = await _mediator.Send(new GetActiveEmployeeListQueryRequest()
         {
-            var dresult = await _mediator.Send(new RegisterEmployeeCommandRequest()
-            {
-                RegisterEmployeeDto = registerDto
-            });
-            if (dresult.Result.ResultStatus == ResultStatus.Success)
-            {
-                TempData["LoginSuccess"] = true;
-                return RedirectToAction("Login", "EmployeeAccount", new { area = "Admin" });
-            }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error)
-            {
-                dresult.Result.IdentityErrorList.ForEach(e => ModelState.AddModelError(e.Code, e.Description));
-                return View(registerDto);
-            }
-        }
-
-        return View(registerDto);
-    }
-
-    [AllowAnonymous]
-    [HttpGet("[action]/{email}/{token}")]
-    public async Task<IActionResult> ConfirmEmail(string email, string token)
-    {
-        var dresult = await _mediator.Send(new ConfirmEmployeeEmailCommandRequest()
-        {
-            Email = email,
-            Token = token
+            DatatableRequestDto = datatableRequestDto
         });
-        if (dresult.Result.ResultStatus == ResultStatus.Success)
+        var jsonData = new
         {
-            ViewBag.State = true;
-            return View("ConfirmEmail");
-        }
+            draw = dresult.Result.Data.Draw,
+            recordsFiltered = dresult.Result.Data.RecordsFiltered,
+            recordsTotal = dresult.Result.Data.RecordsTotal,
+            data = dresult.Result.Data.Data,
+            isSusccess = true
+        };
+        return Ok(jsonData);
 
-        if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotFound))
-        {
-            ViewBag.State = false;
-            return View("ConfirmEmail");
-        }
-
-        return View();
-    }
-
-    [AllowAnonymous]
-    [HttpGet]
-    public IActionResult Login(string returnUrl = "Index")
-    {
-        TempData["returnUrl"] = returnUrl;
-        return View();
-    }
-
-    [AllowAnonymous]
-    [HttpPost]
-    public async Task<IActionResult> Login(LoginEmployeeDto loginDto)
-    {
-        if (ModelState.IsValid)
-        {
-            var dresult = await _mediator.Send(new LoginEmployeeCommandRequest()
-            {
-                LoginEmployeeDto = loginDto
-            });
-            if (dresult.Result.ResultStatus == ResultStatus.Success)
-            {
-                if (string.IsNullOrEmpty(TempData["returnUrl"] != null ? TempData["returnUrl"].ToString() : ""))
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
-                if (TempData["returnUrl"]!.Equals("Index") || TempData["returnUrl"].Equals("/"))
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
-                return LocalRedirect(TempData["returnUrl"].ToString()!);
-            }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.EmployeeAccountLocked))
-            {
-                ModelState.AddModelError("EmployeeAccountLocked", Messages.EmployeeAccountLocked);
-                return View(loginDto);
-            }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.EmployeeIncorrectPassword))
-            {
-                ModelState.AddModelError("EmployeeIncorrectPassword", Messages.EmployeeIncorrectPassword);
-                return View(loginDto);
-            }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.EmployeeNotActive))
-            {
-                ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
-                return View(loginDto);
-            }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.EmployeeNotFound))
-            {
-                ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
-                return View(loginDto);
-            }
-        }
-        return View(loginDto);
-    }
-
-    [AllowAnonymous]
-    [HttpGet]
-    public async Task<IActionResult> ExternalLogin(string providerName, bool isPersistent, string returnUrl)
-    {
-        var dresult = await _mediator.Send(new GetEmployeeExternalLoginAuthenticationPropertiesQueryRequest()
-        {
-            ProviderName = providerName,
-            RedirectUrl = Url.Action("ExternalLoginResponse", "EmployeeAccount", new { providerName = providerName, isPersistent = isPersistent, returnUrl = returnUrl })
-        });
-        if (dresult.Result.ResultStatus == ResultStatus.Success)
-        {
-            return new ChallengeResult(providerName.Trim(), dresult.Result.Data);
-        }
-        return RedirectToAction("Login", "EmployeeAccount", new { area = "Admin" });
-    }
-
-    [AllowAnonymous]
-    [HttpGet]
-    public async Task<IActionResult> ExternalLoginResponse(string providerName, bool isPersistent, string returnUrl = "Index")
-    {
-        var dresult = await _mediator.Send(new ExternalLoginEmployeeCommandRequest()
-        {
-            IsPersistent = isPersistent
-        });
-        if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.EmployeeNotActive))
-        {
-            ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
-            return View("Login");
-        }
-        if (dresult.Result.ResultStatus == ResultStatus.Success)
-        {
-            if (returnUrl.Equals("Index") || returnUrl.Equals("/"))
-            {
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
-            }
-            return LocalRedirect(returnUrl);
-        }
-        TempData[$"{providerName}LoginStatus"] = false;
-        return RedirectToAction("Login", "EmployeeAccount", new { area = "Admin" });
     }
 
     [HttpPost]
-    public async Task<IActionResult> Logout()
+    [Endpoint(Menu = MenuDefinition.Employee, EndpointType = EndpointType.Writing, Decription = EndpointDecription.PostCreateEmployee)]
+    public async Task<IActionResult> CreateEmployee(CreateEmployeeDto createEmployeeDto)
     {
-        await _mediator.Send(new LogoutEmployeeQueryRequest());
-        return Json(new { success = true });
-    }
-
-    [AllowAnonymous]
-    [HttpGet]
-    public IActionResult ForgetPass()
-    {
-        return View();
-    }
-
-    [AllowAnonymous]
-    [HttpPost]
-    public async Task<IActionResult> ForgetPass(ForgetEmployeePasswordDto forgetPassDto)
-    {
-        var dresult = await _mediator.Send(new ForgetEmployeePasswordQueryRequest()
+        if (!ModelState.IsValid)
         {
-            ForgetEmployeePasswordDto = forgetPassDto
+            return PartialView("PartialViews/_CreateEmployeeModalPartial", createEmployeeDto);
+        }
+        var dresult = await _mediator.Send(new CreateEmployeeCommandRequest()
+        {
+            CreateEmployeeDto = createEmployeeDto
         });
         if (dresult.Result.ResultStatus == ResultStatus.Success)
         {
-            TempData["EmailSendStatus"] = true;
-            return View();
+            return Json(new { success = true });
         }
-
-        if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.ErrorSendEmployeeEmail))
+        if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.IdentityErrorList != null)
         {
-            TempData["EmailSendStatus"] = false;
-            return View();
+            dresult.Result.IdentityErrorList.ForEach(e => ModelState.AddModelError(e.Code, e.Description));
+            return PartialView("PartialViews/_CreateEmployeeModalPartial", createEmployeeDto);
         }
+        return Json(new { success = false });
+    }
 
+    [HttpGet]
+    [Endpoint(Menu = MenuDefinition.Employee, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetEmployeeSummaryById)]
+    public async Task<IActionResult> GetEmployeeSummaryById(string id)
+    {
+        var dresult = await _mediator.Send(new GetEmployeeSummaryByIdQueryRequest()
+        {
+            Id = id
+        });
+        if (dresult.Result.ResultStatus == ResultStatus.Success)
+        {
+            return Json(new { success = true, employee = dresult.Result.Data });
+        }
         if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotActive))
         {
-            ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
-            return View(forgetPassDto);
+            ModelState.AddModelError(nameof(Messages.EmployeeNotActive), Messages.EmployeeNotActive);
+            var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
+            return Json(new { success = false, errors = errors });
         }
-
         if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotFound))
         {
-            ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
-            return View(forgetPassDto);
+            ModelState.AddModelError(nameof(Messages.EmployeeNotFound), Messages.EmployeeNotFound);
+            var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
+            return Json(new { success = false, errors = errors });
         }
-
-        return View(forgetPassDto);
+        return Json(new { success = false });
     }
 
-    [AllowAnonymous]
-    [HttpGet("[action]/{userId}/{token}")]
-    public async Task<IActionResult> UpdatePassword(string userId, string token)
+
+    [HttpPost]
+    [Endpoint(Menu = MenuDefinition.Employee, EndpointType = EndpointType.Deleting, Decription = EndpointDecription.PostDeleteEmployee)]
+    public async Task<IActionResult> DeleteEmployee(string id)
     {
-        var dresult = await _mediator.Send(new VerifyEmployeeTokenQueryRequest()
+        var dresult = await _mediator.Send(new SetPassiveEmployeeCommandRequest()
         {
-            UserId = userId,
-            Token = token
+            Id = id
         });
         if (dresult.Result.ResultStatus == ResultStatus.Success)
         {
-            return View();
+            return Json(new { success = true });
         }
-
-        return RedirectToAction("Index", "Error", new { area = "", statusCode = 400 });
-    }
-
-    [AllowAnonymous]
-    [HttpPost("[action]/{userId}/{token}")]
-    public async Task<IActionResult> UpdatePassword(UpdateEmployeePasswordDto updatePasswordDto, string userId, string token)
-    {
-        var dresult = await _mediator.Send(new UpdateEmployeePasswordCommandRequest()
-        {
-            UpdateEmployeePasswordDto = updatePasswordDto,
-            EmployeeId = userId,
-            Token = token
-        });
-        if (dresult.Result.ResultStatus == ResultStatus.Success)
-        {
-            TempData["UpdatePasswordStatus"] = true;
-            return RedirectToAction("Login", "EmployeeAccount", new { area = "Admin" });
-        }
-
-        if (dresult.Result.ResultStatus == ResultStatus.Error &&
-            dresult.Result.Message.Equals(Messages.ErrorUpdateEmployeePassword))
-        {
-            TempData["UpdatePasswordStatus"] = false;
-            return View();
-        }
-
         if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotActive))
         {
-            ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
-            return View(updatePasswordDto);
+            ModelState.AddModelError(nameof(Messages.EmployeeNotActive), Messages.EmployeeNotActive);
+            var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
+            return Json(new { success = false, errors = errors });
         }
-
         if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotFound))
         {
-            ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
-            return View(updatePasswordDto);
+            ModelState.AddModelError(nameof(Messages.EmployeeNotFound), Messages.EmployeeNotFound);
+            var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
+            return Json(new { success = false, errors = errors });
         }
-
-        return View(updatePasswordDto);
+        if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.IdentityErrorList != null)
+        {
+            dresult.Result.IdentityErrorList.ForEach(e => ModelState.AddModelError(e.Code, e.Description));
+            var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
+            return Json(new { success = false, errors = errors });
+        }
+        return Json(new { success = false });
     }
 
     [HttpGet]
-    [Endpoint(Menu = MenuDecription.EmployeeAccount, EndpointType = EndpointType.Reading,
-        Definition = "Get By EmloyeeId User for Edit Profile")]
-    public async Task<IActionResult> EditProfile(int id)
+    [Endpoint(Menu = MenuDefinition.Employee, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetRoleListByEmployeeId)]
+    public async Task<IActionResult> GetRoleListByEmployeeId(string id)
     {
-        var dresult = await _mediator.Send(new GetEmployeeByIdQueryRequest()
+        var dresult = await _mediator.Send(new GetRoleListByEmployeeIdQueryRequest()
         {
-            Id = id.ToString()
+            EmployeeId = id,
         });
         if (dresult.Result.ResultStatus == ResultStatus.Success)
         {
-            return View(dresult.Result.Data);
+            return Json(new { success = true, roles = dresult.Result.Data });
         }
-
-        return RedirectToAction("Index", "Error", new { area = "", statusCode = 400 });
+        return RedirectToAction(IndexAction, nameof(ErrorController)[..^10], new { area = nameof(Admin), statusCode = 400 });
     }
 
     [HttpPost]
-    [Endpoint(Menu = MenuDecription.EmployeeAccount, EndpointType = EndpointType.Updating,
-        Definition = "Edit Profile")]
-    public async Task<IActionResult> EditProfile(EmployeeDto userDto)
+    [Endpoint(Menu = MenuDefinition.Employee, EndpointType = EndpointType.Updating, Decription = EndpointDecription.PostAssignRoleListToEmployee)]
+    public async Task<IActionResult> AssignRoleListToEmployee(string id, List<int> roleIds)
     {
-        if (ModelState.IsValid)
+        if (!string.IsNullOrEmpty(id) && roleIds != null)
         {
-            var dresult = await _mediator.Send(new UpdateUserCommandRequest()
+            var dresult = await _mediator.Send(new AssignRoleListToEmployeeCommandRequest()
             {
-                EmployeeDto = userDto
+                Id = id,
+                RoleIds = roleIds
             });
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
-                TempData["EditProfileSuccess"] = true;
-                return RedirectToAction("Index", "Employee", new { area = "Admin" });
+                return Json(new { success = true });
             }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.EmployeeNotActive))
-            {
-                ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
-                return View(userDto);
-            }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.EmployeeNotFound))
-            {
-                ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
-                return View(userDto);
-            }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.IdentityErrorList != null)
-            {
-                dresult.Result.IdentityErrorList.ForEach(e => ModelState.AddModelError(e.Code, e.Description));
-                return View(userDto);
-            }
+            return RedirectToAction(IndexAction, nameof(ErrorController)[..^10], new { area = nameof(Admin), statusCode = 400 });
         }
-
-        return View(userDto);
+        return Json(new { success = false });
     }
 
     [HttpGet]
-    [Endpoint(Menu = MenuDecription.EmployeeAccount, EndpointType = EndpointType.Reading,
-        Definition = "Get Edit Password EmployeeAccount By EmloyeeId")]
-    public async Task<IActionResult> EditPasswordAccount(int id)
+    [Endpoint(Menu = MenuDefinition.Employee, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetEditEmployeePasswordById)]
+    public async Task<IActionResult> GetEditEmployeePasswordById(int id)
     {
         var dresult = await _mediator.Send(new GetEditEmployeePasswordByIdQueryRequest()
         {
@@ -367,66 +189,41 @@ public class EmployeeController : Controller
         });
         if (dresult.Result.ResultStatus == ResultStatus.Success)
         {
-            return View(dresult.Result.Data);
+            return PartialView("PartialViews/_EditEmployeePasswordModalPartial", dresult.Result.Data);
         }
-        return RedirectToAction("Index", "Error", new { area = "", statusCode = 400 });
+        return RedirectToAction(IndexAction, nameof(ErrorController)[..^10], new { area = nameof(Admin), statusCode = 400 });
     }
 
     [HttpPost]
-    [Endpoint(Menu = MenuDecription.EmployeeAccount, EndpointType = EndpointType.Updating,
-        Definition = "Edit Password EmployeeAccount")]
-    public async Task<IActionResult> EditPasswordAccount(EditEmployeePasswordDto editPasswordAccountDto)
+    [Endpoint(Menu = MenuDefinition.Employee, EndpointType = EndpointType.Updating, Decription = EndpointDecription.PostEditEmployeePassword)]
+    public async Task<IActionResult> EditEmployeePassword(EditEmployeePasswordDto editEmployeePasswordDto)
     {
         if (ModelState.IsValid)
         {
             var dresult = await _mediator.Send(new EditEmployeePasswordCommandRequest()
             {
-                EditPasswordAccountDto = editPasswordAccountDto,
+                EditEmployeePasswordDto = editEmployeePasswordDto,
             });
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
-                TempData["EditPasswordSuccess"] = true;
-                return View(editPasswordAccountDto);
+                return Json(new { success = true });
             }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.EmployeeNotActive))
+            if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotActive))
             {
-                ModelState.AddModelError("EmployeeNotActive", Messages.EmployeeNotActive);
-                return View(editPasswordAccountDto);
+                ModelState.AddModelError(nameof(Messages.EmployeeNotActive), Messages.EmployeeNotActive);
+                return PartialView("PartialViews/_EditEmployeePasswordModalPartial", editEmployeePasswordDto);
             }
-
-            if (dresult.Result.ResultStatus == ResultStatus.Error &&
-                dresult.Result.Message.Equals(Messages.EmployeeNotFound))
+            if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.EmployeeNotFound))
             {
-                ModelState.AddModelError("EmployeeNotFound", Messages.EmployeeNotFound);
-                return View(editPasswordAccountDto);
+                ModelState.AddModelError(nameof(Messages.EmployeeNotFound), Messages.EmployeeNotFound);
+                return PartialView("PartialViews/_EditEmployeePasswordModalPartial", editEmployeePasswordDto);
             }
-
             if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.IdentityErrorList != null)
             {
                 dresult.Result.IdentityErrorList.ForEach(e => ModelState.AddModelError(e.Code, e.Description));
-                return View(editPasswordAccountDto);
+                return PartialView("PartialViews/_EditEmployeePasswordModalPartial", editEmployeePasswordDto);
             }
         }
-
-        return View(editPasswordAccountDto);
-    }
-
-
-    [HttpGet]
-    [Endpoint(Menu = MenuDecription.EmployeeAccount, EndpointType = EndpointType.Reading,
-        Definition = "Get By EmloyeeId User for Profile Details")]
-    public async Task<IActionResult> Profile(int id)
-    {
-        var dresult = await _mediator.Send(new GetEmployeeProfileDetailByIdRequest()
-        {
-            Id = id
-        });
-        if (dresult.Result.ResultStatus == ResultStatus.Success)
-        {
-            return View(dresult.Result.Data);
-        }
-        return RedirectToAction("Index", "Error", new { area = "", statusCode = 400 });
+        return PartialView("PartialViews/_EditEmployeePasswordModalPartial", editEmployeePasswordDto);
     }
 }

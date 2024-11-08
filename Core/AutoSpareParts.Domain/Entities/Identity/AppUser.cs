@@ -12,7 +12,7 @@ public class AppUser : IdentityUser<int>, IEntity
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public GenderType GenderType { get; set; }
-    public string UserIdendityNo { get; set; }
+    public string IdendityNo { get; set; }
     public DateOnly? DateOfBirth { get; set; }
     public DateTime CreatedTime { get; set; } = DateTime.Now;
     public DateTime ModifiedTime { get; set; } = DateTime.Now;

@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Remove="Areas\Admin\Views\IpOperation\Index.cshtml" />
+      <Content Remove="Areas\Admin\Views\IPAddress\Index.cshtml" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\Core\AutoSpareParts.Application\AutoSpareParts.Application.csproj" />
@@ -2219,7 +2219,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Areas\Admin\Views\IpOperation\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\IPAddress\Index.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\MainCategory\Index.cshtml" />
     </ItemGroup>
 

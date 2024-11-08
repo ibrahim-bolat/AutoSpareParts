@@ -58,7 +58,8 @@ public sealed class ProductMap : BaseEntityMap<Product>
             OriginalityStatus = OriginalityStatus.Original,
             PurchasePrice = 350000.50m,
             SalePrice = 450000.50m,
-            ProductDetail = "ÇOK GÜZEL Balata"
+            ProductDetail = "ÇOK GÜZEL Balata",
+            SupplierId = 1
         }, new Product()
         {
             Id = 2,
@@ -70,7 +71,8 @@ public sealed class ProductMap : BaseEntityMap<Product>
             OriginalityStatus = OriginalityStatus.SubIndustry,
             PurchasePrice = 360000.50m,
             SalePrice = 460000.50m,
-            ProductDetail = "ÇOK GÜZEL debriyaj"
+            ProductDetail = "ÇOK GÜZEL debriyaj",
+            SupplierId = 2
         }, new Product()
         {
             Id = 3,
@@ -82,7 +84,8 @@ public sealed class ProductMap : BaseEntityMap<Product>
             OriginalityStatus = OriginalityStatus.Cannibalized,
             PurchasePrice = 340000.50m,
             SalePrice = 440000.50m,
-            ProductDetail = "ÇOK GÜZEL Disk"
+            ProductDetail = "ÇOK GÜZEL Disk",
+            SupplierId = 1
         }, new Product()
         {
             Id = 4,
@@ -94,7 +97,8 @@ public sealed class ProductMap : BaseEntityMap<Product>
             OriginalityStatus = OriginalityStatus.Original,
             PurchasePrice = 420000.50m,
             SalePrice = 520000.50m,
-            ProductDetail = "Mükemmel Balata"
+            ProductDetail = "Mükemmel Balata",
+            SupplierId = 2
         });
     }
 }

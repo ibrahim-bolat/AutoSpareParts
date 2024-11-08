@@ -32,4 +32,6 @@ public static class Messages
     public const string NotRemovedEmployeeFromRole = "Çalışan rolden çıkarılamadı!";
     public const string AuthenticationPropertiesNotFound = "AuthenticationPropertiesNotFound!";
     public const string LoginInfoNotFound = "Giriş Bilgisi Bulunamadı!";
+
+    public const string RoleNotAdded = "Rol eklenemedi";
 }

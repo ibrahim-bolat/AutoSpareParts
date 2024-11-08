@@ -13,6 +13,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using AutoSpareParts.Application.Features.EmployeeAddresses.Constants;
 using Messages = AutoSpareParts.Application.Features.EmployeeAddresses.Constants.Messages;
+using AutoSpareParts.MVC.Controllers;
 
 namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
 
@@ -20,6 +21,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers;
 public class EmployeeAddressController : Controller
 {
     private readonly IMediator _mediator;
+    private readonly string IndexAction = "Index";
 
     public EmployeeAddressController(IMediator mediator)
     {
@@ -27,14 +29,14 @@ public class EmployeeAddressController : Controller
     }
 
     [HttpGet]
-    [Endpoint(Menu = MenuDecription.EmployeeAddress, EndpointType = EndpointType.Reading, Definition = EndpointDefinition.EmployeeAddressEndpointGetIndex)]
+    [Endpoint(Menu = MenuDefinition.EmployeeAddress, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetIndex)]
     public IActionResult Index()
     {
         return View();
     }
 
     [HttpGet]
-    [Endpoint(Menu = MenuDecription.EmployeeAddress, EndpointType = EndpointType.Reading, Definition = EndpointDefinition.EmployeeAddressEndpointGetCreateEmployeeAddress)]
+    [Endpoint(Menu = MenuDefinition.EmployeeAddress, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetCreateEmployeeAddress)]
     public async Task<IActionResult> CreateEmployeeAddress(int employeeId)
     {
         var dresult = await _mediator.Send(new GetEmployeeAddressByEmployeeIdForCreateQueryRequest()
@@ -45,11 +47,11 @@ public class EmployeeAddressController : Controller
         {
             return View(dresult.Result.Data);
         }
-        return RedirectToAction("Index", "Error", new { area = "", statusCode = 400});
+        return RedirectToAction(IndexAction, nameof(ErrorController)[..^10], new { area = string.Empty, statusCode = 400 });
     }
 
     [HttpPost]
-    [Endpoint(Menu = MenuDecription.EmployeeAddress, EndpointType = EndpointType.Writing, Definition = EndpointDefinition.EmployeeAddressEndpointPostCreateEmployeeAddress)]
+    [Endpoint(Menu = MenuDefinition.EmployeeAddress, EndpointType = EndpointType.Writing, Decription = EndpointDecription.PostCreateEmployeeAddress)]
     public async Task<IActionResult> CreateEmployeeAddress(EmployeeAddressDto employeeAddressDto)
     {
         if (ModelState.IsValid)
@@ -70,7 +72,7 @@ public class EmployeeAddressController : Controller
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
                 TempData[nameof(this.CreateEmployeeAddress) + "Success"] = true;
-                return RedirectToAction("CreateEmployeeAddress", "EmployeeAddress" ,new { area = "Admin", employeeId = employeeAddressDto.EmployeeId});
+                return RedirectToAction(nameof(this.CreateEmployeeAddress), nameof(EmployeeAddressController)[..^10] ,new { area = nameof(Admin), employeeId = employeeAddressDto.EmployeeId});
             }
         }
         var selectedAddressResult = await _mediator.Send(new GetSelectedEmployeeAddressQueryRequest()
@@ -81,7 +83,7 @@ public class EmployeeAddressController : Controller
     }
 
     [HttpGet]
-    [Endpoint(Menu = MenuDecription.EmployeeAddress, EndpointType = EndpointType.Reading, Definition = EndpointDefinition.EmployeeAddressEndpointGetUpdateEmployeeAddress)]
+    [Endpoint(Menu = MenuDefinition.EmployeeAddress, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetUpdateEmployeeAddress)]
     public async Task<IActionResult> UpdateEmployeeAddress(int employeeAddressId)
     {
         if (employeeAddressId > 0)
@@ -96,13 +98,14 @@ public class EmployeeAddressController : Controller
             }
             
         }
-        return RedirectToAction("Index", "Error", new { area = "", statusCode = 400});
+        return RedirectToAction(IndexAction, nameof(ErrorController)[..^10], new { area = string.Empty, statusCode = 400 });
     }
 
     [HttpPost]
-    [Endpoint(Menu = MenuDecription.EmployeeAddress, EndpointType = EndpointType.Updating, Definition = EndpointDefinition.EmployeeAddressEndpointPostUpdateEmployeeAddress)]
+    [Endpoint(Menu = MenuDefinition.EmployeeAddress, EndpointType = EndpointType.Updating, Decription = EndpointDecription.PostUpdateEmployeeAddress)]
     public async Task<IActionResult> UpdateEmployeeAddress(EmployeeAddressDto employeeAddressDto)
     {
+        string Profile = "Profile";
         if (ModelState.IsValid)
         {
             var dresult = await _mediator.Send(new UpdateEmployeeAddressCommandRequest
@@ -113,7 +116,7 @@ public class EmployeeAddressController : Controller
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
                 TempData[nameof(this.UpdateEmployeeAddress) + "Success"] = true;
-                return RedirectToAction("Profile", "EmployeeAccount" ,new { area = "Admin", id = employeeAddressDto.EmployeeId});
+                return RedirectToAction(Profile, nameof(EmployeeAccountController)[..^10] ,new { area = nameof(Admin), id = employeeAddressDto.EmployeeId});
             }
         }
         var selectedAddressResult = await _mediator.Send(new GetSelectedEmployeeAddressQueryRequest()
@@ -125,7 +128,7 @@ public class EmployeeAddressController : Controller
 
 
     [HttpGet]
-    [Endpoint(Menu = MenuDecription.EmployeeAddress, EndpointType = EndpointType.Reading, Definition = EndpointDefinition.EmployeeAddressEndpointGetEmployeeAddressDetail)]
+    [Endpoint(Menu = MenuDefinition.EmployeeAddress, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetEmployeeAddressDetail)]
     public async Task<IActionResult>  EmployeeAddressDetail(int employeeAddressId)
     {
         if (employeeAddressId > 0)
@@ -139,12 +142,12 @@ public class EmployeeAddressController : Controller
                 return View(dresult.Result.Data);
             }
         }
-        return RedirectToAction("Index", "Error" ,new { area = "", statusCode = 400});
+        return RedirectToAction(IndexAction, nameof(ErrorController)[..^10], new { area = string.Empty, statusCode = 400 });
     }
     
     
     [HttpPost]
-    [Endpoint(Menu = MenuDecription.EmployeeAddress, EndpointType = EndpointType.Deleting, Definition = EndpointDefinition.EmployeeAddressEndpointPostDeleteEmployeeAddress)]
+    [Endpoint(Menu = MenuDefinition.EmployeeAddress, EndpointType = EndpointType.Deleting, Decription = EndpointDecription.PostDeleteEmployeeAddress)]
     public async Task<IActionResult> DeleteEmployeeAddress(int employeeAddressId)
     {
         if (employeeAddressId > 0)
@@ -161,6 +164,6 @@ public class EmployeeAddressController : Controller
             }
             return Json(new { success = false});
         }
-        return RedirectToAction("Index", "Error" ,new { area = "", statusCode = 400});
+        return RedirectToAction(IndexAction, nameof(ErrorController)[..^10], new { area = string.Empty, statusCode = 400 });
     }    
 }

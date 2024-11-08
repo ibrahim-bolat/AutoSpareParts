@@ -15,7 +15,7 @@ public sealed class CommentMap : BaseEntityMap<Comment>
         //builder.HasIndex(comment => comment.CommentOrder).IsUnique();
         builder.Property(comment => comment.CommentStarRating).HasDefaultValue(0);
 
-        builder.HasOne(comment => comment.Customer).WithMany(user => user.Comments)
+        builder.HasOne(comment => comment.Customer).WithMany(customer => customer.Comments)
             .HasForeignKey(comment => comment.CustomerId).OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(comment => comment.Ad).WithMany(ad => ad.Comments)
@@ -24,32 +24,32 @@ public sealed class CommentMap : BaseEntityMap<Comment>
         builder.HasData(new Comment()
         {
             Id = 1,
-            CustomerId=1,
             AdId = 1,
             CommentDetail = "Çok Beðendim",
             CommentStarRating = 5,
+            CustomerId = 3
 
         }, new Comment()
         {
             Id = 2,
-            CustomerId = 2,
             AdId = 1,
             CommentDetail = "Beðendim",
             CommentStarRating = 4,
+            CustomerId = 4
         }, new Comment()
         {
             Id = 3,
-            CustomerId = 1,
             AdId = 2,
             CommentDetail = "Çok Beðendim",
             CommentStarRating = 5,
+            CustomerId = 3,
         }, new Comment()
         {
             Id = 4,
-            CustomerId = 2,
             AdId = 2,
             CommentDetail = "Beðendim",
             CommentStarRating = 3,
+            CustomerId = 4,
         });
 
     }

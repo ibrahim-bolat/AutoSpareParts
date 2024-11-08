@@ -1,44 +1,41 @@
-﻿using AutoSpareParts.Application.Features.Employees.Queries.GetByUserNameUserImageQuery;
+﻿using AutoSpareParts.Application.Features.EmployeeImages.Queries.GetEmployeeImageListByUserNameQuery;
 using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeSummaryByIdQuery;
-using AutoSpareParts.Domain.Entities.Identity;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AutoSpareParts.MVC.Areas.Admin.ViewComponents;
 
 [ViewComponent]
 public class AdminHeaderAvatarViewComponent : ViewComponent
+{
+    private readonly IMediator _mediator;
+
+    public AdminHeaderAvatarViewComponent(IMediator mediator)
     {
-        private readonly IMediator _mediator;
-
-        public AdminHeaderAvatarViewComponent(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-            var imageResult = await _mediator.Send(new GetByUserNameUserImageQueryRequest()
-            {
-                UserName = User.Identity?.Name,
-            });
-            ViewBag.UserId = imageResult.Result.Data.Select(i => i.EmployeeId).FirstOrDefault();
-            ViewBag.ProfilPhoto = "/admin/images/avatar/unspecifieduseravatar.png";
-            var userResult = await _mediator.Send(new GetEmployeeSummaryByIdQueryRequest()
-            {
-                Id = ViewBag.UserId.ToString()
-            });
-            ViewBag.FullName = userResult.Result.Data.FirstName + " " + userResult.Result.Data.LastName;
-            if (imageResult.Result.Data.Count > 0)
-            {
-                foreach (var userImage in imageResult.Result.Data)
-                {
-                    if (userImage.Profil)
-                        ViewBag.ProfilPhoto = userImage.Path;
-                }
-            }
-            return View();
-        }
+        _mediator = mediator;
     }
+
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        var imageResult = await _mediator.Send(new GetEmployeeImageListByUserNameQueryRequest()
+        {
+            UserName = User.Identity?.Name,
+        });
+        ViewBag.EmployeeId = imageResult.Result.Data.Select(i => i.EmployeeId).FirstOrDefault();
+        ViewBag.ProfilPhoto = "/admin/images/avatar/unspecifieduseravatar.png";
+        var employeeResult = await _mediator.Send(new GetEmployeeSummaryByIdQueryRequest()
+        {
+            Id = ViewBag.EmployeeId.ToString()
+        });
+        ViewBag.FullName = employeeResult.Result.Data.FirstName + " " + employeeResult.Result.Data.LastName;
+        if (imageResult.Result.Data.Count > 0)
+        {
+            foreach (var employeeImage in imageResult.Result.Data)
+            {
+                if (employeeImage.Profil)
+                    ViewBag.ProfilPhoto = employeeImage.Path;
+            }
+        }
+        return View();
+    }
+}

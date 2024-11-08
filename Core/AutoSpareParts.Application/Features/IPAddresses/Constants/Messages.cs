@@ -11,4 +11,6 @@ public static class Messages
     public const string IPNotFound = "IP bulunamadı!";
     public const string IPActive = "IP zaten aktif!";
     public const string IPNotActive = "IP aktif değildir!";
+
+    public const string EndpointNotFound = "Endpoint bulunamadı!";
 }

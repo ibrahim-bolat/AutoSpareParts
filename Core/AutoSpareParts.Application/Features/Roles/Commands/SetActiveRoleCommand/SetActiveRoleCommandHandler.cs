@@ -60,7 +60,7 @@ public class SetRoleActiveCommandCommandHandler : IRequestHandler<SetActiveRoleC
         }
         return new SetActiveRoleCommandResponse
         {
-            Result = new Result(ResultStatus.Error, Messages.RoleDefaultRole)
+            Result = new Result(ResultStatus.Error, Messages.DefaultRole)
         };
     }
 }

@@ -20,25 +20,25 @@
                     </li>
                     <h3 class="menu-title">UI elements</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Kullanıcı İşlemleri</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Çalışan İşlemleri</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li>
-                                <i class="fa fa-user"></i><a asp-area="Admin" asp-controller="UserOperation"  asp-action="Index"  class="nav-link" >Aktif Kullanıcılar</a>
+                                <i class="fa fa-user"></i><a asp-area="Admin" asp-controller="Employee"  asp-action="Index"  class="nav-link" >Aktif Çalışanlar</a>
                             </li>
                             <li>
-                                <i class="fa fa-ban"></i><a asp-area="Admin" asp-controller="DeletedAccount"  asp-action="Index"  class="nav-link" >Silinmiş Kullanıcılar</a>
+                            <i class="fa fa-ban"></i><a asp-area="Admin" asp-controller="DeletedEmployee" asp-action="Index" class="nav-link">Silinmiş Çalışanlar</a>
                             </li>
                             <li>
-                                <i class="fa fa-cogs"></i><a asp-area="Admin" asp-controller="RoleOperation"  asp-action="Index" class="nav-link" >Rol İşlemleri</a>
+                                <i class="fa fa-cogs"></i><a asp-area="Admin" asp-controller="Role"  asp-action="Index" class="nav-link" >Rol İşlemleri</a>
                             </li>
                             <li>
-                                <i class="fa fa-cogs"></i><a asp-area="Admin" asp-controller="IpOperation"  asp-action="Index" class="nav-link" >IP İşlemleri</a>
+                                <i class="fa fa-cogs"></i><a asp-area="Admin" asp-controller="IPAddress"  asp-action="Index" class="nav-link" >IP İşlemleri</a>
                             </li>
                             <li>
-                                <i class="fa fa-toggle-on"></i><a asp-area="Admin" asp-controller="AuthorizeEndpoint"  asp-action="Index" class="nav-link" >Rol Bazlı Endpoint Yetkilendirme İşlemleri</a>
+                                <i class="fa fa-toggle-on"></i><a asp-area="Admin" asp-controller="Endpoint"  asp-action="Index" class="nav-link" >Rol Bazlı Endpoint Yetkilendirme İşlemleri</a>
                             </li>
                             <li>
-                                <i class="fa fa-toggle-off"></i><a asp-area="Admin" asp-controller="AuthorizeEndpoint"  asp-action="AuthorizeEndpoints" class="nav-link" >Ip Bazlı Endpoint Yetkilendirme İşlemleri</a>
+                                <i class="fa fa-toggle-off"></i><a asp-area="Admin" asp-controller="Endpoint"  asp-action="Endpoints" class="nav-link" >IP Bazlı Endpoint Yetkilendirme İşlemleri</a>
                             </li>
                         </ul>
                     </li>

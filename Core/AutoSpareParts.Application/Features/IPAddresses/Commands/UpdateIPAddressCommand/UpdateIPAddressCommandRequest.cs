@@ -4,7 +4,7 @@ using MediatR;
 
 namespace AutoSpareParts.Application.Features.IPAddresses.Commands.UpdateIPAddressCommand;
 
-public class UpdateIpAddressCommandRequest:IRequest<UpdateIpAddressCommandResponse>
+public class UpdateIPAddressCommandRequest:IRequest<UpdateIPAddressCommandResponse>
 {
-    public IPDto IpDto{ get; set; }
+    public IPDto IPDto{ get; set; }
 }

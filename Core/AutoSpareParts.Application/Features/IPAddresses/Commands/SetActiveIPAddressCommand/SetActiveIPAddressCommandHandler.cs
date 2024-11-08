@@ -9,20 +9,20 @@ using Microsoft.AspNetCore.Http;
 
 namespace AutoSpareParts.Application.Features.IPAddresses.Commands.SetActiveIPAddressCommand;
 
-public class SetIpAddressActiveCommandCommandHandler : IRequestHandler<SetActiveIpAddressCommandRequest, SetActiveIpAddressCommandResponse>
+public class SetIPAddressActiveCommandCommandHandler : IRequestHandler<SetActiveIPAddressCommandRequest, SetActiveIPAddressCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper; 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public SetIpAddressActiveCommandCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+    public SetIPAddressActiveCommandCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<SetActiveIpAddressCommandResponse> Handle(SetActiveIpAddressCommandRequest request,
+    public async Task<SetActiveIPAddressCommandResponse> Handle(SetActiveIPAddressCommandRequest request,
         CancellationToken cancellationToken)
     {
         IPAddress IP = await _unitOfWork.IPAddresses.GetByIdAsync(request.Id);
@@ -38,21 +38,21 @@ public class SetIpAddressActiveCommandCommandHandler : IRequestHandler<SetActive
                 int result = await _unitOfWork.SaveAsync();
                 if (result > 0)
                 {
-                    return new SetActiveIpAddressCommandResponse
+                    return new SetActiveIPAddressCommandResponse
                     {
                         Result = new  Result(ResultStatus.Success, Messages.IPUpdated)
                     };
                 }
-                return new SetActiveIpAddressCommandResponse{
+                return new SetActiveIPAddressCommandResponse{
                     Result = new Result(ResultStatus.Error, Messages.IPNotUpdated)
                 };
             }
-            return new SetActiveIpAddressCommandResponse
+            return new SetActiveIPAddressCommandResponse
             {
                 Result = new Result(ResultStatus.Error, Messages.IPActive)
             };
         }
-        return new SetActiveIpAddressCommandResponse
+        return new SetActiveIPAddressCommandResponse
         {
             Result = new Result(ResultStatus.Error, Messages.IPNotFound)
         };

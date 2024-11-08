@@ -9,17 +9,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoSpareParts.Application.Features.IPAddresses.Queries.GetIPAddressListQuery;
 
-public class GetIpAddressListQueryHandler:IRequestHandler<GetIpAddressListQueryRequest,GetIpAddressListQueryResponse>
+public class GetIPAddressListQueryHandler:IRequestHandler<GetIPAddressListQueryRequest,GetIPAddressListQueryResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public GetIpAddressListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetIPAddressListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<GetIpAddressListQueryResponse> Handle(GetIpAddressListQueryRequest request, CancellationToken cancellationToken)
+    public async Task<GetIPAddressListQueryResponse> Handle(GetIPAddressListQueryRequest request, CancellationToken cancellationToken)
     {
         var IPData = _mapper.ProjectTo<IPListDto>(await _unitOfWork.IPAddresses.GetAllQueryableAsync()).AsQueryable();
         int pageSize = request.DatatableRequestDto.Length == -1 ? IPData.Count() :  request.DatatableRequestDto.Length;
@@ -57,7 +57,7 @@ public class GetIpAddressListQueryHandler:IRequestHandler<GetIpAddressListQueryR
             RecordsFiltered = recordsTotal,
             Data = IPList
         };
-        return new GetIpAddressListQueryResponse{
+        return new GetIPAddressListQueryResponse{
             Result = new DataResult<DatatableResponseDto<IPListDto>>(ResultStatus.Success, response)
         };
     }

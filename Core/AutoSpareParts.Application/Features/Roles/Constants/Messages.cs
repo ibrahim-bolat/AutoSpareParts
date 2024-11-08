@@ -11,8 +11,8 @@ public static class Messages
     public const string RoleNotFound = "Rol bulunamadı!";
     public const string RoleActive = "Rol zaten aktif!";
     public const string RoleNotActive = "Rol aktif değildir!";
-    public const string NotFoundAuthorizeEndpoints = "Yetkilendirme İçin EndPoint Yok!";
-    public const string RoleDefaultRole = "Rol default bir roldür silinip güncellenemez";
+    public const string NotFoundEndpoint = "Yetkilendirme İçin EndPoint Yok!";
+    public const string DefaultRole = "Rol default bir roldür silinip güncellenemez";
 
     public const string EmployeeNotActive = "Çalışanın sisteme giriş izni yok!!";
     public const string EmployeeNotFound = "Çalışan emaili yada şifresi hatalıdır!";

@@ -1,4 +1,4 @@
-using AutoSpareParts.Application.Features.Employees.DTOs;
+using AutoSpareParts.Application.Features.Roles.DTOs;
 using AutoSpareParts.Application.Wrappers.Abstract;
 
 namespace AutoSpareParts.Application.Features.Roles.Queries.GetRoleByIdQuery;

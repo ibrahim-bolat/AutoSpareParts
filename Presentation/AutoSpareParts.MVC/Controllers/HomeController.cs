@@ -1,7 +1,4 @@
-﻿using AutoSpareParts.Application.Constants;
-using AutoSpareParts.Application.CustomAttributes;
-using AutoSpareParts.Domain.Enums;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 namespace AutoSpareParts.MVC.Controllers;

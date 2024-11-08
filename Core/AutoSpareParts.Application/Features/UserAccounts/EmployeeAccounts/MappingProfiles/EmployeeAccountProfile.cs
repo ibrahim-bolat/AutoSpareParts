@@ -14,7 +14,7 @@ public class EmployeeAccountProfile : Profile
         CreateMap<Employee, EmployeeSummaryCardDto>().ForMember(dest => dest.DefaultAddressDetail
                 , opt => opt.MapFrom(src => src.EmployeeAddresses.FirstOrDefault(x => x.DefaultAddress).AddressDetails))
             .ReverseMap();
-        CreateMap<Employee, EditEmployeePasswordDto>().ReverseMap();
+        CreateMap<Employee, EditEmployeeAccountPasswordDto>().ReverseMap();
         CreateMap<EmployeeAddress, EmployeeAddressSummaryDto>()
             .ForMember(dest => dest.FullName
                 , opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))

@@ -69,12 +69,12 @@
     <div class="container-fluid py-5" style="background-color: #eee;">
         <div class="row">
             <div class="col-lg-4">
-                <!-- User Card Summary-->
-                @await Component.InvokeAsync("UserSummaryCard", new { userId = Model.UserId })
-                <!-- User Card Summary-->
-                <!-- UserImage Card-->
-                @await Component.InvokeAsync("UserImageCard", new { userId = Model.UserId })
-                <!-- UserImage Card-->
+                <!-- Employee Card Summary-->
+                @await Component.InvokeAsync("EmployeeSummaryCard", new { employeeId = Model.EmployeeId })
+                <!-- Employee Card Summary-->
+                <!-- EmployeeImage Card-->
+                @await Component.InvokeAsync("EmployeeImageCard", new { employeeId = Model.EmployeeId })
+                <!-- EmployeeImage Card-->
             </div>
             <div class="col-lg-8">
                 <div class="card">
@@ -106,7 +106,7 @@
                            <div class="form-group row">
                                <label asp-for="PhoneNumber" class="col-sm-3 col-form-label"></label>
                                <div class="col-sm-9">
-                                   <input asp-for="PhoneNumber" id="phonemasc" class="form-control"/>
+                                    <input asp-for="PhoneNumber" id="employeephonemasc" class="form-control" />
                                </div>
                            </div>
                            <div class="form-group row">
@@ -180,11 +180,11 @@
                                    <input asp-for="DefaultAddress" class="mt-3"/>
                                </div>
                            </div>
-                           <input type="hidden" asp-for="UserId" class="form-control"/>
+                           <input type="hidden" asp-for="EmployeeId" class="form-control"/>
                            <div class="form-group row">
                                <div class="offset-sm-3 col-sm-9">
                                    <input type="submit" value="Kaydet" id="btnSave" class="btn btn-success btn-sm"/>
-                                   <a asp-area="Admin" asp-controller="Account" asp-action="Profile" asp-route-id="@Model.UserId" class="btn btn-primary btn-sm ml-2">Profil</a>
+                                   <a asp-area="Admin" asp-controller="EmployeeAccount" asp-action="Profile" asp-route-id="@Model.EmployeeId" class="btn btn-primary btn-sm ml-2">Profil</a>
                                </div>
                            </div>
                        </form>
@@ -199,7 +199,7 @@
     <script src="~/lib/inputmask/jquery.inputmask.min.js"></script>
     <script src="~/lib/fancybox/js/jquery.fancybox.min.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>
-    <script src="~/admin/js/userimage/userimage.js" asp-append-version="true"></script>
+    <script src="~/admin/js/employeeimage/employeeimage.js" asp-append-version="true"></script>
     <script asp-append-version="true">
         var app = app || {};
         app.Urls = app.Urls || {};

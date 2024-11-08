@@ -4,6 +4,6 @@ namespace AutoSpareParts.Application.Features.Employees.Commands.RemoveUserFromR
 
 public class RemoveEmployeeFromRoleCommandRequest : IRequest<RemoveEmployeeFromRoleCommandResponse>
 {
-    public string UserId { get; set; }
+    public string EmployeeId { get; set; }
     public string RoleId { get; set; }
 }

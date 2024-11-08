@@ -67,7 +67,7 @@ public class SetRolePassiveCommandHandler : IRequestHandler<SetPassiveRoleComman
         }
         return new SetPassiveRoleCommandResponse
         {
-            Result = new Result(ResultStatus.Error, Messages.RoleDefaultRole)
+            Result = new Result(ResultStatus.Error, Messages.DefaultRole)
         };
         
     }

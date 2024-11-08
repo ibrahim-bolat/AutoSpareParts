@@ -1,0 +1,134 @@
+@model CreateEmployeeImageDto
+@{
+    Layout = "Admin/_AdminLayout";
+
+    ViewBag.Title = "Resim Ekle";
+}
+@section Style {
+    <style>
+        /*------------------------------------------------------------------
+                 Fancybox Gallery Section
+              -------------------------------------------------------------------*/
+
+        .gallery_section_inner .column {
+            background: #fff;
+            box-shadow: 0 0 13px -10px #000;
+            overflow: hidden;
+        }
+
+        .heading_section {
+            border-top: solid #1ed085 2px;
+            background: #15283c;
+        }
+
+            .heading_section h4 {
+                color: #fff;
+                margin: 0;
+                font-weight: 200;
+                text-align: center;
+                padding: 16px 0 16px;
+                font-size: 15px;
+            }
+    </style>
+    <link href="~/lib/fancybox/css/jquery.fancybox.css" rel="stylesheet" />
+}
+
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Dashboard</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li class="active">Dashboard</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content mt-3">
+    <div class="col-sm-12">
+        <div class="alert  alert-success alert-dismissible fade show" role="alert">
+            <span class="badge badge-pill badge-success">Success</span> You successfully read this important alert message.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="container-fluid py-5" style="background-color: #eee;">
+        <div class="row">
+            <div class="col-lg-4">
+                <!-- Employee Card Summary-->
+                @await Component.InvokeAsync("EmployeeSummaryCard", new { employeeId = Model.EmployeeId })
+                <!-- Employee Card Summary-->
+                <!-- EmployeeImage Card-->
+                @await Component.InvokeAsync("EmployeeImageCard", new { employeeId = Model.EmployeeId })
+                <!-- EmployeeImage Card-->
+            </div>
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Resim Ekle</h2>
+                    </div>
+                    <div class="card-body">
+                        <form asp-area="Admin" asp-controller="EmployeeImage" asp-action="CreateEmployeeImage" method="post" enctype="multipart/form-data">
+                            <div class="form-group row offset-3 col-9 text-danger" asp-validation-summary="All">
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="Title" class="col-sm-3 col-form-label"></label>
+                                <div class="col-sm-9">
+                                    <input asp-for="Title" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="AltText" class="col-sm-3 col-form-label"></label>
+                                <div class="col-sm-9">
+                                    <input asp-for="AltText" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="Note" class="col-sm-3 col-form-label"></label>
+                                <div class="col-sm-9">
+                                    <textarea asp-for="Note" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="ImageFile" class="col-sm-3 col-form-label"></label>
+                                <div class="col-sm-9">
+                                    <input asp-for="ImageFile" accept="image/*" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="Profil" class="col-3 col-form-label"></label>
+                                <div class="col-9">
+                                    <input asp-for="Profil" class="mt-2" />
+                                </div>
+                            </div>
+                            <input type="hidden" asp-for="EmployeeId" class="form-control" />
+                            <div class="form-group row">
+                                <div class="offset-sm-3 col-sm-9">
+                                    <input type="submit" value="Kaydet" class="btn btn-primary btn-sm" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- .content -->
+@section Scripts {
+    <script src="~/lib/fancybox/js/jquery.fancybox.min.js"></script>
+    <script asp-append-version="true">
+        var app = app || {};
+        app.Urls = app.Urls || {};
+        app.ToastMessages = app.ToastMessages || {};
+        app.ToastMessages.createUserImageMessage = '@TempData["CreateEmployeeImageSuccess"]';
+    </script>
+    <script src="~/admin/js/employeeimage/employeeimage-.js" asp-append-version="true"></script>
+}

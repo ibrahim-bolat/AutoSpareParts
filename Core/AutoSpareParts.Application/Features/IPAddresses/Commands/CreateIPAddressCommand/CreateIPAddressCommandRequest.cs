@@ -2,9 +2,9 @@ using AutoSpareParts.Application.Features.IPAddresses.DTOs;
 using AutoSpareParts.Application.Features.Employees.DTOs;
 using MediatR;
 
-namespace AutoSpareParts.Application.Features.IPAddresses.Commands.CreatIPpAddressCommand;
+namespace AutoSpareParts.Application.Features.IPAddresses.Commands.CreatIPAddressCommand;
 
-public class CreateIpAddressCommandRequest:IRequest<CreateIpAddressCommandResponse>
+public class CreateIPAddressCommandRequest:IRequest<CreateIPAddressCommandResponse>
 {
-    public IPDto IpDto{ get; set; }
+    public IPDto IPDto{ get; set; }
 }

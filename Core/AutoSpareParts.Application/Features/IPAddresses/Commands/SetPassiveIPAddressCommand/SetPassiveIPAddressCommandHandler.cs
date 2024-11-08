@@ -9,20 +9,20 @@ using Microsoft.AspNetCore.Http;
 
 namespace AutoSpareParts.Application.Features.IPAddresses.Commands.SetPassiveIPAddressCommand;
 
-public class SetIpAddressPassiveCommandCommandHandler : IRequestHandler<SetPassiveIpAddressCommandRequest, SetPassiveIpAddressCommandResponse>
+public class SetIPAddressPassiveCommandCommandHandler : IRequestHandler<SetPassiveIPAddressCommandRequest, SetPassiveIPAddressCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper; 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public SetIpAddressPassiveCommandCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+    public SetIPAddressPassiveCommandCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<SetPassiveIpAddressCommandResponse> Handle(SetPassiveIpAddressCommandRequest request,
+    public async Task<SetPassiveIPAddressCommandResponse> Handle(SetPassiveIPAddressCommandRequest request,
         CancellationToken cancellationToken)
     {
         IPAddress IP = await _unitOfWork.IPAddresses.GetByIdAsync(request.Id);
@@ -38,21 +38,21 @@ public class SetIpAddressPassiveCommandCommandHandler : IRequestHandler<SetPassi
                 int result = await _unitOfWork.SaveAsync();
                 if (result > 0)
                 {
-                    return new SetPassiveIpAddressCommandResponse
+                    return new SetPassiveIPAddressCommandResponse
                     {
                         Result = new  Result(ResultStatus.Success, Messages.IPUpdated)
                     };
                 }
-                return new SetPassiveIpAddressCommandResponse{
+                return new SetPassiveIPAddressCommandResponse{
                     Result = new Result(ResultStatus.Error, Messages.IPNotUpdated)
                 };
             }
-            return new SetPassiveIpAddressCommandResponse
+            return new SetPassiveIPAddressCommandResponse
             {
                 Result = new Result(ResultStatus.Error, Messages.IPNotActive)
             };
         }
-        return new SetPassiveIpAddressCommandResponse
+        return new SetPassiveIPAddressCommandResponse
         {
             Result = new Result(ResultStatus.Error, Messages.IPNotFound)
         };

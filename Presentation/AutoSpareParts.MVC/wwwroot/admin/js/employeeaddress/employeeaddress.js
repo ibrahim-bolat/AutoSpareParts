@@ -2,9 +2,9 @@
 $(document).ready(function ($) {
     // Phone Input Mask
     
-    $("#phonemasc").inputmask("+\\90(999)999-99-99");
+    $("#employeephonemasc").inputmask("+\\90(999)999-99-99");
     $(document).on("ajaxComplete", function(e){
-        $("#phonemasc").inputmask("+\\90(999)999-99-99");
+        $("#employeephonemasc").inputmask("+\\90(999)999-99-99");
     });
     
     //GetAllDistrictsByCityId
@@ -14,7 +14,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var cityId = $("#cityId").val();
         $.ajax({
-            url: "/admin/address/getalldistrictsbycityid",
+            url: "/admin/address/getdistrictlistbycityid",
             data: { cityId: cityId },
             type: "POST",
             dataType: "json",

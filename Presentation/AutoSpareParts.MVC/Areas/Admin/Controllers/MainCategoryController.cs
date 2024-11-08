@@ -1,17 +1,15 @@
-﻿
-using AutoSpareParts.Application.Constants;
-using AutoSpareParts.Application.CustomAttributes;
+﻿using AutoSpareParts.Application.CustomAttributes;
 using AutoSpareParts.Application.DTOs.Common;
-using AutoSpareParts.Application.Features.IPAddresses.Queries.GetIPAddressByIdQuery;
 using AutoSpareParts.Application.Features.MainCategories.Commands.CreateMainCategoryCommand;
 using AutoSpareParts.Application.Features.MainCategories.Commands.UpdateMainCategoryCommand;
-using AutoSpareParts.Application.Features.MainCategories.DTOs;
 using AutoSpareParts.Application.Features.MainCategories.Queries.GetMainCategoryByIdQuery;
 using AutoSpareParts.Application.Features.MainCategories.Queries.GetMainCategoryListQuery;
+using AutoSpareParts.Application.Features.MainCategories.DTOs;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Messages = AutoSpareParts.Application.Features.MainCategories.Constants.Messages;
+using AutoSpareParts.Application.Constants;
+using AutoSpareParts.Application.Features.MainCategories.Constants;
 
 namespace AutoSpareParts.MVC.Areas.Admin.Controllers
 {
@@ -32,7 +30,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetAllMainCategories(DatatableRequestDto datatableRequestDto)
+        public async Task<IActionResult> GetMainCategoryList(DatatableRequestDto datatableRequestDto)
         {
             var dresult = await _mediator.Send(new GetMainCategoryListQueryRequest()
             {
@@ -51,7 +49,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Endpoint(Menu = MenuDecription.MainCategory, EndpointType = EndpointType.Writing, Definition = "Create MainCategory")]
+        [Endpoint(Menu = MenuDefinition.MainCategory, EndpointType = EndpointType.Writing, Decription = EndpointDecription.PostCreateMainCategory)]
         public async Task<IActionResult> CreateMainCategory(MainCategoryDto mainCategoryDto)
         {
             if (!ModelState.IsValid)
@@ -72,7 +70,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Endpoint(Menu = MenuDecription.MainCategory, EndpointType = EndpointType.Updating, Definition = "Update MainCategory")]
+        [Endpoint(Menu = MenuDefinition.MainCategory, EndpointType = EndpointType.Updating, Decription = EndpointDecription.PostUpdateMainCategory)]
         public async Task<IActionResult> UpdateMainCategory(MainCategoryListDto mainCategoryListDto)
         {
             if (!ModelState.IsValid)
@@ -86,7 +84,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
             });
             if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.MainCategoryNotFound))
             {
-                ModelState.AddModelError("MainCategoryNotFound", Messages.MainCategoryNotFound);
+                ModelState.AddModelError(nameof(Messages.MainCategoryNotFound), Messages.MainCategoryNotFound);
                 return PartialView("PartialViews/_UpdateMainCategoryModalPartial", mainCategoryListDto);
             }
 
@@ -99,7 +97,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Endpoint(Menu = MenuDecription.MainCategory, EndpointType = EndpointType.Reading, Definition = "Get By EmloyeeId MainCategory Details")]
+        [Endpoint(Menu = MenuDefinition.MainCategory, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetMainCategoryById)]
         public async Task<IActionResult> GetMainCategoryById(int id)
         {
             var dresult = await _mediator.Send(new GetMainCategoryByIdQueryRequest()
@@ -113,7 +111,7 @@ namespace AutoSpareParts.MVC.Areas.Admin.Controllers
 
             if (dresult.Result.ResultStatus == ResultStatus.Error && dresult.Result.Message.Equals(Messages.MainCategoryNotFound))
             {
-                ModelState.AddModelError("MainCategoryNotFound", Messages.MainCategoryNotFound);
+                ModelState.AddModelError(nameof(Messages.MainCategoryNotFound), Messages.MainCategoryNotFound);
                 var errors = ModelState.ToDictionary(x => x.Key, x => x.Value?.Errors);
                 return Json(new { success = false, errors = errors });
             }

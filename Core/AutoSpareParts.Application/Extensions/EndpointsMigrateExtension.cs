@@ -45,7 +45,7 @@ public static class EndpointsMigrateExtension
                                     var areaAttributeName = areaAttribute?.RouteValue;
 
                                     string endpointType = Enum.GetName(typeof(EndpointType), authorizeDefinitionAttribute.EndpointType);
-                                    string definition = authorizeDefinitionAttribute.Definition;
+                                    string definition = authorizeDefinitionAttribute.Decription;
 
                                     var httpAttribute = attributes.FirstOrDefault(a => a.GetType().IsAssignableTo(typeof(HttpMethodAttribute))) as HttpMethodAttribute;
                                     string httpType = null;
