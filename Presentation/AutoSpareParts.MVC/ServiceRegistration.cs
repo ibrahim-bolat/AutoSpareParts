@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using AutoSpareParts.Application.Models;
 using AutoSpareParts.MVC.Configurations.RateLimit;
 using AutoSpareParts.MVC.Configurations.SeriLog;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using NpgsqlTypes;
@@ -15,36 +16,37 @@ namespace AutoSpareParts.MVC;
 
 public static class ServiceRegistration
 {
-    public static void AddPresentationServices(this IServiceCollection serviceCollection,IConfiguration configuration,IHostBuilder host)
+    public static void AddPresentationServices(this IServiceCollection serviceCollection, IConfiguration configuration, IHostBuilder host)
     {
         //hot reload
         serviceCollection.AddControllersWithViews().AddRazorRuntimeCompilation();
-        
+
         //for Ignore Cycles
-        serviceCollection.AddControllers().AddJsonOptions(options => 
-        { 
+        serviceCollection.AddControllers().AddJsonOptions(options =>
+        {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             options.JsonSerializerOptions.WriteIndented = true;
             options.JsonSerializerOptions.PropertyNamingPolicy = null;//ilk karakter büyük olsun
         });
-        
+
         //cookie configuration
         serviceCollection.ConfigureApplicationCookie(cookieOptions =>
         {
-            cookieOptions.LoginPath = new PathString("/admin/account/login");
-            cookieOptions.LogoutPath = new PathString("/admin/account/logout");
+            cookieOptions.LoginPath = new PathString("/admin/employeeaccount/login");
+            cookieOptions.LogoutPath = new PathString("/admin/employeeaccount/logout");
             cookieOptions.Cookie = new CookieBuilder
             {
-                Name = "AutoSparePartsCookie", 
-                HttpOnly = false, 
-                SameSite = SameSiteMode.Lax, 
-                SecurePolicy = CookieSecurePolicy.Always 
+                Name = "AutoSparePartsCookie",
+                HttpOnly = false,
+                SameSite = SameSiteMode.Lax,
+                SecurePolicy = CookieSecurePolicy.Always
             };
             cookieOptions.SlidingExpiration = true;
             cookieOptions.ExpireTimeSpan = TimeSpan.FromHours(2);
             cookieOptions.AccessDeniedPath = new PathString($"/error/index?statusCode={401}");
         });
-        
+
+
         //facebook and google login authenticate
         serviceCollection.AddAuthentication().AddFacebook(faceOptions =>
         {
@@ -59,30 +61,30 @@ public static class ServiceRegistration
             googleOptions.ClientSecret = configuration["GoogleClientSecret"];
             googleOptions.AccessDeniedPath = new PathString("/admin/account/login");
             googleOptions.ReturnUrlParameter = "";
-        });;
-        
+        }); ;
+
         //all project authorize
         //serviceCollection.AddAuthorization(options =>
         //{
         //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
         //        .RequireAuthenticatedUser()
         //        .Build();
-        //}); 
-        
+        //});
+
         //for fix token error
         serviceCollection.Configure<RouteOptions>(options =>
         {
-            options.LowercaseUrls = true; 
-            options.LowercaseQueryStrings = true; 
+            options.LowercaseUrls = true;
+            options.LowercaseQueryStrings = true;
         });
-        
+
         //seri log configuration
         Logger log = new LoggerConfiguration()
             //.WriteTo.Console(outputTemplate:"[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}" )
             //.WriteTo.File(configuration["Serilog:LogFilePath"],
             //    rollingInterval: RollingInterval.Day,
             //    rollOnFileSizeLimit: true)
-            .WriteTo.PostgreSQL(configuration.GetConnectionString("DefaultConnection"), 
+            .WriteTo.PostgreSQL(configuration.GetConnectionString("DefaultConnection"),
                 configuration["Serilog:LogDatabaseTableName"], needAutoCreateTable: true,
                 columnOptions: new Dictionary<string, ColumnWriterBase>
                 {
@@ -98,7 +100,7 @@ public static class ServiceRegistration
             .Enrich.FromLogContext()
             .MinimumLevel.Information()
             .CreateLogger();
-        
+
         //use above seri log configuration
         host.UseSerilog(log);
 
@@ -111,7 +113,7 @@ public static class ServiceRegistration
             logging.RequestBodyLogLimit = 4096;
             logging.ResponseBodyLogLimit = 4096;
         });
-        
+
         //configure RateLimitSettings
         serviceCollection.Configure<RateLimitSettings>(configuration.GetSection("RateLimitSettings"));
         serviceCollection.AddRateLimiter(options =>

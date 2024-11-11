@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using System.Security.Principal;
 
 namespace AutoSpareParts.Persistence;
@@ -28,32 +29,42 @@ public static class ServiceRegistration
                 providerOptions => providerOptions.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(5), errorCodesToAdd: null));
         });
 
-        // IdentityOptions
-        serviceCollection.Configure<IdentityOptions>(configuration.GetSection("IdentityOptions"));
 
         //identity appuser
-        serviceCollection.AddIdentity<AppUser, AppRole>()
-            .AddErrorDescriber<CustomIdentityErrorDescriber>()
-            .AddEntityFrameworkStores<DataContext>()
-            .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
+        serviceCollection.AddIdentity<AppUser, AppRole>(_ =>
+        {
+            configuration.GetSection("IdentityOptions");
+        }).AddErrorDescriber<CustomIdentityErrorDescriber>()
+           .AddEntityFrameworkStores<DataContext>()
+           .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
 
         //identity employee
-        serviceCollection.AddIdentityCore<Employee>()
-          .AddRoles<AppRole>()
+        serviceCollection.AddIdentityCore<Employee>(_ =>
+        {
+            configuration.GetSection("IdentityOptions");
+        }).AddRoles<AppRole>()
           .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddEntityFrameworkStores<DataContext>()
           .AddTokenProvider<DataProtectorTokenProvider<Employee>>(TokenOptions.DefaultProvider);
 
         //identity customer
-        serviceCollection.AddIdentityCore<Customer>()
-          .AddRoles<AppRole>()
+        serviceCollection.AddIdentityCore<Customer>(_ =>
+        {
+            configuration.GetSection("IdentityOptions");
+        }).AddRoles<AppRole>()
           .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddEntityFrameworkStores<DataContext>()
           .AddTokenProvider<DataProtectorTokenProvider<Customer>>(TokenOptions.DefaultProvider);
 
-        // Farklý kullanýcý türleri için SignInManager i ayrýca eklemek gerekiyor DI'a çünkü AddIdentityCore da bunlar eklenmiyor
+        // Farklý kullanýcý türleri için altttaki servisleri ayrýca eklemek gerekiyor DI'a çünkü AddIdentity metodunda varsayýlan olarak eklendiði halde
+        // AddIdentityCore da bunlar eklenmiyor.
         serviceCollection.TryAddScoped<SignInManager<Employee>>();
+        serviceCollection.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<Employee>>();
+        serviceCollection.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<Employee>>();
+
         serviceCollection.TryAddScoped<SignInManager<Customer>>();
+        serviceCollection.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<Customer>>();
+        serviceCollection.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<Customer>>();
 
         //user security stamp validate time
         serviceCollection.Configure<SecurityStampValidatorOptions>(options =>

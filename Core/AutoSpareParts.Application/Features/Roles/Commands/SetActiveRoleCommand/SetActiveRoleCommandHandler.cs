@@ -23,7 +23,7 @@ public class SetRoleActiveCommandCommandHandler : IRequestHandler<SetActiveRoleC
         CancellationToken cancellationToken)
     {
         IdentityResult roleResult;
-        List<int> defaultRoleIds = new List<int>() { 1, 2, 3 };
+        List<int> defaultRoleIds = new List<int>() { 1, 2, 3, 4, 5 };
         if (!defaultRoleIds.Contains(request.Id))
         {
             AppRole role = await _roleManager.FindByIdAsync(request.Id.ToString());

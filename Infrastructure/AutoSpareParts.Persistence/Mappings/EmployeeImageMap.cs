@@ -26,9 +26,9 @@ public sealed class EmployeeImageMap : BaseEntityMap<EmployeeImage>
             Path = "/admin/images/employeeimages/1/profil.jpg",
             AltText = "Profil",
             Profil = true,
-            EmployeeId = 1,
             IsActive = true,
-            IsDeleted = false
+            IsDeleted = false,
+            EmployeeId = 1
         });
     }
 }

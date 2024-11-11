@@ -69,7 +69,7 @@
                     @await Component.InvokeAsync("EmployeeSummaryCard", new { employeeId = Model.EmployeeDto.Id })
                     <!-- Employee Card Summary-->
                     <!-- EmployeeImage Card-->
-                    @await Component.InvokeAsync("EmployeeImageCard", new { userId = Model.EmployeeDto.Id })
+                    @await Component.InvokeAsync("EmployeeImageCard", new { employeeId = Model.EmployeeDto.Id })
                     <!-- EmployeeImage Card-->
             </div>
             <div class="col-lg-8">

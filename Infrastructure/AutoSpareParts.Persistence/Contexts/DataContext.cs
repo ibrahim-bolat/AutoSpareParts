@@ -18,7 +18,7 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int>
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<CustomerAddress> CustomerAddresses { get; set; }
-    public DbSet<CustomerImage> Customermages { get; set; }
+    public DbSet<CustomerImage> CustomerImages { get; set; }
     public DbSet<Discount> Discounts { get; set; }
     public DbSet<District> Districts { get; set; }
     public DbSet<Employee> Employees { get; set; }

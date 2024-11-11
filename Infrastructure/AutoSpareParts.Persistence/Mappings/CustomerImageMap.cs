@@ -23,12 +23,12 @@ public sealed class CustomerImageMap : BaseEntityMap<CustomerImage>
         {
             Id = 1,
             Title = "ProfilResmi",
-            Path = "/admin/images/userimages/1/profil.jpg",
+            Path = "/images/customerimages/3/profil.jpg",
             AltText = "Profil",
             Profil = true,
-            CustomerId = 3,
             IsActive = true,
-            IsDeleted = false
+            IsDeleted = false,
+            CustomerId = 3
         });
     }
 }

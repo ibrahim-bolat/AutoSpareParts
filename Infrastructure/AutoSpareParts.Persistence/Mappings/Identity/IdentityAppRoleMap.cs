@@ -35,6 +35,18 @@ public class IdentityAppRoleMap : IEntityTypeConfiguration<AppRole>
             Id = 3,
             Name = RoleType.User.ToString(),
             NormalizedName = RoleType.User.ToString().ToUpperInvariant()
+        },
+        new AppRole
+        {
+            Id = 4,
+            Name = RoleType.Employee.ToString(),
+            NormalizedName = RoleType.Employee.ToString().ToUpperInvariant()
+        },
+        new AppRole
+        {
+            Id = 5,
+            Name = RoleType.Customer.ToString(),
+            NormalizedName = RoleType.Customer.ToString().ToUpperInvariant()
         });
     }
 }

@@ -1,9 +1,8 @@
 using AutoSpareParts.Domain.Entities;
-using AutoSpareParts.Domain.Entities.Identity;
-using AutoSpareParts.Persistence.Mappings.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 

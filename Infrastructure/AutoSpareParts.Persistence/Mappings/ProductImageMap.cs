@@ -22,19 +22,19 @@ public sealed class ProductImageMap : BaseEntityMap<ProductImage>
         builder.HasData(new ProductImage()
         {
             Id = 1,
-            ProductId = 1,
             Title = "Ford Focuk Fren Disk Resmi",
             Path = "/img/products/fren/frendiskleri/1/fordfocusfrendisk.jpg",
             AltText = "Ford Focuk Fren Disk Resmi",
             Vitrin = true,
+            ProductId = 1
         }, new ProductImage()
         {
             Id = 2,
-            ProductId = 3,
             Title = "Fiat Linea 1.3 Fren Diski Resmi",
             Path = "/img/products/fren/frendiskleri/2/fiatlineafrendisk.jpg",
             AltText = "Ford Focuk Fren Disk Resmi",
             Vitrin = true,
+            ProductId = 3
         });
     }
 }
