@@ -73,7 +73,7 @@ public class CreateEmployeeImageCommandHandler:IRequestHandler<CreateEmployeeIma
     {
         var imageFileName = Path.GetFileNameWithoutExtension(employeeImageAddDto.ImageFile.FileName);
 
-        var localImageFileDir = $"wwwroot/admin/images/userimages/{employeeImageAddDto.EmployeeId}";// wwwroot/admin/images/employeeimages/1
+        var localImageFileDir = $"wwwroot/admin/images/employeeimages/{employeeImageAddDto.EmployeeId}";// wwwroot/admin/images/employeeimages/1
         var extension = Path.GetExtension(employeeImageAddDto.ImageFile.FileName).ToLower();
 
         //local employeeimages/employeeId klasörü yoksa oluştur.

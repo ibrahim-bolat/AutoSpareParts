@@ -5,6 +5,7 @@ using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeSummaryByIdQuery;
+using AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.Queries.GetEmployeeSummaryCardByIdQuery;
 
 
 namespace AutoSpareParts.MVC.Areas.Admin.ViewComponents;
@@ -64,9 +65,9 @@ public class EmployeeSummaryCardViewComponent : ViewComponent
                 }
             }
         }
-        var employeeCardSummaryResult = await _mediator.Send(new GetEmployeeSummaryByIdQueryRequest()
+        var employeeCardSummaryResult = await _mediator.Send(new GetByIdForUserSummaryCardQueryRequest()
         {
-            Id = employeeId.ToString()
+            Id = employeeId
         });
         return View(employeeCardSummaryResult.Result.Data);
     }

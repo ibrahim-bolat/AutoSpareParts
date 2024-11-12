@@ -6,6 +6,8 @@ using AutoSpareParts.Domain.Entities.Identity;
 using AutoSpareParts.Persistence.Contexts;
 using AutoSpareParts.Persistence.Repositories;
 using AutoSpareParts.Persistence.Repositories.Common;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,8 +37,8 @@ public static class ServiceRegistration
         {
             configuration.GetSection("IdentityOptions");
         }).AddErrorDescriber<CustomIdentityErrorDescriber>()
-           .AddEntityFrameworkStores<DataContext>()
-           .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
+          .AddEntityFrameworkStores<DataContext>()
+          .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
 
         //identity employee
         serviceCollection.AddIdentityCore<Employee>(_ =>
@@ -55,6 +57,7 @@ public static class ServiceRegistration
           .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddEntityFrameworkStores<DataContext>()
           .AddTokenProvider<DataProtectorTokenProvider<Customer>>(TokenOptions.DefaultProvider);
+
 
         // Farklý kullanýcý türleri için altttaki servisleri ayrýca eklemek gerekiyor DI'a çünkü AddIdentity metodunda varsayýlan olarak eklendiði halde
         // AddIdentityCore da bunlar eklenmiyor.

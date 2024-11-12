@@ -258,13 +258,13 @@ public class EmployeeAccountController : Controller
 
     [AllowAnonymous]
     [HttpPost("[action]/{employeeId}/{token}")]
-    public async Task<IActionResult> UpdatePassword(UpdateEmployeePasswordDto updatePasswordDto, string userId, string token)
+    public async Task<IActionResult> UpdatePassword(UpdateEmployeePasswordDto updatePasswordDto, string employeeId, string token)
     {
         string updatePasswordStatus = "UpdatePasswordStatus";
         var dresult = await _mediator.Send(new UpdateEmployeeAccountPasswordCommandRequest()
         {
             UpdateEmployeePasswordDto = updatePasswordDto,
-            EmployeeId = userId,
+            EmployeeId = employeeId,
             Token = token
         });
         if (dresult.Result.ResultStatus == ResultStatus.Success)

@@ -1,6 +1,7 @@
 ﻿using AutoSpareParts.Application.Features.EmployeeImages.Queries.GetEmployeeImageListByUserNameQuery;
 using AutoSpareParts.Application.Features.Employees.Queries.GetEmployeeSummaryByIdQuery;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoSpareParts.MVC.Areas.Admin.ViewComponents;

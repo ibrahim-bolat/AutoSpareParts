@@ -25,10 +25,10 @@ public class EmployeeImageController : Controller
 
     [HttpGet]
     [Endpoint(Menu = MenuDefinition.EmployeeImage, EndpointType = EndpointType.Reading, Decription = EndpointDecription.GetCreateEmployeeImage)]
-    public IActionResult CreateEmployeeImage(int userId)
+    public IActionResult CreateEmployeeImage(int employeeId)
     {
         CreateEmployeeImageDto createUserImageDto = new CreateEmployeeImageDto();
-        createUserImageDto.EmployeeId = userId;
+        createUserImageDto.EmployeeId = employeeId;
         return View(createUserImageDto);
     }
 
@@ -51,7 +51,7 @@ public class EmployeeImageController : Controller
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
                 TempData[nameof(this.CreateEmployeeImage) + "Success"] = true;
-                return RedirectToAction(nameof(this.CreateEmployeeImage), nameof(EmployeeImageController)[..^10], new { area = nameof(Admin), userId = createUserImageDto.EmployeeId });
+                return RedirectToAction(nameof(this.CreateEmployeeImage), nameof(EmployeeImageController)[..^10], new { area = nameof(Admin), employeeId = createUserImageDto.EmployeeId });
             }
         }
         return View(createUserImageDto);

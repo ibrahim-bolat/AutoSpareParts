@@ -52,14 +52,14 @@ public static class ServiceRegistration
         {
             faceOptions.AppId = configuration["FacebookAppId"];
             faceOptions.AppSecret = configuration["FacebookAppSecret"];
-            faceOptions.AccessDeniedPath = new PathString("/admin/account/login");
+            faceOptions.AccessDeniedPath = new PathString("/admin/employeeaccount/login");
             faceOptions.ReturnUrlParameter = "";
         })
         .AddGoogle(googleOptions =>
         {
             googleOptions.ClientId = configuration["GoogleClientId"];
             googleOptions.ClientSecret = configuration["GoogleClientSecret"];
-            googleOptions.AccessDeniedPath = new PathString("/admin/account/login");
+            googleOptions.AccessDeniedPath = new PathString("/admin/employeeaccount/login");
             googleOptions.ReturnUrlParameter = "";
         }); ;
 

@@ -2,7 +2,7 @@ var $=jQuery.noConflict();
 $(document).ready(function ($) {
     $(".employeeImageSetProfilButton").on("click", function() {
         var Id = $(this).attr("data-id");
-        var userId = $(this).attr("data-userid");
+        var employeeId = $(this).attr("data-employeeid");
         Swal.fire({
             title: 'Profil Olsun mu?',
             text: "Resmi Profil Olarak Ayarlamak İstediğinizden Emin misiniz?",
@@ -29,7 +29,7 @@ $(document).ready(function ($) {
                                 text: "Profil Resmi Başarıyla Ayarlandı",
                                 icon: 'success',
                             }).then((result) => {
-                                window.location = '/admin/employeeaccount/profile?id=' + userId;
+                                window.location = '/admin/employeeaccount/profile?id=' + employeeId;
                             })
                         } else {
                             Swal.fire({
@@ -54,7 +54,7 @@ $(document).ready(function ($) {
     
     $(".employeeImageDeleteProfilButton").on("click", function() {
         var Id = $(this).attr("data-id");
-        var userId = $(this).attr("data-userid");
+        var employeeId = $(this).attr("data-employeeid");
         Swal.fire({
             title: 'Resmi Silmek İstediğinizden Emin misiniz??',
             text: "Silme işlemine onay verdikten sonra işlemi tekrardan geri alamazsınız!",
@@ -80,7 +80,7 @@ $(document).ready(function ($) {
                                 text: "Resim Silme İşlemi Başarıyla Gerçekleşti",
                                 icon: 'success',
                             }).then((result) => {
-                                window.location = '/admin/account/profile?id=' + userId;
+                                window.location = '/admin/employeeaccount/profile?id=' + employeeId;
                             })
                         } else {
                             Swal.fire({
@@ -104,7 +104,7 @@ $(document).ready(function ($) {
     });
 
     // CreateEmployeeImage
-    if(app.ToastMessages.createEmployeeImageMessage==="True"){
+    if (app.ToastMessages.createEmployeeImageMessage ==="True"){
         toastMessage(5000,"success","Resim Eklendi.",
             "Resim Ekleme İşlemi Başarıyla Gerçekleştirildi.");
     }
