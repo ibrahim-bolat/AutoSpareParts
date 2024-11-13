@@ -14,8 +14,6 @@
       <Folder Include="Features\UserAccounts\CustomerAccounts\BusinessRules\" />
       <Folder Include="Features\UserAccounts\CustomerAccounts\Commands\" />
       <Folder Include="Features\UserAccounts\CustomerAccounts\Constants\" />
-      <Folder Include="Features\UserAccounts\CustomerAccounts\DTOs\" />
-      <Folder Include="Features\UserAccounts\CustomerAccounts\MappingProfiles\" />
       <Folder Include="Features\UserAccounts\CustomerAccounts\Queries\" />
       <Folder Include="Features\UserAccounts\CustomerAccounts\Validations\" />
       <Folder Include="Features\UserAccounts\EmployeeAccounts\BusinessRules" />

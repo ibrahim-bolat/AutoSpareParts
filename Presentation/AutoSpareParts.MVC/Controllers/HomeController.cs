@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AutoSpareParts.MVC.Controllers;
 
-[AllowAnonymous]
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

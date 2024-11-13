@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 using AutoSpareParts.Application.Models;
 using AutoSpareParts.MVC.Configurations.RateLimit;
 using AutoSpareParts.MVC.Configurations.SeriLog;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using NpgsqlTypes;
@@ -32,8 +31,8 @@ public static class ServiceRegistration
         //cookie configuration
         serviceCollection.ConfigureApplicationCookie(cookieOptions =>
         {
-            cookieOptions.LoginPath = new PathString("/admin/employeeaccount/login");
-            cookieOptions.LogoutPath = new PathString("/admin/employeeaccount/logout");
+            //cookieOptions.LoginPath = new PathString("/admin/employeeaccount/login");
+            //cookieOptions.LogoutPath = new PathString("/admin/employeeaccount/logout");
             cookieOptions.Cookie = new CookieBuilder
             {
                 Name = "AutoSparePartsCookie",
@@ -44,6 +43,23 @@ public static class ServiceRegistration
             cookieOptions.SlidingExpiration = true;
             cookieOptions.ExpireTimeSpan = TimeSpan.FromHours(2);
             cookieOptions.AccessDeniedPath = new PathString($"/error/index?statusCode={401}");
+            cookieOptions.Events.OnRedirectToLogin = async context =>
+            {
+                var user = context.HttpContext.User;
+                const string area = "/admin";
+                var redirectUrlEndWith = "account/login";
+                var redirectUrl = string.Empty;
+                if (context.Request.Path.StartsWithSegments(area))
+                {
+                    redirectUrl = area + "/employee" + redirectUrlEndWith;
+                }
+                else
+                {
+                    redirectUrl = "/customer" + redirectUrlEndWith;
+                }
+                context.Response.Redirect(redirectUrl);
+                await Task.CompletedTask;
+            };
         });
 
 
@@ -61,15 +77,15 @@ public static class ServiceRegistration
             googleOptions.ClientSecret = configuration["GoogleClientSecret"];
             googleOptions.AccessDeniedPath = new PathString("/admin/employeeaccount/login");
             googleOptions.ReturnUrlParameter = "";
-        }); ;
+        });
 
         //all project authorize
-        //serviceCollection.AddAuthorization(options =>
-        //{
-        //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        //        .RequireAuthenticatedUser()
-        //        .Build();
-        //});
+        serviceCollection.AddAuthorization(options =>
+        {
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+        });
 
         //for fix token error
         serviceCollection.Configure<RouteOptions>(options =>

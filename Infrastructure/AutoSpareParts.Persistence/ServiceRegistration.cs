@@ -6,15 +6,11 @@ using AutoSpareParts.Domain.Entities.Identity;
 using AutoSpareParts.Persistence.Contexts;
 using AutoSpareParts.Persistence.Repositories;
 using AutoSpareParts.Persistence.Repositories.Common;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-using System.Security.Principal;
 
 namespace AutoSpareParts.Persistence;
 
@@ -36,8 +32,8 @@ public static class ServiceRegistration
         serviceCollection.AddIdentity<AppUser, AppRole>(_ =>
         {
             configuration.GetSection("IdentityOptions");
-        }).AddErrorDescriber<CustomIdentityErrorDescriber>()
-          .AddEntityFrameworkStores<DataContext>()
+        }).AddEntityFrameworkStores<DataContext>()
+          .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddTokenProvider<DataProtectorTokenProvider<AppUser>>(TokenOptions.DefaultProvider);
 
         //identity employee
@@ -45,17 +41,17 @@ public static class ServiceRegistration
         {
             configuration.GetSection("IdentityOptions");
         }).AddRoles<AppRole>()
-          .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddEntityFrameworkStores<DataContext>()
+          .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddTokenProvider<DataProtectorTokenProvider<Employee>>(TokenOptions.DefaultProvider);
 
-        //identity customer
+        ////identity customer
         serviceCollection.AddIdentityCore<Customer>(_ =>
         {
             configuration.GetSection("IdentityOptions");
         }).AddRoles<AppRole>()
-          .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddEntityFrameworkStores<DataContext>()
+          .AddErrorDescriber<CustomIdentityErrorDescriber>()
           .AddTokenProvider<DataProtectorTokenProvider<Customer>>(TokenOptions.DefaultProvider);
 
 
@@ -68,6 +64,7 @@ public static class ServiceRegistration
         serviceCollection.TryAddScoped<SignInManager<Customer>>();
         serviceCollection.TryAddScoped<ISecurityStampValidator, SecurityStampValidator<Customer>>();
         serviceCollection.TryAddScoped<ITwoFactorSecurityStampValidator, TwoFactorSecurityStampValidator<Customer>>();
+
 
         //user security stamp validate time
         serviceCollection.Configure<SecurityStampValidatorOptions>(options =>
