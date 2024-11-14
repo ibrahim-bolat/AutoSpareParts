@@ -1,6 +1,4 @@
 using AutoSpareParts.Application.Features.UserAccounts.CustomerAccounts.DTOs;
-using AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.Commands.RegisterEmployeeCommand;
-using AutoSpareParts.Application.Features.UserAccounts.EmployeeAccounts.DTOs;
 using AutoSpareParts.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

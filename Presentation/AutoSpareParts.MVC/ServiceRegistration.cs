@@ -45,20 +45,29 @@ public static class ServiceRegistration
             cookieOptions.AccessDeniedPath = new PathString($"/error/index?statusCode={401}");
             cookieOptions.Events.OnRedirectToLogin = async context =>
             {
-                var user = context.HttpContext.User;
+                const string employeeLoginPath = "/admin/employeeaccount/login";
+                const string customerLoginPath = "/customeraccount/login";
+                const string redirectUrlEndWith = "account/login";
                 const string area = "/admin";
-                var redirectUrlEndWith = "account/login";
-                var redirectUrl = string.Empty;
-                if (context.Request.Path.StartsWithSegments(area))
+                string returnUrl = context.Request.Query["returnUrl"].ToString();
+                var requestPath = context.Request.Path;
+                string redirectUrl;
+                string returnUrlPart= string.Empty;
+                if (requestPath.Value is not (employeeLoginPath or customerLoginPath))
                 {
-                    redirectUrl = area + "/employee" + redirectUrlEndWith;
+                    returnUrlPart = $"?returnUrl={requestPath.Value}";
+                    if (requestPath.StartsWithSegments(area))
+                    {
+                        redirectUrl = $"{area}/employee{redirectUrlEndWith}{returnUrlPart}";
+                    }
+                    else
+                    {
+                        redirectUrl = $"/customer{redirectUrlEndWith}{returnUrlPart}";
+                    }
+                    context.Response.Redirect(redirectUrl);
                 }
-                else
-                {
-                    redirectUrl = "/customer" + redirectUrlEndWith;
-                }
-                context.Response.Redirect(redirectUrl);
                 await Task.CompletedTask;
+
             };
         });
 
