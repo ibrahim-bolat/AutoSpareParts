@@ -114,7 +114,7 @@ public class EmployeeAccountController : Controller
             });
             if (dresult.Result.ResultStatus == ResultStatus.Success)
             {
-                if (string.IsNullOrEmpty(TempData[returnUrl] != null ? TempData[returnUrl].ToString() : ""))
+                if (string.IsNullOrEmpty(TempData[returnUrl] != null ? TempData[returnUrl].ToString() : string.Empty))
                     return RedirectToAction(IndexAction, nameof(HomeController)[..^10], new { area = nameof(Admin) });
                 if (TempData[returnUrl]!.Equals(IndexAction) || TempData[returnUrl].Equals("/"))
                     return RedirectToAction(IndexAction, nameof(HomeController)[..^10], new { area = nameof(Admin) });
