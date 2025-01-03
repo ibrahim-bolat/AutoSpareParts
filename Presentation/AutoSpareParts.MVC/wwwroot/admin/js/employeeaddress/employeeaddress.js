@@ -43,7 +43,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var districtId = $("#districtId").val();
         $.ajax({
-            url: "/admin/address/getallneighborhoodsorvillagesbydistrictid",
+            url: "/admin/address/getneighborhoodorvillagelistbydistrictid",
             data: { districtId: districtId },
             type: "POST",
             dataType: "json",
@@ -69,7 +69,7 @@ $(document).ready(function ($) {
         $("#streetId").empty();
         var neighborhoodOrVillageId = $("#neighborhoodOrVillageId").val();
         $.ajax({
-            url: "/admin/address/getallstreetsbyneighborhoodorvillageid",
+            url: "/admin/address/getstreetlistbyneighborhoodorvillageid",
             data: { neighborhoodOrVillageId: neighborhoodOrVillageId },
             type: "POST",
             dataType: "json",
